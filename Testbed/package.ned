@@ -1,0 +1,3 @@
+package testbed;
+
+@license(LGPL);

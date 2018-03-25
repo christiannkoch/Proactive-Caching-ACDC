@@ -1,0 +1,76 @@
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
+
+#include "SSASFactory.h"
+#include "BasicSSAS.h"
+#include "LargestGhostListSSAS.h"
+#include "SmallestGhostListSSAS.h"
+#include "RelativeLargestGhostListSSAS.h"
+#include "RelativeSmallestGhostListSSAS.h"
+#include "LeftFirstSSAS.h"
+#include "ProbationaryFirstSSAS.h"
+#include "RightFirstSSAS.h"
+SSASFactory::SSASFactory() {
+    // TODO Auto-generated constructor stub
+
+}
+
+BasicSSAS* SSASFactory:: createAdaptionStrategy(
+        ARCProbationaryCache* probationaryCache,
+        BasicGhostList* probationaryGhostList,
+        std::vector<BasicCacheSegment*>* cacheSegmentVector,
+        std::vector<BasicGhostList*>* ghostListVector, unsigned int cacheSize,
+        int subCacheSize, double minSegSize, std::string type) {
+    BasicSSAS* returnedSSAS = nullptr;
+    if (type == "largestGhostList") {
+        returnedSSAS = new LargestGhostListSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "smallesGhostList") {
+        returnedSSAS = new SmallestGhostListSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "relativeLargestGhostList") {
+        returnedSSAS = new RelativeLargestGhostListSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "relativeSmallestGhostList") {
+        returnedSSAS = new RelativeSmallestGhostListSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "probationaryFirst") {
+        returnedSSAS = new ProbationaryFirstSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "leftFirst") {
+        returnedSSAS = new LeftFirstSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+    else if (type == "rightFirst") {
+        returnedSSAS = new RightFirstSSAS(probationaryCache,
+                probationaryGhostList, cacheSegmentVector, ghostListVector,
+                cacheSize, subCacheSize, minSegSize);
+    }
+
+    else
+        throw "This type of adaption Strategy does not exist\n";
+    return returnedSSAS;
+}
