@@ -26,14 +26,14 @@ public:
     virtual void periodicEvents() = 0;
     virtual std::list<std::string>* insertIntoCache(VideoSegment *pkg) = 0;
     virtual bool contains(SegmentRequest *rqst) = 0;
-    virtual VideoSegment* retrievePackage(SegmentRequest *rqst) = 0;
+    virtual VideoSegment* retrieveSegment(SegmentRequest *rqst) = 0;
     virtual void setSize(long long size) = 0;
     virtual long long getSize() = 0;
     virtual long long getMaxSize() = 0;
     virtual void clearCache() = 0;
     virtual int getReadOperations() = 0;
     virtual int getWriteOperations() = 0;
-    virtual void deletePackage(std::string id) = 0;
+    virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
 protected:
     unsigned long long maxCacheSize = 0;

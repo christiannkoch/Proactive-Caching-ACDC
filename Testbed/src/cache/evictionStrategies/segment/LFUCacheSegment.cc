@@ -177,7 +177,7 @@ std::list<std::string>* LFUCacheSegment::reduce(int size) {
     return deletedVideoSegments;
 }
 
-VideoSegment *LFUCacheSegment::retrievePackage(SegmentRequest *rqst) {
+VideoSegment *LFUCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

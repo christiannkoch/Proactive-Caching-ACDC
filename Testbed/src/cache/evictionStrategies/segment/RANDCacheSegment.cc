@@ -102,7 +102,7 @@ std::list<std::string>* RANDCacheSegment::reduce(int size) {
     return deletedVideoSegments;
 }
 
-VideoSegment* RANDCacheSegment::retrievePackage(SegmentRequest* rqst) {
+VideoSegment* RANDCacheSegment::retrieveSegment(SegmentRequest* rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

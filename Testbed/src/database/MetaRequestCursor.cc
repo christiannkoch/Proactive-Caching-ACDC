@@ -21,7 +21,9 @@
 #include <vector>
 #include <string>
 
-
+/*
+ * not needed
+ */
 MetaRequestCursor::MetaRequestCursor(const std::string query,
         sql::Connection* connection) {
     this->query = query;

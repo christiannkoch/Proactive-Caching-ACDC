@@ -17,9 +17,12 @@
 #include <list>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-
+/*
+ * @brief Creates a new ARCProbationaryCache
+ * @param size the size of the cache
+ * @return A pointer to this class
+ */
 SLRUProbationaryCache::SLRUProbationaryCache(long long size) {
-    // TODO Auto-generated constructor stub
     setSize(size);
     this->head = new RecencyNode("0", nullptr, nullptr);
     head->setNext(head);
@@ -27,19 +30,33 @@ SLRUProbationaryCache::SLRUProbationaryCache(long long size) {
 }
 
 SLRUProbationaryCache::~SLRUProbationaryCache() {
-    // TODO Auto-generated destructor stub
 }
-
+/**
+ * @brief resets the cache hit and miss
+ *
+ * resets the values we use for tracking the performance of the caching strategy.
+ */
 void SLRUProbationaryCache::resetRates() {
     this->readOperation = 0;
     this->writeOperation = 0;
 }
-
+/**
+ * @brief executes periodic events
+ *
+ * periodic events can regularily check on something
+ */
 void SLRUProbationaryCache::periodicEvents() {
 
 }
-
-void SLRUProbationaryCache::deletePackage(std::string id) {
+/**
+ * @brief deletes video segment from the storage of the cache
+ *
+ * When a video segment is deleted, we check if the corresponding recency node
+ * is now empty. if so, we update the pointers and delete the recency node in
+ * order to save storage.
+ * @param id the video id of the video segment that has to be deleted
+ */
+void SLRUProbationaryCache::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
         int freedSize = container[id]->first->getSize();
         RecencyNode* rec = container[id]->second;
@@ -54,14 +71,21 @@ void SLRUProbationaryCache::deletePackage(std::string id) {
     }
 
 }
-
-std::list<std::string>* SLRUProbationaryCache::insertIntoCache(VideoSegment *pkg) {
+/**
+ * @brief Inserts a video segment into the Cache
+ *
+ * A segment is inserted into the cache following SLRUProbationaryCache algorithm
+ * @param *pkg A VideoSegment
+ * @return a list of video ids that were deleted in order to insert the segment
+ */
+std::list<std::string>* SLRUProbationaryCache::insertIntoCache(
+        VideoSegment *pkg) {
 
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     while (cacheSize >= maxCacheSize - pkg->getSize()) {
         std::string toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
             new RecencyNode(keyBuilder, head, head->getNext()));
@@ -72,20 +96,25 @@ std::list<std::string>* SLRUProbationaryCache::insertIntoCache(VideoSegment *pkg
     writeOperation++;
     return nullptr;
 }
-
+/*
+ * @brief deletes a video segment
+ */
 void SLRUProbationaryCache::drop(VideoSegment* pkg) {
     std::string toDelete = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
-    deletePackage(toDelete);
+    deleteSegment(toDelete);
 }
-
+/*
+ * @brief inserts a video segment at the end of the cache
+ * @param pkg the video segment to insert at the end of the cache
+ */
 void SLRUProbationaryCache::insertIntoCacheAtEnd(VideoSegment* pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     while (cacheSize > maxCacheSize - pkg->getSize()) {
-            std::string toDelete = head->getPrev()->getValue();
-            deletePackage(toDelete);
-        }
+        std::string toDelete = head->getPrev()->getValue();
+        deleteSegment(toDelete);
+    }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
             new RecencyNode(keyBuilder, head->getPrev(), head));
     container[keyBuilder] = p;
@@ -94,7 +123,11 @@ void SLRUProbationaryCache::insertIntoCacheAtEnd(VideoSegment* pkg) {
     cacheSize = cacheSize + pkg->getSize();
     writeOperation++;
 }
-
+/**
+ * @brief Checks if the requested segment is already in the Cache
+ * @param rqst a segment request
+ * @return A bool Value, indicating whether the Cache contains the segment or not
+ */
 bool SLRUProbationaryCache::contains(SegmentRequest* rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
@@ -104,27 +137,45 @@ bool SLRUProbationaryCache::contains(SegmentRequest* rqst) {
     else
         return true;
 }
-
-VideoSegment* SLRUProbationaryCache::retrievePackage(SegmentRequest *rqst) {
+/**
+ * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
+ * @param rqst A segment request
+ *
+ * The video segment is returned and we call rearrangeCache.
+ * @return The video segment that fullfills the segment request
+ *
+ */
+VideoSegment* SLRUProbationaryCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
     VideoSegment *pkg = container[keyBuilder]->first;
     return pkg->dup();
 }
-
+/**
+ * @brief Sets the size of the Cache
+ * @param size An Integer Value
+ */
 void SLRUProbationaryCache::setSize(long long size) {
     this->maxCacheSize = size;
 }
-
+/**
+ * @brief Get the size of the cache
+ * @return Returns an integer Value describing the size of the cache
+ */
 long long SLRUProbationaryCache::getSize() {
     return this->cacheSize;
 }
-
+/**
+ * @brief Get the maximum size of the cache
+ * @return Returns an integer Value describing the maximum size of the cache
+ */
 long long SLRUProbationaryCache::getMaxSize() {
     return this->maxCacheSize;
 }
-
+/**
+ * @brief deletes all Objects in the Cache
+ */
 void SLRUProbationaryCache::clearCache() {
     for (auto i : container) {
         delete i.second->first;
@@ -133,10 +184,21 @@ void SLRUProbationaryCache::clearCache() {
     }
     delete head;
 }
-
+/**
+ * @brief returns the read operations
+ *
+ * Returns the amount of read operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of read operations performed
+ */
 int SLRUProbationaryCache::getReadOperations() {
     return this->readOperation;
 }
+/**
+ * @brief returns the write operations
+ *
+ * Returns the amount of write operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of write operations performed
+ */
 int SLRUProbationaryCache::getWriteOperations() {
     return this->writeOperation;
 }

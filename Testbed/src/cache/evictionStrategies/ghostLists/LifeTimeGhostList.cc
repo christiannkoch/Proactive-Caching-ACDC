@@ -17,22 +17,32 @@
 #include <omnetpp.h>
 #include <string>
 #include <map>
+/*
+ * @brief returns an instance of a LifeTimeGhostList
+ * the lifetime of the elements in the ghost list is set to 4 hours
+ * @return an instance of a LifeTimeGhostList
+ */
 LifeTimeGhostList::LifeTimeGhostList() {
-    // TODO Auto-generated constructor stub
     this->lifeTime = 14400;
 }
 
 LifeTimeGhostList::~LifeTimeGhostList() {
-    // TODO Auto-generated destructor stub
 }
-
+/*
+ * @brief returns if a video id is in the ghost list
+ * @param id the video id
+ * @return true if contained in the ghost list, false otherwise
+ */
 bool LifeTimeGhostList::contains(std::string id) {
     if (container.find(id) == container.end())
         return false;
     else
         return true;
 }
-
+/*
+ * @brief periodicEvents of the ghost list
+ * deletes all elements that have expired
+ */
 void LifeTimeGhostList::periodicEvents() {
     for (auto i = container.begin(); i != container.end(); i++) {
         std::string toDelete = (*i).first;
@@ -41,6 +51,11 @@ void LifeTimeGhostList::periodicEvents() {
         }
     }
 }
+
+/*
+ * @brief inserts elements into the ghost list
+ * @param id the list if video ids to insert
+ */
 void LifeTimeGhostList::insert(std::list<std::string>* id) {
     for (std::list<std::string>::const_iterator i = id->begin(); i != id->end();
             i++) {
@@ -50,11 +65,18 @@ void LifeTimeGhostList::insert(std::list<std::string>* id) {
     delete id;
 }
 
+/*
+ * @brief deletes an entry from the ghost list
+ * @param id the entry to delete
+ */
 void LifeTimeGhostList::deleteEntry(std::string id) {
     if (container.find(id) != container.end())
         container.erase(id);
 }
 
+/*
+ * @brief returns the size of the ghost list
+ */
 long long LifeTimeGhostList::getSize() {
     return container.size();
 }

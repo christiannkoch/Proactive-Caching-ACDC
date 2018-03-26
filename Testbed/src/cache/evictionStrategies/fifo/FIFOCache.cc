@@ -77,7 +77,7 @@ void FIFOCache::resetRates() {
  * The only time this is called from outside is with MCD as admission strategy
  * @param id the video id of the video segment that has to be deleted
  */
-void FIFOCache::deletePackage(std::string id) {
+void FIFOCache::deleteSegment(std::string id) {
     int freedSize = container[id]->first->getSize();
     delete container[id]->first;
     RecencyNode* rec = container[id]->second;
@@ -112,7 +112,7 @@ void FIFOCache::insertIntoCache(VideoSegment *pkg) {
             + std::to_string(pkg->getSegmentId());
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         std::string toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
             new RecencyNode(keyBuilder, head, head->getNext()));
@@ -142,7 +142,7 @@ bool FIFOCache::contains(SegmentRequest *rqst) {
  * @return The video segment that fullfills the segment request
  *
  */
-VideoSegment* FIFOCache::retrievePackage(SegmentRequest *rqst) {
+VideoSegment* FIFOCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

@@ -33,12 +33,12 @@ public:
     void periodicEvents() override;
     void insertIntoCache(VideoSegment *pkg) override;
     bool contains(SegmentRequest *rqst) override;
-    VideoSegment *retrievePackage(SegmentRequest *rqst) override;
+    VideoSegment *retrieveSegment(SegmentRequest *rqst) override;
     long long getSize() override;
     void clearCache() override;
     int getReadOperations();
     int getWriteOperations();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     bool expanded;/**< a boolean value that is true, if all cache expand or reduce operations have been performed */

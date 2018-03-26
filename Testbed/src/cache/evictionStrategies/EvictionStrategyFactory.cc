@@ -48,7 +48,7 @@ BasicEvictionStrategy* EvictionStrategyFactory::createEvictionStrategy(
         long long size, std::vector<std::pair<double, double>>* storageAlterations,
         std::string storageAlterationStrategy) {
     if (implementation == "ACARC")
-        return new ACARCCache(parameters, size, storageAlterations,
+        return new ACDCCache(parameters, size, storageAlterations,
                 storageAlterationStrategy.c_str());
     else if (implementation == "ARC1")
         return new ARC1Cache(parameters, size, storageAlterations,

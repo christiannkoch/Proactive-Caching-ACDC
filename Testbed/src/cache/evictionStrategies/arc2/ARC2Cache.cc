@@ -95,8 +95,8 @@ void ARC2Cache::resetRates() {
  * This is used when the admission strategy is MCD
  * @param id the video id of the video segment that has to be deleted
  */
-void ARC2Cache::deletePackage(std::string id) {
-    t1->deletePackage(id);
+void ARC2Cache::deleteSegment(std::string id) {
+    t1->deleteSegment(id);
     b1->deleteEntry(id);
     t2->deletePackage(id);
     b2->deleteEntry(id);
@@ -171,13 +171,13 @@ bool ARC2Cache::contains(SegmentRequest *rqst) {
  * @return The video segment that fullfills the segment request
  *
  */
-VideoSegment *ARC2Cache::retrievePackage(SegmentRequest *rqst) {
+VideoSegment *ARC2Cache::retrieveSegment(SegmentRequest *rqst) {
     if (t1->contains(rqst)) {
-        VideoSegment* dummy = t1->retrievePackage(rqst);
+        VideoSegment* dummy = t1->retrieveSegment(rqst);
         rearrangeCache(dummy);
-        return t2->retrievePackage(rqst);
+        return t2->retrieveSegment(rqst);
     } else {
-        return t2->retrievePackage(rqst);
+        return t2->retrieveSegment(rqst);
     }
 }
 /**

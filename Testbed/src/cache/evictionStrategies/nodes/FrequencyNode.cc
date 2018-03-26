@@ -13,10 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <nodes/FrequencyNode.h>
+#include <FrequencyNode.h>
 #include <string>
 #include <set>
-
+/*
+ * @brief returns an instance of a frequency node
+ * @param value the value of the frequency node. it indicates the frequency of accesses of the elements in it
+ * @param items list of video ids that are accessed value times
+ * @param prev the previous frequency node
+ * @param next the next frequency node
+ * @return an instance of a frequency node
+ */
 FrequencyNode::FrequencyNode(int value, std::set<std::string>* items,
         FrequencyNode* prev, FrequencyNode* next) {
     this->value = value;
@@ -29,27 +36,47 @@ FrequencyNode::FrequencyNode(int value, std::set<std::string>* items,
 FrequencyNode::~FrequencyNode() {
     delete items;
 }
-
+/*
+ * @brief sets the previous pointer to the previous frequency node
+ * @param prev the previous frequency node
+ */
 void FrequencyNode::setPrev(FrequencyNode* prev) {
     this->prev = prev;
 }
-
+/*
+ * @brief sets the next pointer to the next frequency node
+ * @param prev the next frequency node
+ */
 void FrequencyNode::setNext(FrequencyNode* next) {
     this->next = next;
 }
-
+/*
+ * @brief returns the previous frequency node
+ * @return the previous frequency node
+ */
 FrequencyNode* FrequencyNode::getPrev() {
     return this->prev;
 }
-
+/*
+ * @brief returns the next frequency node
+ * @return the next frequency node
+ */
 FrequencyNode* FrequencyNode::getNext() {
     return this->next;
 }
 
+/*
+ * @brief returns the access frequency of the frequency node
+ * @return the access frequency of the frequency node
+ */
 int FrequencyNode::getValue() {
     return this->value;
 }
 
+/*
+ * @brief returns the list of items stored in the frequency node
+ * @return the list of items stored in the frequency node
+ */
 std::set<std::string>* FrequencyNode::getItems() {
     return this->items;
 }

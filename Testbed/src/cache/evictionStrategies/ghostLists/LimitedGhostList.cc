@@ -18,6 +18,13 @@
 #include <map>
 #include <string>
 
+/*
+ * @brief returns an instance of a LimitedGhostList
+ *
+ * @param size the maximum size of the ghostlist
+ * the size limit of the ghost list is set to size
+ * @return an instance of a LimitedGhostList
+ */
 LimitedGhostList::LimitedGhostList(long long size) {
     // TODO Auto-generated constructor stub
     this->size = size;
@@ -27,7 +34,6 @@ LimitedGhostList::LimitedGhostList(long long size) {
 }
 
 LimitedGhostList::~LimitedGhostList() {
-    // TODO Auto-generated destructor stub
     RecencyNode* rec = head->getNext();
     while (rec->getValue() != "0") {
         rec = rec->getNext();
@@ -36,7 +42,10 @@ LimitedGhostList::~LimitedGhostList() {
 
     delete head;
 }
-
+/*
+ * @brief deletes an entry from the ghost list
+ * @param id the entry to delete
+ */
 void LimitedGhostList::deleteEntry(std::string id) {
     if (container.find(id) != container.end()) {
         RecencyNode* rec = container[id];
@@ -47,19 +56,26 @@ void LimitedGhostList::deleteEntry(std::string id) {
     }
 
 }
-
+/*
+ * @brief returns if a video id is in the ghost list
+ * @param id the video id
+ * @return true if contained in the ghost list, false otherwise
+ */
 bool LimitedGhostList::contains(std::string id) {
     if (container.find(id) == container.end())
         return false;
     else {
-        rearrangeGhostList(id);
+        deleteEntry(id);
         return true;
     }
 
 }
-
+/*
+ * @brief inserts elements into the ghost list
+ * @param id the list if video ids to insert
+ */
 void LimitedGhostList::insert(std::list<std::string>* id) {
-    if (container.size() > size - 1) {
+    while (container.size() + id->size() > size) {
         std::string toDelete = head->getPrev()->getValue();
         deleteEntry(toDelete);
     }
@@ -72,21 +88,16 @@ void LimitedGhostList::insert(std::list<std::string>* id) {
     delete id;
 
 }
-
+/*
+ * @brief periodicEvents of the ghost list
+ * deletes all elements that have expired
+ */
 void LimitedGhostList::periodicEvents() {
 
 }
-
+/*
+ * @brief returns the size of the ghost list
+ */
 long long LimitedGhostList::getSize() {
     return this->size;
-}
-void LimitedGhostList::rearrangeGhostList(std::string id) {
-    RecencyNode* rec = container[id];
-    RecencyNode* next_rec = rec->getNext();
-    rec->getPrev()->setNext(next_rec);
-    next_rec->setPrev(rec->getPrev());
-    rec->setNext(head->getNext());
-    rec->getNext()->setPrev(rec);
-    rec->setPrev(head);
-    head->setNext(rec);
 }

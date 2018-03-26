@@ -29,7 +29,7 @@ public:
     virtual void clearCache() = 0;
     virtual bool contains(SegmentRequest *rqst) = 0;
     virtual std::list<std::string>* insertIntoCache(VideoSegment *pkg) = 0; // gibt die ID des Videos zurück, wenn es aus dem LFU gelöscht wird um sie dann in die zweite Ghostlist zu schreiben. Wenn die ID 0 ist, muss nichts in die GhostList geschreiben werden, da nichts gelöscht wurde.
-    virtual VideoSegment* retrievePackage(SegmentRequest *rqst) = 0;
+    virtual VideoSegment* retrieveSegment(SegmentRequest *rqst) = 0;
     virtual void expand(int i) = 0;
     virtual std::list<std::string>* reduce(int i) = 0;
     virtual int getReadOperations() = 0;

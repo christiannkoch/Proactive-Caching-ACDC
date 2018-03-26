@@ -12,7 +12,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file ACDCCache.cc
+/* @file LFUDACache.cc
  * @author Johannes Pfannmüller
  * @date
  * @version 1.0
@@ -31,7 +31,14 @@
 #include <string>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-
+/*
+ * @brief Creates a new LFUDACache for caching functionalities
+ * @param parameters the parameters for this eviction strategy
+ * @param size The desired Size of this Cache
+ * @param storageAlterations a vector of pairs of double value representing storage alterations
+ * @param storageAlterationStrategy the strategy used when altering the size of the storage
+ * @return A pointer to this class
+ */
 LFUDACache::LFUDACache(std::vector<std::string>* parameters, long long size,
         std::vector<std::pair<double, double>>* storageAlterations,
         std::string storageAlterationStrategy) {
@@ -53,7 +60,12 @@ LFUDACache::LFUDACache(std::vector<std::string>* parameters, long long size,
 LFUDACache::~LFUDACache() {
     delete storageAlterations;
 }
-
+/**
+ * @brief resets the cache hit and miss
+ *
+ * resets the values we use for tracking the performance of the caching strategy.
+ * Also triggers the storage alteration if any exist
+ */
 void LFUDACache::resetRates() {
     this->readOperation = 0;
     this->writeOperation = 0;
@@ -66,8 +78,15 @@ void LFUDACache::resetRates() {
         }
     }
 }
-
-void LFUDACache::deletePackage(std::string id) {
+/**
+ * @brief deletes video segment from the storage of the cache
+ *
+ * When a video segment is deleted, we check if the corresponding frequency node
+ * is now empty. if so, we update the pointers and delete the frequency node in
+ * order to save storage.
+ * @param id the video id of the video segment that has to be deleted
+ */
+void LFUDACache::deleteSegment(std::string id) {
     int freedSize = container[id]->first->getSize();
     FrequencyNode* freq = container[id]->second;
     freq->getItems()->erase(id);
@@ -86,13 +105,18 @@ void LFUDACache::deletePackage(std::string id) {
     readOperation++;
     writeOperation++;
 }
-
+/**
+ * @brief Inserts a video segment into the Cache
+ *
+ * A segment is inserted into the cache following the LFUDA algorithm
+ * @param *pkg A VideoSegment
+ */
 void LFUDACache::insertIntoCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         std::string toDelete = getLeastFrequent();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
     }
     if (nodeContainer.find(1 + globalK) == nodeContainer.end()) {
         std::set<std::string>* items = new std::set<std::string>();
@@ -118,6 +142,11 @@ void LFUDACache::insertIntoCache(VideoSegment *pkg) {
     writeOperation++;
 }
 
+/*
+ * @brief returns the predecessor to a key
+ * @param key a key
+ * @return the predecessor to a key
+ */
 FrequencyNode* LFUDACache::findPred(int key) {
     if (head->getNext() == head)
         return head;
@@ -132,6 +161,11 @@ FrequencyNode* LFUDACache::findPred(int key) {
     return nullptr;
 }
 
+/*
+ * @brief returns the successor to a key
+ * @param key a key
+ * @return the successor to a key
+ */
 FrequencyNode* LFUDACache::findSucc(int key) {
     if (head->getNext() == head)
         return head;
@@ -146,6 +180,11 @@ FrequencyNode* LFUDACache::findSucc(int key) {
     return nullptr;
 }
 
+/*
+ * @brief rearranges the cache on hit in the LFUDA manner
+ *
+ * @param pkg the video segment that triggered the rearrangement
+ */
 void LFUDACache::rearrangeCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
@@ -182,11 +221,19 @@ void LFUDACache::rearrangeCache(VideoSegment *pkg) {
         delete freq;
     }
 }
-
+/**
+ * @brief executes periodic events
+ *
+ * periodic events can regularily check on something
+ */
 void LFUDACache::periodicEvents() {
 
 }
-
+/**
+ * @brief Checks if the requested segment is already in the Cache
+ * @param rqst a segment request
+ * @return A bool Value, indicating whether the Cache contains the segment or not
+ */
 bool LFUDACache::contains(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
@@ -197,8 +244,15 @@ bool LFUDACache::contains(SegmentRequest *rqst) {
         return true;
 
 }
-
-VideoSegment *LFUDACache::retrievePackage(SegmentRequest *rqst) {
+/**
+ * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
+ * @param rqst A segment request
+ *
+ * The video segment is returned and we call rearrangeCache.
+ * @return The video segment that fullfills the segment request
+ *
+ */
+VideoSegment *LFUDACache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
@@ -206,20 +260,25 @@ VideoSegment *LFUDACache::retrievePackage(SegmentRequest *rqst) {
     rearrangeCache(pkg);
     return pkg->dup();
 }
-
+/**
+ * @brief Sets the size of the Cache
+ * @param size An Integer Value
+ */
 void LFUDACache::setSize(long long size) {
     maxCacheSize = size;
 }
-
+/**
+ * @brief Get the size of the cache
+ * @return Returns an integer Value describing the size of the cache
+ */
 long long LFUDACache::getSize() {
     return this->cacheSize;
 }
-
+/**
+ * @brief deletes all Objects in the Cache
+ */
 void LFUDACache::clearCache() {
-    /*for (auto iter : container) {
-     delete (iter.second);
-     }*/
-    //delete head;
+
     for (auto i : container) {
         delete i.second->first;
         delete i.second;
@@ -233,17 +292,38 @@ void LFUDACache::clearCache() {
     delete head;
 }
 
+/*
+ * @brief returns the id of the least frequently used video segment
+ * @return the id of the least frequently used video segment
+ */
 std::string LFUDACache::getLeastFrequent() {
     return *head->getNext()->getItems()->begin();
 }
-
+/**
+ * @brief alters the cache size
+ *
+ * a function that alters the maximum size of the cache to a given double value
+ *
+ * @param newCacheSize a double value representing the new size of the cache
+ */
 void LFUDACache::alterCacheSize(double newCacheSize) {
     maxCacheSize = newCacheSize;
 }
-
+/**
+ * @brief returns the read operations
+ *
+ * Returns the amount of read operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of read operations performed
+ */
 int LFUDACache::getReadOperations() {
     return this->readOperation;
 }
+/**
+ * @brief returns the write operations
+ *
+ * Returns the amount of write operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of write operations performed
+ */
 int LFUDACache::getWriteOperations() {
     return this->writeOperation;
 }

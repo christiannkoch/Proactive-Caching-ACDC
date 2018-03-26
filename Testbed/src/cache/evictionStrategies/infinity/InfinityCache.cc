@@ -50,7 +50,7 @@ void InfinityCache::resetRates() {
     this->writeOperation = 0;
 }
 
-void InfinityCache::deletePackage(std::string id) {
+void InfinityCache::deleteSegment(std::string id) {
 
 }
 
@@ -76,7 +76,7 @@ bool InfinityCache::contains(SegmentRequest *rqst) {
         return true;
 }
 
-VideoSegment *InfinityCache::retrievePackage(SegmentRequest *rqst) {
+VideoSegment *InfinityCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     char pkgname[20];
     sprintf(pkgname, "Package id %s%s", rqst->getVideoId(),

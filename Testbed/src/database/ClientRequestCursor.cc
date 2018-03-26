@@ -20,17 +20,23 @@
 #include <cppconn/statement.h>
 #include <vector>
 #include <string>
-
+/*
+ * @brief returns an instance of the ClientRequestCursor
+ * @param query the query to be executed
+ * @param connection the connection to the database
+ * @return an instance of the ClientRequestCursor
+ */
 ClientRequestCursor::ClientRequestCursor(const std::string query, sql::Connection* connection) {
-    // TODO Auto-generated constructor stub
 this->query = query;
 this->connection = connection;
 }
 
 ClientRequestCursor::~ClientRequestCursor() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief executes the query and saves the result
+ */
 void ClientRequestCursor::execute(){
     this->stmt = connection->createStatement();
     this->res = stmt->executeQuery(this->query);
@@ -54,6 +60,10 @@ void ClientRequestCursor::execute(){
     delete stmt;
 }
 
+/*
+ * @brief returns the result of the executed query
+ * @return the result of the executed query
+ */
 std::vector<std::vector<std::string>*>* ClientRequestCursor::getResultSet() {
     return this->resultSet;
 }

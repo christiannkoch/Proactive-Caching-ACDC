@@ -14,31 +14,38 @@
 // 
 
 #include <ghostLists/GhostList.h>
-
+/*
+ * @brief returns an instance of a GhostList
+ * @return an instance of a GhostList
+ */
 GhostList::GhostList() {
-    // TODO Auto-generated constructor stub
 
 }
 
 GhostList::~GhostList() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief returns if a video id is in the ghost list
+ * @param id the video id
+ * @return true if contained in the ghost list, false otherwise
+ */
 bool GhostList::contains(std::string id) {
     if (container.find(id) == container.end())
         return false;
     else
         return true;
 }
-
+/*
+ * @brief periodicEvents of the ghost list
+ */
 void GhostList::periodicEvents() {
-    /*EV << "GhostList: [";
-     for (std::list<string>::iterator iter = liste.begin(); iter != liste.end();
-     iter++) {
-     EV << *iter << "; ";
-     }
-     EV << "]" << endl;*/
 }
+
+/*
+ * @brief inserts elements into the ghost list
+ * @param id the list if video ids to insert
+ */
 void GhostList::insert(std::list<std::string>* id) {
     for (std::list<std::string>::const_iterator i = id->begin(); i != id->end();
             i++) {
@@ -48,11 +55,18 @@ void GhostList::insert(std::list<std::string>* id) {
     delete id;
 }
 
+/*
+ * @brief deletes an entry from the ghost list
+ * @param id the entry to delete
+ */
 void GhostList::deleteEntry(std::string id) {
     if (container.find(id) != container.end())
         container.erase(id);
 }
 
+/*
+ * @brief returns the size of the ghost list
+ */
 long long GhostList::getSize() {
     return container.size();
 }

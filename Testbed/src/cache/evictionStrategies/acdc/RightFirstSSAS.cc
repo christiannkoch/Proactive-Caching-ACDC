@@ -14,7 +14,17 @@
 // 
 
 #include "RightFirstSSAS.h"
-
+/*
+ * @brief returns an instance of a RightFirstSSAS
+ * @param probationaryCache the probationary cache
+ * @param probationaryGhostList the probationary ghostlist
+ * @param cacheSegmentVector the category cache vector
+ * @param ghostListVector the ghostlists for the category caches
+ * @param cacheSize the size of the cache
+ * @param subCacheSize the subcache size
+ * @param minSegSize the minimum subcache size
+ * @return an instance of a RightFirstSSAS
+ */
 RightFirstSSAS::RightFirstSSAS(ARCProbationaryCache* probationaryCache,
         BasicGhostList* probationaryGhostList,
         std::vector<BasicCacheSegment*>* cacheSegmentVector,
@@ -28,6 +38,9 @@ RightFirstSSAS::~RightFirstSSAS() {
     // TODO Auto-generated destructor stub
 }
 
+/*
+ * not yet implemented
+ */
 int RightFirstSSAS::getIdToReduce(unsigned int id) {
     return 0;
 }

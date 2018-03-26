@@ -24,9 +24,12 @@
 
 Define_Module(OriginServer);
 
+/*
+ * @brief called when this module is created
+ */
 void OriginServer::initialize() {
-    std::cout << "Initialisierung startet \n";
-    this->nwInfo = NetworkInformation::getInformation(this);
+    std::cout << "Initialisierung startet \n"; //used for debugging purposes
+    this->nwInfo = NetworkInformation::getInformation(this); //creates the NetworkInformation
     nwInfo->setupNetworkInformation();
     setGateSize("originGateIn", nwInfo->getGateSize(0));
     setGateSize("originGateOut", nwInfo->getGateSize(0));
@@ -38,6 +41,9 @@ void OriginServer::initialize() {
     servesOverTime.setName("Serves");
 }
 
+/*
+ * @brief schedules all self messages for recording purposes
+ */
 void OriginServer::scheduleSelfMessages() {
     for (double i = 0; i <= (nwInfo->getSimulationDuration() / timeDifference);
             i = i + 1) {
@@ -45,11 +51,20 @@ void OriginServer::scheduleSelfMessages() {
     }
 }
 
+/*
+ * @brief records the metrics from the origin server
+ */
 void OriginServer::recordData() {
     servesOverTime.record(serves);
     serves = 0.0;
 }
 
+/*
+ * @brief describes the behaviour when a message arrives
+ *
+ * on arrival of a next recording message, metrics are recorded
+ * on the arrival of a segment request, this request is served
+ */
 void OriginServer::handleMessage(cMessage *msg) {
     if (strcmp("next Recording", msg->getName()) == 0) {
         recordData();
@@ -67,6 +82,11 @@ void OriginServer::handleMessage(cMessage *msg) {
     }
 }
 
+/*
+ * @brief generates a video segment and sends
+ * @param rqst the request that is to be fullfilled
+ * @return a video segment that answers the request
+ */
 VideoSegment* OriginServer::generatePackage(SegmentRequest* rqst) {
     char pkgname[20];
     sprintf(pkgname, "Package id %s%s", rqst->getVideoId(),
@@ -83,7 +103,9 @@ VideoSegment* OriginServer::generatePackage(SegmentRequest* rqst) {
 }
 
 /*
- * Sendet die Response
+ * @brief sends the video segment on the channel where the request came from
+ * @param pkg the video segment to send
+ * @param gateNumber the out gate on which to send the video segment
  */
 void OriginServer::sendResponse(VideoSegment *pkg, int gateNumber) {
     send(pkg, "originGateOut", gateNumber);
@@ -92,6 +114,9 @@ void OriginServer::sendResponse(VideoSegment *pkg, int gateNumber) {
     servesTotal++;
 }
 
+/*
+ * @brief creates the reverse proxies
+ */
 void OriginServer::createReverseProxys() {
     rpc = new ReverseProxyCreator(getParentModule(), this,
             nwInfo->getAmountOfClients(), nwInfo->getAmountOfLeafProxys(),
@@ -102,6 +127,9 @@ void OriginServer::createReverseProxys() {
     delete rpc;
 }
 
+/*
+ * @brief called when se simulation is over
+ */
 void OriginServer::finish() {
     servesOverTime.record(serves);
     recordScalar("Total serves", servesTotal);

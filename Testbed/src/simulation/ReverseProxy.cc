@@ -27,6 +27,9 @@ using namespace omnetpp;
 using namespace std;
 Define_Module(ReverseProxy);
 
+/*
+ * @brief called upon initialization
+ */
 void ReverseProxy::initialize() {
     this->nwInfo = NetworkInformation::getInformation(this);
     this->settings = nwInfo->getSettings(par("proxyId"));
@@ -51,6 +54,9 @@ void ReverseProxy::initialize() {
     timeToFirstSegment.setName("TimeToFirstSegment");
 }
 
+/*
+ * @brief schedules selfmessages to periodically record data
+ */
 void ReverseProxy::scheduleSelfMessages() {
     scheduleAt(0.0, new cMessage("next Recording"));
 
@@ -62,13 +68,25 @@ void ReverseProxy::scheduleSelfMessages() {
         scheduleAt(0.0, new cMessage("periodic admission Event"));
 }
 
+/*
+ * @brief defines the behaviour when a message arrives at the reverse proxy
+ */
 void ReverseProxy::handleMessage(cMessage *msg) {
+    /*
+     * if it is a next Recording event, we do our recordings and schedule another
+     * next recording event
+     */
     if (strcmp("next Recording", msg->getName()) == 0) {
         recordData();
         if (simTime() < nwInfo->getSimulationDuration())
             scheduleAt(simTime().dbl() + timeDifference, msg->dup());
         delete msg;
-    } else if (strcmp("periodic eviction Event", msg->getName()) == 0) {
+    }
+    /*
+     * if it is a periodic eviction event, we trigger the periodic eviction
+     * events of the cache
+     */
+    else if (strcmp("periodic eviction Event", msg->getName()) == 0) {
         eviction->periodicEvents();
         if (simTime() < nwInfo->getSimulationDuration())
             scheduleAt(
@@ -76,16 +94,29 @@ void ReverseProxy::handleMessage(cMessage *msg) {
                             + std::stoi(settings->evictionParameters.at(0)),
                     msg->dup());
         delete msg;
-    } else if (strcmp("periodic admission Event", msg->getName()) == 0) {
+    }
+    /*
+     * if it is a periodic admission event, we trigger the periodic admission
+     * events of the cache
+     */
+    else if (strcmp("periodic admission Event", msg->getName()) == 0) {
         admission->periodicEvents();
         if (simTime() < nwInfo->getSimulationDuration()) {
             scheduleAt(simTime().dbl() + 3600.0, msg->dup());
         }
         delete msg;
-    } else {
+    } else { // if it is not a periodic event
         const char* packetType = msg->getClassName();
-        if (strcmp(packetType, "SegmentRequest") == 0) {
+        if (strcmp(packetType, "SegmentRequest") == 0) { // if it is a segment request
             SegmentRequest *rqst = check_and_cast<SegmentRequest *>(msg);
+            /*
+             * if the cache has the requested video segment stored, a hit is registered and
+             * the video segment is served
+             * if not, a cache miss is registered and
+             * the request is added to the request queue of the request handler
+             * and if a queue already existed, the request is deleted. if a queue did not exist
+             * the request is forwarded to a proxy higher up in the hierarchy
+             */
             if (eviction->contains(rqst)) {
                 string keyBuilder = rqst->getVideoId()
                         + std::to_string(rqst->getSegmentId());
@@ -94,13 +125,13 @@ void ReverseProxy::handleMessage(cMessage *msg) {
                     firstSegmentDelayVector.push_back(0.0);
                 }
                 //bubble("Hit");
-                VideoSegment* pkg = eviction->retrievePackage(rqst);
+                VideoSegment* pkg = eviction->retrieveSegment(rqst);
                 pkg->setSeenAbove(true);
                 sendMessage(pkg, rqst->getArrivalGate()->getIndex());
 
                 delete rqst;
                 if (settings->admissionStrategy == "MCD" && !settings->leaf)
-                    eviction->deletePackage(keyBuilder);
+                    eviction->deleteSegment(keyBuilder);
             } else {
 
                 //bubble("Miss");
@@ -121,7 +152,12 @@ void ReverseProxy::handleMessage(cMessage *msg) {
                 }
 
             }
-        } else {
+        }
+        /*
+         * if the message is a video segment, the admission strategy decides if it is stored
+         * and the segment is served to all clients of the request queue
+         */
+        else {
             VideoSegment* package = check_and_cast<VideoSegment *>(msg);
             string keyBuilder = package->getVideoId()
                     + std::to_string(package->getSegmentId());
@@ -147,6 +183,11 @@ void ReverseProxy::handleMessage(cMessage *msg) {
     }
 }
 
+/*
+ * @brief sends a message on a channel
+ * @param msg the message to send
+ * @param gate the gate on which we send the message
+ */
 void ReverseProxy::sendMessage(cMessage *msg, int gate) {
     const char* packetType = msg->getClassName();
     if (strcmp(packetType, "SegmentRequest") == 0) {
@@ -183,6 +224,9 @@ void ReverseProxy::createClients() {
 
 }
 
+/*
+ * @brief called at the end for garbage collection and recording purposes
+ */
 void ReverseProxy::finish() {
     eviction->clearCache();
     readOperations.record((double) cache->getReadOperations());
@@ -198,17 +242,26 @@ void ReverseProxy::finish() {
     //delete recordingEvent;
 }
 
+/*
+ * @brief increments the cache hit value
+ */
 void ReverseProxy::registerCacheHit() {
     cacheHit++;
     cacheHitTotal++;
     delayVector.push_back(0.0);
 }
 
+/*
+ * @brief increments the cache miss value
+ */
 void ReverseProxy::registerCacheMiss() {
     cacheMiss++;
     cacheMissTotal++;
 }
 
+/*
+ * @brief records data for evaluation
+ */
 void ReverseProxy::recordData() {
     hits.record(cacheHitTotal);
     misses.record(cacheMissTotal);

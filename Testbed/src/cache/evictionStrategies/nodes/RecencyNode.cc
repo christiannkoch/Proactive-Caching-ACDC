@@ -13,36 +13,59 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <nodes/RecencyNode.h>
-
+#include <RecencyNode.h>
+/*
+ * @brief returns an instance of a RecencyNode
+ * @param value the value of the recency node which is the video id
+ * @param prev the previous recency node
+ * @param next the next recency node
+ */
 RecencyNode::RecencyNode(std::string value, RecencyNode* prev,
         RecencyNode* next) {
-    // TODO Auto-generated constructor stub
     this->value = value;
     this->prev = prev;
     this->next = next;
 }
 
 RecencyNode::~RecencyNode() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief sets the previous pointer
+ * @param prev the previous recency node
+ */
 void RecencyNode::setPrev(RecencyNode* prev) {
     this->prev = prev;
 }
 
+/*
+ * @brief sets the next pointer
+ * @param next the next recency node
+ */
 void RecencyNode::setNext(RecencyNode* next) {
     this->next = next;
 }
 
+/*
+ * @brief returns the previous recency node
+ * @return the previous recency node
+ */
 RecencyNode* RecencyNode::getPrev() {
     return this->prev;
 }
 
+/*
+ * @brief returns the next recency node
+ * @return the next recency node
+ */
 RecencyNode* RecencyNode::getNext() {
     return this->next;
 }
 
+/*
+ * @brief returns the value of the recency node
+ * @return the value of the recency node
+ */
 std::string RecencyNode::getValue() {
     return this->value;
 }

@@ -24,22 +24,22 @@
 #include <omnetpp.h>
 #include "BasicSSAS.h"
 
-class ACARCCache: public BasicEvictionStrategy {
+class ACDCCache: public BasicEvictionStrategy {
 public:
-    ACARCCache(std::vector<std::string>* parameters, long long size,
+    ACDCCache(std::vector<std::string>* parameters, long long size,
             std::vector<std::pair<double, double>>* storageAlterations,
             const std::string& storageAlterationStrategy);
-    virtual ~ACARCCache();
+    virtual ~ACDCCache();
     void periodicEvents();
     void insertIntoCache(VideoSegment *pkg);
     bool contains(SegmentRequest *rqst);
-    VideoSegment *retrievePackage(SegmentRequest *rqst);
+    VideoSegment *retrieveSegment(SegmentRequest *rqst);
     long long getSize();
     void clearCache();
     int getWriteOperations();
     int getReadOperations();
     void resetRates();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
 protected:
     bool expanded = false;
     std::string expandStrat = "";

@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for Testbed
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -I.
+#  opp_makemake -f --deep -lmysqlcppconn
 #
 
 # Name of target to be created (-o option)
@@ -16,7 +16,7 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(QTENV_LIBS) $(CMDENV_LI
 #USERIF_LIBS = $(QTENV_LIBS)
 
 # C++ include paths (with -I)
-INCLUDE_PATH = \
+INCLUDE_PATH =\
 	-I. \
     -Iconfigurations \
     -Iconfigurations/ACARCConfigs \
@@ -58,7 +58,7 @@ INCLUDE_PATH = \
 EXTRA_OBJS =
 
 # Additional libraries (-L, -l options)
-LIBS = -lmysqlcppconn
+LIBS =  -lmysqlcppconn
 
 # Output directory
 PROJECT_OUTPUT_DIR = out

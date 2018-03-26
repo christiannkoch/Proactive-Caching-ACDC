@@ -12,7 +12,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file ACDCCache.cc
+/* @file LRUCache.cc
  * @author Johannes Pfannmüller
  * @date
  * @version 1.0
@@ -31,7 +31,14 @@
 #include <vector>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-
+/*
+ * @brief Creates a new LRUCache for caching functionalities
+ * @param parameters the parameters for this eviction strategy
+ * @param size The desired Size of this Cache
+ * @param storageAlterations a vector of pairs of double value representing storage alterations
+ * @param storageAlterationStrategy the strategy used when altering the size of the storage
+ * @return A pointer to this class
+ */
 LRUCache::LRUCache(std::vector<std::string>* parameters, long long size,
         std::vector<std::pair<double, double>>* storageAlterations,
         std::string storageAlterationStrategy) {
@@ -52,7 +59,12 @@ LRUCache::LRUCache(std::vector<std::string>* parameters, long long size,
 LRUCache::~LRUCache() {
     delete storageAlterations;
 }
-
+/**
+ * @brief resets the cache hit and miss
+ *
+ * resets the values we use for tracking the performance of the caching strategy.
+ * Also triggers the storage alteration if any exist
+ */
 void LRUCache::resetRates() {
     this->readOperation = 0;
     this->writeOperation = 0;
@@ -65,8 +77,15 @@ void LRUCache::resetRates() {
         }
     }
 }
-
-void LRUCache::deletePackage(std::string id) {
+/**
+ * @brief deletes video segment from the storage of the cache
+ *
+ * When a video segment is deleted, we check if the corresponding recency node
+ * is now empty. if so, we update the pointers and delete the recency node in
+ * order to save storage.
+ * @param id the video id of the video segment that has to be deleted
+ */
+void LRUCache::deleteSegment(std::string id) {
     int freedSize = container[id]->first->getSize();
     RecencyNode* rec = container[id]->second;
     delete container[id]->first;
@@ -78,16 +97,25 @@ void LRUCache::deletePackage(std::string id) {
     cacheSize = cacheSize - freedSize;
     writeOperation++;
 }
-
+/**
+ * @brief executes periodic events
+ *
+ * periodic events can regularily check on something
+ */
 void LRUCache::periodicEvents() {
 }
-
+/**
+ * @brief Inserts a video segment into the Cache
+ *
+ * A segment is inserted into the cache following the LRU algorithm
+ * @param *pkg A VideoSegment
+ */
 void LRUCache::insertIntoCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     while (cacheSize >= maxCacheSize - pkg->getSize()) {
         std::string toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         //std::cout << "Insert while schleife vom Loeschen" <<"\n";
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
@@ -99,7 +127,11 @@ void LRUCache::insertIntoCache(VideoSegment *pkg) {
 
     writeOperation++;
 }
-
+/**
+ * @brief Checks if the requested segment is already in the Cache
+ * @param rqst a segment request
+ * @return A bool Value, indicating whether the Cache contains the segment or not
+ */
 bool LRUCache::contains(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
@@ -109,8 +141,15 @@ bool LRUCache::contains(SegmentRequest *rqst) {
     else
         return true;
 }
-
-VideoSegment *LRUCache::retrievePackage(SegmentRequest *rqst) {
+/**
+ * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
+ * @param rqst A segment request
+ *
+ * The video segment is returned and we call rearrangeCache.
+ * @return The video segment that fullfills the segment request
+ *
+ */
+VideoSegment *LRUCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
@@ -118,15 +157,23 @@ VideoSegment *LRUCache::retrievePackage(SegmentRequest *rqst) {
     rearrangeCache(pkg);
     return pkg->dup();
 }
-
+/**
+ * @brief Sets the size of the Cache
+ * @param size An Integer Value
+ */
 void LRUCache::setSize(long long size) {
     this->maxCacheSize = size;
 }
-
+/**
+ * @brief Get the size of the cache
+ * @return Returns an integer Value describing the size of the cache
+ */
 long long LRUCache::getSize() {
     return this->cacheSize;
 }
-
+/**
+ * @brief deletes all Objects in the Cache
+ */
 void LRUCache::clearCache() {
     for (auto i : container) {
         delete i.second->first;
@@ -135,7 +182,11 @@ void LRUCache::clearCache() {
     }
     delete head;
 }
-
+/*
+ * @brief rearranges the cache on hit in the LRU manner
+ *
+ * @param pkg the video segment that triggered the rearrangement
+ */
 void LRUCache::rearrangeCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
@@ -148,15 +199,31 @@ void LRUCache::rearrangeCache(VideoSegment *pkg) {
     rec->setPrev(head);
     head->setNext(rec);
 }
-
+/**
+ * @brief alters the cache size
+ *
+ * a function that alters the maximum size of the cache to a given double value
+ *
+ * @param newCacheSize a double value representing the new size of the cache
+ */
 void LRUCache::alterCacheSize(double newCacheSize) {
     maxCacheSize = newCacheSize;
 }
-
+/**
+ * @brief returns the read operations
+ *
+ * Returns the amount of read operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of read operations performed
+ */
 int LRUCache::getWriteOperations() {
     return this->writeOperation;
 }
-
+/**
+ * @brief returns the write operations
+ *
+ * Returns the amount of write operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of write operations performed
+ */
 int LRUCache::getReadOperations() {
     return this->readOperation;
 }

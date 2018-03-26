@@ -107,7 +107,7 @@ bool LRUCacheSegment::contains(SegmentRequest* rqst) {
         return true;
 }
 
-VideoSegment* LRUCacheSegment::retrievePackage(SegmentRequest *rqst) {
+VideoSegment* LRUCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

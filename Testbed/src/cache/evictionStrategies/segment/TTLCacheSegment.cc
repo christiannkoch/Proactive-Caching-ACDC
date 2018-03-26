@@ -113,7 +113,7 @@ std::list<std::string>* TTLCacheSegment::reduce(int size) {
     return deletedVideoSegments;
 }
 
-VideoSegment* TTLCacheSegment::retrievePackage(SegmentRequest* rqst) {
+VideoSegment* TTLCacheSegment::retrieveSegment(SegmentRequest* rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

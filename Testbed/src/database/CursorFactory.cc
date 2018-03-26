@@ -21,21 +21,28 @@
 #include "FirstTimestampRequestCursor.h"
 
 CursorFactory::CursorFactory() {
-    // TODO Auto-generated constructor stub
 
 }
 
+/*
+ * @brief returns a cursor based upon the execution we want to make
+ * @param query the query we want to execute
+ * @param connection the connection to the database
+ * @param type the type of the cursor
+ * @return an instance of the cursor we need to execute
+ */
+
 DBCursor* CursorFactory::createCursor(const std::string query,
         sql::Connection* connection, const std::string type) {
-        if (type == "meta")
-            return new MetaRequestCursor(query, connection);
-        if(type == "request")
-            return new ClientRequestCursor(query, connection);
-        if(type == "allClients")
-            return new AllClientsRequestCursor(query, connection);
-        if(type == "firstTimestamp")
-            return new FirstTimestampRequestCursor(query, connection);
-        else
-            throw "this type of Cursor does not exist\n";
+    if (type == "meta")
+        return new MetaRequestCursor(query, connection);
+    if (type == "request")
+        return new ClientRequestCursor(query, connection);
+    if (type == "allClients")
+        return new AllClientsRequestCursor(query, connection);
+    if (type == "firstTimestamp")
+        return new FirstTimestampRequestCursor(query, connection);
+    else
+        throw "this type of Cursor does not exist\n";
 }
 

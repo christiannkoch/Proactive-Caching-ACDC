@@ -13,27 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef SRC_CACHE_EVICTIONSTRATEGIES_GHOSTLISTS_LIMITEDGHOSTLIST_H_
-#define SRC_CACHE_EVICTIONSTRATEGIES_GHOSTLISTS_LIMITEDGHOSTLIST_H_
-
-#include <nodes/RecencyNode.h>
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_
+#include "BasicAdmissionStrategy.h"
+#include <vector>
 #include <map>
-#include <string>
-#include <list>
 
-class LimitedGhostList {
+class NHIT :  public BasicAdmissionStrategy{
 public:
-    LimitedGhostList(long long size);
-    virtual ~LimitedGhostList();
-    bool contains(std::string id);
-    void insert(std::list<std::string>* id);
+    NHIT(std::vector<std::string>* parameters);
+    virtual ~NHIT();
+    bool toBeCached(VideoSegment* pkg);
     void periodicEvents();
-    void deleteEntry(std::string id);
-    long long getSize();
 private:
-    unsigned long long size;
-    RecencyNode* head;
-    std::map<std::string, RecencyNode*> container;
+    std::map<std::string, std::vector<double>*> seenPackets;
+    unsigned int thresholdValue;
+    double timeFrame;
+    std::vector<std::string> stringsToDelete;
 };
 
-#endif /* SRC_CACHE_EVICTIONSTRATEGIES_GHOSTLISTS_LIMITEDGHOSTLIST_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_ */

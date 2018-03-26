@@ -18,6 +18,18 @@
 
 using namespace omnetpp;
 
+/*
+ * @brief returns an instance of the ReverseProxyCreator
+ * @param parent the module on which the reverse proxies are created on
+ * @param originServer the module that created the instance of the ReverseProxyCreator
+ * @param userIDs all userIDs
+ * @param amountOfLeafProxies the amount of leaf proxies
+ * @param amountOfLevels the amount of levels
+ * @param cdnDelay the inter-cdn delay
+ * @param leafProxyVector a map that assigns each leaf proxy its client ids
+ * @param connectionTable the connection table
+ * @return an instrance of the ReverseProxyCreator
+ */
 ReverseProxyCreator::ReverseProxyCreator(cModule* parent, cModule* originServer,
         int userIDs, int amountOfLeafProxies, int amountOfLevels, int cdnDelay,
         std::vector<ProxyCacheSettings_t>* cacheSettings,
@@ -38,6 +50,11 @@ ReverseProxyCreator::ReverseProxyCreator(cModule* parent, cModule* originServer,
 ReverseProxyCreator::~ReverseProxyCreator() {
 }
 
+/*
+ * @brief creates the reverse proxies on the network
+ *
+ * Creates the reverse proxies
+ */
 void ReverseProxyCreator::createReverseProxys() {
     int proxyId = 1;
     for (auto revProxy : *cacheSettings) {
@@ -69,13 +86,16 @@ void ReverseProxyCreator::createReverseProxys() {
     connectNetwork();
 }
 
+/*
+ * @brief connects the reverse proxies according to the connection table
+ */
 void ReverseProxyCreator::connectNetwork() {
     for (auto proxy : ReverseProxys) {
         std::vector<int>* connections = getConnectionsForProxy(
                 proxy->getId() - 2);
         for (unsigned int i = 0; i < connections->size(); i++) {
             std::string test2 = cacheSettings->at(proxy->getId() - 3).name;
-            if (connections->at(i) == 0) {
+            if (connections->at(i) == 0) { // origin server connects to proxy
                 cDelayChannel *channelTop = cDelayChannel::create("channelTop");
                 channelTop->setDelay(channelDelay);
 
@@ -91,7 +111,7 @@ void ReverseProxyCreator::connectNetwork() {
                         proxy->gate("proxyIn", i), channelBot);
                 channelTop->callInitialize();
                 channelBot->callInitialize();
-            } else {
+            } else { // proxy connects to proxy
                 cDelayChannel *channelBot = cDelayChannel::create("channelBot");
                 channelBot->setDelay(channelDelay);
                 proxy->gate("proxyOut", i)->connectTo(
@@ -108,18 +128,39 @@ void ReverseProxyCreator::connectNetwork() {
     }
 }
 
+/*
+ * @brief returns the amount of client gates for a given proxy
+ * @param proxyName the name of the proxy we need the amount of gates for
+ * @return the amount of client gates
+ */
 int ReverseProxyCreator::getAmountOfClientGates(std::string proxyName) {
     return leafProxyVector->at(proxyName)->size();
 }
 
+/*
+ * @brief returns the gate size for a given proxy
+ * @param id the id of the proxy we need the gate size for
+ * @return the gate size of a proxy
+ */
 int ReverseProxyCreator::getGateSize(int id) {
     return connectionTable->at(id)->size();
 }
 
+/*
+ * @brief returns the connections for a proxy
+ * @param id the id of a proxy we want the connections for
+ * @return the list of proxy ids the given proxy is connected to
+ */
 std::vector<int>* ReverseProxyCreator::getConnectionsForProxy(int id) {
     return connectionTable->at(id);
 }
 
+/*
+ * @brief returns the gate a proxy connects to another proxy
+ * @param id the id of a proxy we want the connection for
+ * @param proxy the proxy we want to connect to the proxy identified by id
+ * @return the gate where to connect the proxy
+ */
 int ReverseProxyCreator::getGate(int id, std::string proxy) {
 
     for (unsigned int i = 0; i < connectionTable->at(id)->size(); i++) {

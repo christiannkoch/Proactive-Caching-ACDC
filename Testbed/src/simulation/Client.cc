@@ -25,24 +25,33 @@ Define_Module(Client);
 
 using namespace omnetpp;
 
+/*
+ * @brief initializes the client module
+ *
+ * when a client is created he calls initialize on himself. the client
+ * sets the userId and the clientId. It then schedules its first segment
+ * request
+ */
 void Client::initialize() {
     this->nwInfo = NetworkInformation::getInformation(this);
     this->userId = par("userId");
     this->clientId = par("clientId");
     getRequests();
+    /*
+     * if the clients request set is not empty, take the first request, segment it
+     * and schedule the first segment. a self message is scheduled every five seconds
+     * which checks if there are still segment requests left.
+     */
     if (!requestSet->empty()) {
         result = requestSet->at(requestSet->size() - 1);
         requestSet->pop_back();
         nextRequestEvent = new cMessage("next Request");
         periodicRequest = new cMessage("periodic Request");
-        videoDuration = std::atof((result->at(4).c_str())); //Das ist normalerweise das richtige
-        //videoDuration = std::atof((result->at(7).c_str())); //für den direkten vergleich mit markus' set
-        chunkDuration = 5.0;        //std::atof((result->at(5).c_str()));
+        videoDuration = std::atof((result->at(4).c_str()));
+        chunkDuration = 5.0;
 
-        if (videoDuration > std::atof((result->at(7).c_str()))) //Das ist normalerweise das richtige
+        if (videoDuration > std::atof((result->at(7).c_str())))
             videoDuration = std::atof((result->at(7).c_str()));
-        /*if (chunkDuration < 1)
-         chunkDuration = 5.4;*/
         numberOfRequests = videoDuration / chunkDuration;
         if (numberOfRequests < 1)
             numberOfRequests = 1;
@@ -56,30 +65,42 @@ void Client::initialize() {
     }
 }
 
+/*
+ * @brief the behaviour that occurs when a message arrives
+ *
+ * @param msg the message that arrives at the client gate
+ *
+ * in this method, the clients behaviour is described when a message arrives.
+ */
 void Client::handleMessage(cMessage *msg) {
 
+    /**
+     * if the type is nextRequestEvent, it is signaled that the client starts watching a new
+     * video which results in new segmentRequests and the counter is reset.
+     */
     if (msg == nextRequestEvent) {
         counter = 1;
         sendRequest(generateRequest(result, counter));
         counter++;
-        //std::cout << "erstes mal Request event" << "\n";
         scheduleAt(simTime().dbl() + (chunkDuration - 1), periodicRequest);
-    } else {
+    }else {
+        /*
+         * the message type periodic request signals that the client is not done watching the
+         * video and schedules a new segmentRequest
+         */
         if (msg == periodicRequest) {
-            //std::cout << "periodischer Request" << "\n";
-            if (numberOfRequests > counter) {
-                //std::cout
-                // << "periodische Request gesendet und noch welche übrig"
-                //<< "\n";
+            if (numberOfRequests > counter) { // if tehre are still segments to be requested
                 sendRequest(generateRequest(result, counter));
                 counter++;
                 scheduleAt(simTime().dbl() + (chunkDuration - 1), msg);
-            } else {
-                //std::cout << "nächstes Requestset" << "\n";
+            }
+           // otherwise we are done watching the current video.
+            else {
                 delete result;
-                //std::cout << "altes Result gelöscht" << "\n";
+                /*
+                 * if the request set is not empty we take the next video and schedule segmentRequests for it
+                 */
                 if (!requestSet->empty()) {
-                    //std::cout << "es gab das nächste Requestset" << "\n";
                     result = requestSet->at(requestSet->size() - 1);
                     requestSet->pop_back();
                     videoDuration = std::atof((result->at(4).c_str()));
@@ -88,13 +109,6 @@ void Client::handleMessage(cMessage *msg) {
                     numberOfRequests = videoDuration / chunkDuration;
                     if (numberOfRequests < 1)
                         numberOfRequests = 1;
-                    //std::cout << "nächstes Reqeustevent wird gescheduled"
-                    //<< "\n";
-                    //std::cout << "jetzt ist es" << simTime().dbl() << "\n";
-                    //std::cout << "nächste Zeit ist"
-                    //<< std::atof(result->at(1).c_str())
-                    //- nwInfo->getFirstRequestTimed() << "\n";
-                    //std::cout << nextRequestEvent->getName() << "\n";
 
                     if (std::atof(result->at(1).c_str())
                             - nwInfo->getFirstRequestTimed()
@@ -112,22 +126,30 @@ void Client::handleMessage(cMessage *msg) {
                                 periodicRequest);
                     }
 
-                    //std::cout << "ist gescheduled" << "\n";
-                } else {
-                    //std::cout << "Client ist fertig" << "\n";
+                }
+                /*
+                 * if the request set is empty, this client is done and does not send any more requests
+                 */
+                else {
                     delete requestSet;
                     delete msg;
                 }
             }
 
         } else {
-            //std::cout << "Hier kommen wir eigentlich gar nicht rein" << "\n";
             delete msg;
         }
     }
 
 }
-
+/*
+ * @brief generates a new segment request
+ *
+ * @param data the data of the video we generate requests for
+ * @param i the segment we request
+ *
+ * generates a segmentRequest for a video
+ */
 SegmentRequest *Client::generateRequest(std::vector<std::string>* data, int i) {
     char rqstname[20];
     sprintf(rqstname, "Request id %s%s", data->at(3).c_str(),
@@ -142,15 +164,29 @@ SegmentRequest *Client::generateRequest(std::vector<std::string>* data, int i) {
     return rqst;
 }
 
+/*
+ * @brief sends a request on a specific channel
+ *
+ * @param rqst the request to be sent
+ */
 void Client::sendRequest(SegmentRequest *rqst) {
-//bubble("Send Request");
     send(rqst, "reverseProxyOut");
 }
 
+/*
+ * @brief gets the requests for the client
+ *
+ * In the nwInfo the client can get its requests with the userId
+ */
 void Client::getRequests() {
     requestSet = nwInfo->getRequestsForClient(userId);
 }
 
+/*
+ * @brief is called at the end of the program execution
+ *
+ * used for garbage collection
+ */
 void Client::finish() {
     delete nextRequestEvent;
 }

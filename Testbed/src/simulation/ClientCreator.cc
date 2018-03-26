@@ -19,7 +19,13 @@
 #include "Hub.h"
 
 using namespace omnetpp;
-
+/*
+ * @brief creates an instance of the ClientCreator
+ *
+ * @param userIds the userIds of the clients that have to be created
+ * @param the network on which the clients are created
+ * @param reverseProxy the owner of the instance of the ClientCreator
+ */
 ClientCreator::ClientCreator(std::vector<std::string>* userIds,
         omnetpp::cModule* parent, omnetpp::cModule* reverseProxy) {
     this->userIds = userIds;
@@ -29,6 +35,17 @@ ClientCreator::ClientCreator(std::vector<std::string>* userIds,
 
 ClientCreator::~ClientCreator() {
 }
+
+/*
+ * @brief creates clients with Hubs in between
+ *
+ * Omnet only allows a module to connect to a specific number of other modules.
+ * with this function we basically split the set of clients in half and assign
+ * each subset of clients a connector that then connects these clients to the reverseProxy.
+ *
+ * NOTE: this is only implemented, so that the maximum number times two of connections can be handled.
+ * This has to be changed in the future to allow a infinite number of connectinos.
+ */
 void ClientCreator::createClientsWithHubs() {
     for (unsigned int i = 0; i < 2; i++) {
         cModuleType *moduleType = cModuleType::get(
@@ -53,10 +70,16 @@ void ClientCreator::createClientsWithHubs() {
     for (unsigned int i = 0; i < this->userIds->size(); i++) {
 
         cModuleType *moduleType = cModuleType::get(
-                "ba_project.src.simulation.Client");
+                "testbed.src.simulation.Client");
         cModule *module = moduleType->create("Client", parent);
 
-        /*cDelayChannel *channelTop = cDelayChannel::create("channelTop");
+        /*
+         * We can create the channels for the clients which are connected to the
+         * reverseProxy with delays. We did not do this but it is possible.
+         */
+
+
+        /* cDelayChannel *channelTop = cDelayChannel::create("channelTop");
         channelTop->setDelay(0.1);
 
         cDelayChannel *channelBot = cDelayChannel::create("channelBot");
@@ -86,11 +109,15 @@ void ClientCreator::createClientsWithHubs() {
     }
 }
 
+/*
+ * @brief creates clients that connect to the reverseProxy
+ *
+ */
 void ClientCreator::createClients() {
     for (unsigned int i = 0; i < this->userIds->size(); i++) {
 
         cModuleType *moduleType = cModuleType::get(
-                "testbed.src.simulation.Client");
+                "ba_project.src.simulation.Client");
         cModule *module = moduleType->create("Client", parent);
 
         /*cDelayChannel *channelTop = cDelayChannel::create("channelTop");

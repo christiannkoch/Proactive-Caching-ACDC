@@ -22,11 +22,25 @@
 #include "LeftFirstSSAS.h"
 #include "ProbationaryFirstSSAS.h"
 #include "RightFirstSSAS.h"
+/*
+ * @brief returns an instance of the SSASFactory
+ * @return an instance of the SSASFactory
+ */
 SSASFactory::SSASFactory() {
-    // TODO Auto-generated constructor stub
 
 }
-
+/*
+ * @brief returns an adpative Strategy based upon the type we want
+ * @param probationaryCache the probationary cache
+ * @param probationaryGhostList the probationary ghostlist
+ * @param cacheSegmentVector the category cache vector
+ * @param ghostListVector the ghostlists for the category caches
+ * @param cacheSize the size of the cache
+ * @param subCacheSize the subcache size
+ * @param minSegSize the minimum subcache size
+ * @param type the type of the adaption strategy we want
+ * @return an adaptive Strategy
+ */
 BasicSSAS* SSASFactory:: createAdaptionStrategy(
         ARCProbationaryCache* probationaryCache,
         BasicGhostList* probationaryGhostList,

@@ -14,7 +14,17 @@
 // 
 
 #include "RelativeLargestGhostListSSAS.h"
-
+/*
+ * @brief returns an instance of a RelativeLargestGhostListSSAS
+ * @param probationaryCache the probationary cache
+ * @param probationaryGhostList the probationary ghostlist
+ * @param cacheSegmentVector the category cache vector
+ * @param ghostListVector the ghostlists for the category caches
+ * @param cacheSize the size of the cache
+ * @param subCacheSize the subcache size
+ * @param minSegSize the minimum subcache size
+ * @return an instance of a RelativeLargestGhostListSSAS
+ */
 RelativeLargestGhostListSSAS::RelativeLargestGhostListSSAS(
         ARCProbationaryCache* probationaryCache,
         BasicGhostList* probationaryGhostList,
@@ -30,7 +40,14 @@ RelativeLargestGhostListSSAS::RelativeLargestGhostListSSAS(
     this->minSegSize = minSegSize;
 
 }
-
+/*
+ * @brief returns the id of the subcache that is reduced
+ * @param toExpand the id of the subcahe that is expanded
+ *
+ * decides which of subcache is reduced based upon the size of the subcache relative to its ghostlist
+ *
+ * @return the id of the subcache that is reduced. 0 means the probationary cache
+ */
 int RelativeLargestGhostListSSAS::getIdToReduce(unsigned int toExpand) {
     int idToReduce = 0;
     double relativeGhostListSize = 0;
@@ -76,7 +93,10 @@ int RelativeLargestGhostListSSAS::getIdToReduce(unsigned int toExpand) {
     }
     return idToReduce;
 }
-
+/*
+ * @brief calculates the sum of all ghostlist entries
+ * @return the sum of all ghostlist entries
+ */
 int RelativeLargestGhostListSSAS::getSumOfGhostListEntries() {
     int sumOfGhostListEntries = probationaryGhostList->getSize();
     for (unsigned int i = 0; i < ghostListVector->size(); i++) {
@@ -85,7 +105,11 @@ int RelativeLargestGhostListSSAS::getSumOfGhostListEntries() {
     }
     return sumOfGhostListEntries;
 }
-
+/*
+ * @brief returns the smallest cache segment
+ * @param toExpand the cache segment to expand
+ * @return the smallest cache segment
+ */
 int RelativeLargestGhostListSSAS::getSmallestCacheSegment(int toExpand) {
     int smallestCache = 0;
     int smallestCacheSize = 0;
@@ -108,5 +132,4 @@ int RelativeLargestGhostListSSAS::getSmallestCacheSegment(int toExpand) {
 }
 
 RelativeLargestGhostListSSAS::~RelativeLargestGhostListSSAS() {
-    // TODO Auto-generated destructor stub
 }

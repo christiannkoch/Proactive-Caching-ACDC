@@ -79,8 +79,8 @@ void ARC1Cache::resetRates() {
     }
 }
 
-void ARC1Cache::deletePackage(std::string id) {
-    t1->deletePackage(id);
+void ARC1Cache::deleteSegment(std::string id) {
+    t1->deleteSegment(id);
     b1->deleteEntry(id);
     t2->deletePackage(id);
     b2->deleteEntry(id);
@@ -132,13 +132,13 @@ bool ARC1Cache::contains(SegmentRequest *rqst) {
 
 }
 
-VideoSegment *ARC1Cache::retrievePackage(SegmentRequest *rqst) {
+VideoSegment *ARC1Cache::retrieveSegment(SegmentRequest *rqst) {
     if (t1->contains(rqst)) {
-        VideoSegment* dummy = t1->retrievePackage(rqst);
+        VideoSegment* dummy = t1->retrieveSegment(rqst);
         rearrangeCache(dummy);
-        return t2->retrievePackage(rqst);
+        return t2->retrieveSegment(rqst);
     } else {
-        return t2->retrievePackage(rqst);
+        return t2->retrieveSegment(rqst);
     }
 }
 

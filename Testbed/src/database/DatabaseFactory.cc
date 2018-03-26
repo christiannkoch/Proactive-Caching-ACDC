@@ -22,6 +22,15 @@
 using namespace sql;
 using namespace omnetpp;
 
+/*
+ * @brief returns a connection to the database based upon the type of the database
+ * @param type the type of the database, eg. mysql, nosql etc.
+ * @param username the username of someone who can connect to the database
+ * @param password the password corresponding to the user who wants to connect to the database
+ * @param server the server address
+ * @param port the port on which the database listenes to
+ * @return a connection to a database based upon the type of the database
+ */
 DBConnection* DatabaseFactory::getConnection(const std::string type,
         const std::string username, const std::string password,
         const std::string server, int port) {

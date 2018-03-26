@@ -34,7 +34,7 @@ public:
     void clearCache();
     bool contains(SegmentRequest* rqst);
     std::list<std::string>* insertIntoCache(VideoSegment* pkg);
-    VideoSegment* retrievePackage(SegmentRequest* rqst);
+    VideoSegment* retrieveSegment(SegmentRequest* rqst);
     void expand(int i);
     std::list<std::string>* reduce(int i);
     int getReadOperations();

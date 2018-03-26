@@ -36,20 +36,37 @@
 #include "SSASFactory.h"
 #include "BasicSSAS.h"
 
-ACARCCache::ACARCCache(std::vector<std::string>* parameters, long long size,
+/*
+ * @brief returns an instance of the ACDCCache
+ * @param parameters the parameters for the ACDCCache
+ * @param size the maximum cache size
+ * @param storageAlterations the vector with the list of storage alterations
+ * @param storageAlterationStrategy the strategy that is used when altering the maximum cache size
+ * @return an instance of the ACDCCache
+ */
+ACDCCache::ACDCCache(std::vector<std::string>* parameters, long long size,
         std::vector<std::pair<double, double>>* storageAlterations,
         const std::string& storageAlterationStrategy) {
     this->parameters = parameters;
     setSize(size);
     expandStrat = storageAlterationStrategy;
     this->storageAlterations = storageAlterations;
+    /*
+     * if there are no storage alterations expanded can be set to true
+     */
     if(storageAlterations->size() > 0){
         expanded = false;
     }
     else
         expanded = true;
+    /*
+     * calculates the minSegSize
+     */
     this->minSegSize = std::stof(
             this->parameters->at(this->parameters->size() - 1));
+    /*
+     * creates the probationary cache
+     */
     try {
         this->probationaryCache =
                 (ARCProbationaryCache*) ProbationaryCacheFactory::createProbationaryCache(
@@ -59,6 +76,9 @@ ACARCCache::ACARCCache(std::vector<std::string>* parameters, long long size,
     }
     this->adaptiveStrategy = parameters->at(0);
     setupCacheSegments();
+    /*
+     * creates the ghostlist based on the adaptive strategy
+     */
     if (this->adaptiveStrategy == "timeLimitedGhostList")
         this->probationaryGhostList = new LifeTimeGhostList();
     else {
@@ -66,12 +86,18 @@ ACARCCache::ACARCCache(std::vector<std::string>* parameters, long long size,
     }
     probationaryVector.setName("ProbationaryCacheSize");
     ghostListSize.setName("ProbationaryGhostListSize");
+    /*
+     *creates the adaptionStrategy for the cache segments
+     */
     adaptionStrategy = SSASFactory::createAdaptionStrategy(probationaryCache,
             probationaryGhostList, &cacheSegmentVector, &ghostListVector,
             cacheSize, subCacheSize, minSegSize, adaptiveStrategy);
 }
 
-void ACARCCache::resetRates() {
+/*
+ * @brief resets the values used for evaluation and triggers the storage alterations
+ */
+void ACDCCache::resetRates() {
     probationaryVector.record(probationaryCache->getSize());
     ghostListSize.record(probationaryGhostList->getSize());
     for (unsigned int i = 0; i < cacheSegmentVector.size(); i++) {
@@ -95,8 +121,12 @@ void ACARCCache::resetRates() {
     }
 }
 
-void ACARCCache::deletePackage(std::string id) {
-    probationaryCache->deletePackage(id);
+/*
+ * @brief deletes a segment identified by its video id
+ * @param id the video id of the segment to delete
+ */
+void ACDCCache::deleteSegment(std::string id) {
+    probationaryCache->deleteSegment(id);
     probationaryGhostList->deleteEntry(id);
     for (auto i : cacheSegmentVector) {
         i->deletePackage(id);
@@ -106,7 +136,7 @@ void ACARCCache::deletePackage(std::string id) {
     }
 }
 
-ACARCCache::~ACARCCache() {
+ACDCCache::~ACDCCache() {
     delete probationaryCache;
     delete probationaryGhostList;
     for (auto i : cacheSegmentVector)
@@ -121,7 +151,11 @@ ACARCCache::~ACARCCache() {
     delete storageAlterations;
 }
 
-void ACARCCache::periodicEvents() {
+/*
+ * @brief executes periodic Events
+ * used only if a TTL segment exists
+ */
+void ACDCCache::periodicEvents() {
     probationaryCache->periodicEvents();
     probationaryGhostList->periodicEvents();
     for (auto i : cacheSegmentVector)
@@ -131,7 +165,13 @@ void ACARCCache::periodicEvents() {
 
 }
 
-void ACARCCache::insertIntoCache(VideoSegment* pkg) {
+/*
+ * @brief inserts a video segment into the cache
+ * @param pkg the video segment to insert into the cache
+ *
+ * inserts a video segment into the probationary cache
+ */
+void ACDCCache::insertIntoCache(VideoSegment* pkg) {
     std::list<std::string>* IDtoInsert = probationaryCache->insertIntoCache(
             pkg);
     std::string idBuilder = pkg->getVideoId()
@@ -143,7 +183,15 @@ void ACARCCache::insertIntoCache(VideoSegment* pkg) {
         delete IDtoInsert;
 }
 
-bool ACARCCache::contains(SegmentRequest* rqst) {
+/*
+ * @brief inidcates if a segment requested is in the cache
+ * @param rqst a request we want to get the segment for
+ *
+ * searches the probationary cache first, then all other cache segments
+ *
+ * @return true if the request is in the cache, false otherwise
+ */
+bool ACDCCache::contains(SegmentRequest* rqst) {
     std::string idBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
     int toSearch = findCacheForCategory(rqst);
@@ -170,49 +218,86 @@ bool ACARCCache::contains(SegmentRequest* rqst) {
     }
 }
 
-VideoSegment* ACARCCache::retrievePackage(SegmentRequest* rqst) {
+/*
+ * @brief retrieves a video segment from the cache
+ * @param rqst the request to which we want to retrieve the segment to
+ * @return a video segment
+ */
+VideoSegment* ACDCCache::retrieveSegment(SegmentRequest* rqst) {
     if (probationaryCache->contains(rqst)) {
-        VideoSegment* dummy = probationaryCache->retrievePackage(rqst);
+        VideoSegment* dummy = probationaryCache->retrieveSegment(rqst);
         rearrangeCache(dummy);
-        return cacheSegmentVector.at(findCacheForCategory(rqst))->retrievePackage(
+        return cacheSegmentVector.at(findCacheForCategory(rqst))->retrieveSegment(
                 rqst);
     } else {
-        return cacheSegmentVector.at(findCacheForCategory(rqst))->retrievePackage(
+        return cacheSegmentVector.at(findCacheForCategory(rqst))->retrieveSegment(
                 rqst);
     }
 }
 
-long long ACARCCache::getSize() {
+/*
+ * @brief returns the maximum size of the cache
+ * @return the maximum size of the cache
+ */
+long long ACDCCache::getSize() {
     return this->cacheSize;
 }
 
-void ACARCCache::clearCache() {
+/*
+ * @brief deletes all segments from the cache
+ */
+void ACDCCache::clearCache() {
     for (auto i : cacheSegmentVector)
         i->clearCache();
     probationaryCache->clearCache();
 }
 
-int ACARCCache::getWriteOperations() {
+/*
+ * @brief returns the amount of write operations performed in a given timeframe
+ *
+ * @return the amount of write operations
+ */
+int ACDCCache::getWriteOperations() {
     int writeOperations = this->probationaryCache->getWriteOperations();
     for (auto i : cacheSegmentVector)
         writeOperations = writeOperations + i->getWriteOperations();
     return writeOperations;
 }
 
-int ACARCCache::getReadOperations() {
+/*
+ * @brief returns the amount of read operations performed in a given timeframe
+ *
+ * @return the amount of read operations
+ */
+int ACDCCache::getReadOperations() {
     int readOpreations = this->probationaryCache->getReadOperations();
     for (auto i : cacheSegmentVector)
         readOpreations = readOpreations + i->getReadOperations();
     return readOpreations;
 }
-//hier muss -2 gerechnet werden, da der erste Parameter immer die AdaptionStrategy angibt und der letzte die minSegSize
-//am ende noch +1 rechnen wegen des ProbationaryCache
-void ACARCCache::setSize(long long size) {
+/*
+ * @brief sets the size of the cache
+ * sets the cache size and calculates the subcache size
+ * @param size the cache size
+ */
+void ACDCCache::setSize(long long size) {
+    /*
+     * we substract 2 because the first parameter is always the adaption strategy and the last parameter the minSegSize
+     * at the end we have to add one because of the probationary cache
+     */
     this->cacheSize = size;
     subCacheSize = (cacheSize / (((this->parameters->size() - 2) / 2) + 1));
 }
 
-void ACARCCache::rearrangeCache(VideoSegment *pkg) {
+/*
+ * @brief rearranges the cache
+ * @param pkg the video segment wich caused the rearrangement
+ * if a hit occured in the probationary cache, the video segment is moved to the
+ * corresponding category cache
+ * if a hit occured in a catetory cache, the rearrangement of this category cache is
+ * triggered
+ */
+void ACDCCache::rearrangeCache(VideoSegment *pkg) {
     std::string idBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     probationaryCache->drop(pkg);
@@ -249,7 +334,11 @@ void ACARCCache::rearrangeCache(VideoSegment *pkg) {
         delete IDtoInsert;
 }
 
-void ACARCCache::setupCacheSegments() {
+/*
+ * @brief creates the cache segments
+ * brief explains this
+ */
+void ACDCCache::setupCacheSegments() {
     for (unsigned int i = 1; i < parameters->size() - 1; i = i + 2) {
         std::string typeParam = parameters->at(i);
         std::string categoryParam = parameters->at(i + 1);
@@ -280,7 +369,11 @@ void ACARCCache::setupCacheSegments() {
     }
 }
 
-void ACARCCache::alterCacheSize(double newCacheSize) {
+/*
+ * @brief alters the cache size
+ * @param newCacheSize the new maximum cache size
+ */
+void ACDCCache::alterCacheSize(double newCacheSize) {
     if (expandStrat == "equal") {
         double toExpand = newCacheSize / (cacheSegmentVector.size() + 1);
         subCacheSize = toExpand;
@@ -303,23 +396,29 @@ void ACARCCache::alterCacheSize(double newCacheSize) {
         cacheSize = newCacheSize;
     }
 }
-
 /*
- * Gibt einen integer zwischen 0 und (N-1) zurück, wobei 0 bedeutet, dass es das MISC-Segment ist, es also kein explizites Cache-Segment
- * für diesen Cache gibt. Alles andere gibt eben den Indize wieder.
+ * @brief returns a value representing a cache corresponding to the category of the request
+ * @param rqst the request we want the cache segment for
+ *
+ * returns an integer betwee 0 and NumberOfCacheSegments-1, 0 means the probationary cache
+ *
+ * @return the id of the cache segment
  */
-int ACARCCache::findCacheForCategory(SegmentRequest* rqst) {
+int ACDCCache::findCacheForCategory(SegmentRequest* rqst) {
     for (unsigned int i = 0; i < cacheSegmentVector.size(); i++)
         if (cacheSegmentVector.at(i)->getCategory().compare(rqst->getCategory())
                 == 0)
             return i;
     return 0;
 }
+
 /*
- * Schaut nach, ob eine PacketID in einer der Ghostlists drinnen steht. Zurückgegeben wird ein Wert zwischen 0 und (N-1), der für die
- * Ghostlist steht, die zur Zugehörigen Kategorie zählt. 0 als Rückgabe bedeutet MISC.
+ * @brief returns the ghostlist corresponding to a category
+ * @param pkg the segment from which category we want the ghostlist for
+ * NOTE: 0 means MISC segment
+ * @return the id of the ghostlist corresponding to a category cache
  */
-int ACARCCache::findGhostListForCategory(VideoSegment* pkg) {
+int ACDCCache::findGhostListForCategory(VideoSegment* pkg) {
     int cacheSegment = 0;
     for (unsigned int i = 0; i < cacheSegmentVector.size(); i++)
         if (cacheSegmentVector.at(i)->getCategory().compare(pkg->getCategory())

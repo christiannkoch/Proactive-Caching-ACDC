@@ -21,17 +21,24 @@
 #include <vector>
 #include <string>
 
+/*
+ * @brief returns an instance of the AllClientsRequestCursor
+ * @param query the query which is executed on the database
+ * @param connection the connection to the database
+ */
 AllClientsRequestCursor::AllClientsRequestCursor(const std::string query,
         sql::Connection* connection) {
-    // TODO Auto-generated constructor stub
     this->query = query;
     this->connection = connection;
 }
 
 AllClientsRequestCursor::~AllClientsRequestCursor() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief executes a command on the database and saves the result
+ *
+ */
 void AllClientsRequestCursor::execute() {
     this->stmt = connection->createStatement();
     this->res = stmt->executeQuery(this->query);
@@ -43,7 +50,10 @@ void AllClientsRequestCursor::execute() {
     delete stmt;
     delete res;
 }
-
+/*
+ * @brief returns the result of the statement executed on the database
+ * @return the result from the statement execution on the database
+ */
 std::vector<std::vector<std::string>*>* AllClientsRequestCursor::getResultSet() {
     return this->resultSet;
 }

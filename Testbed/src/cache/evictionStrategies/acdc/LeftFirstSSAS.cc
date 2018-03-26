@@ -14,7 +14,17 @@
 // 
 
 #include "LeftFirstSSAS.h"
-
+/*
+ * @brief returns an instance of a LeftFirstSSAS
+ * @param probationaryCache the probationary cache
+ * @param probationaryGhostList the probationary ghostlist
+ * @param cacheSegmentVector the category cache vector
+ * @param ghostListVector the ghostlists for the category caches
+ * @param cacheSize the size of the cache
+ * @param subCacheSize the subcache size
+ * @param minSegSize the minimum subcache size
+ * @return an instance of a LeftFirstSSAS
+ */
 LeftFirstSSAS::LeftFirstSSAS(ARCProbationaryCache* probationaryCache,
         BasicGhostList* probationaryGhostList,
         std::vector<BasicCacheSegment*>* cacheSegmentVector,
@@ -28,6 +38,9 @@ LeftFirstSSAS::~LeftFirstSSAS() {
     // TODO Auto-generated destructor stub
 }
 
+/*
+ * not yet implemented
+ */
 int LeftFirstSSAS::getIdToReduce(unsigned int id){
     return 0;
 }

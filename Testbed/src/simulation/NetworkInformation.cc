@@ -26,10 +26,17 @@
 #include <stdio.h>
 #include <boost/lexical_cast.hpp>
 
-NetworkInformation* NetworkInformation::singleton = 0;
+NetworkInformation* NetworkInformation::singleton = 0; // since we only want one instance of this class to exist, we do it with this singleton
 
 using namespace omnetpp;
-
+/*
+ * @brief returns an instance of the NetworkInformation class
+ *
+ * @param owner the module that created the instance of the NetworkInformation.
+ *
+ * The NetworkInformation class is responsible for holding, creating and serving important information
+ * for the simulation like the database with the request set.
+ */
 NetworkInformation::NetworkInformation(omnetpp::cModule* owner) {
     this->owner = owner;
     std::string test = owner->getParentModule()->par("SetupfileName");
@@ -40,6 +47,11 @@ NetworkInformation::NetworkInformation(omnetpp::cModule* owner) {
 
 }
 
+/*
+ * @brief opens the connection to the database
+ *
+ * @return the connection to the database
+ */
 DBConnection* NetworkInformation::connectToDatabase() {
     std::string addressBuilder = "tcp://" + databaseInformation.address + ":";
     return DatabaseFactory::getConnection(databaseInformation.type,
@@ -47,15 +59,30 @@ DBConnection* NetworkInformation::connectToDatabase() {
             addressBuilder, databaseInformation.port);
 }
 
+/*
+ * @brief returns the end time of the simulation
+ *
+ * @return the simulation end time as a unix timestamp
+ */
 double NetworkInformation::getEndTime() {
     return this->databaseInformation.endTime;
 }
 
+/*
+ * @brief returns the duration of the simulation
+ *
+ * @return the duration of the simulation in seconds
+ */
 double NetworkInformation::getSimulationDuration() {
     return (this->databaseInformation.endTime
             - this->databaseInformation.startTime);
 }
 
+/*
+ * @brief sets up the database parameter
+ *
+ * the database parameters are used to connect to the database
+ */
 void NetworkInformation::setupDatabaseParameters(
         std::vector<std::string>* config) {
     databaseInformation.type = removeSpaces(
@@ -82,11 +109,28 @@ void NetworkInformation::setupDatabaseParameters(
 
 }
 
+/*
+ * @brief removes spaces from a given string
+ *
+ * @param s the string from which to remove the spaces
+ *
+ * @return a string without spaces
+ */
 std::string NetworkInformation::removeSpaces(std::string s) {
     s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
     return s;
 }
 
+/*
+ * @brief splits a string into a vector of strings based on a delimiter
+ *
+ * @param s the string to split
+ * @param delimiter the delimiter that signals a split
+ *
+ * the brief description says it all
+ *
+ * @return a vector of strings
+ */
 std::vector<std::string> NetworkInformation::splitString(std::string s,
         const std::string& delimiter) {
     std::vector<std::string> tokens;
@@ -112,6 +156,12 @@ NetworkInformation::~NetworkInformation() {
 
 }
 
+/*
+ * @brief returns the singleton of the NetworkInformation
+ *
+ * @return the Networkinformation
+ */
+
 NetworkInformation* NetworkInformation::getInformation(
         omnetpp::cModule* owner) {
     if ((singleton == 0))
@@ -119,12 +169,10 @@ NetworkInformation* NetworkInformation::getInformation(
     return singleton;
 }
 
-/*void NetworkInformation::clearNetworkInformation() {
- if (singleton == 0)
- return;
- delete singleton;
- }*/
-
+/*
+ * @brief is called when the NetworkInformation is initialized
+ *
+ */
 void NetworkInformation::setupNetworkInformation() {
     generateProxyCacheSettings();
     this->amountOfReverseProxys = proxyCacheSettings.size();
@@ -137,6 +185,12 @@ void NetworkInformation::setupNetworkInformation() {
     setupAllRequests();
 }
 
+/*
+ * @brief performs a database request to get all requests
+ *
+ * Here the database request is performed to get all requests. the requests are stored
+ * for further use
+ */
 void NetworkInformation::setupAllRequests() {
 
     std::cout << "setting up all Requests, may take some time" << endl;
@@ -193,16 +247,28 @@ void NetworkInformation::setupAllRequests() {
             << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
 }
 
+/*
+ * @brief returns the requests for a client
+ * @param id the id of the client we want the requests for
+ * @return a vector of a vector of strings which holds all the information of a request for a client
+ */
 std::vector<std::vector<std::string>*>* NetworkInformation::getRequestsForClient(
         int id) {
     return this->allRequests[id];
 
 }
 
+/*
+ * @brief returns the connection to the database
+ * @return the connection to the database
+ */
 DBConnection* NetworkInformation::getDatabaseConnection() {
     return this->dataBaseConnection;
 }
 
+/*
+ * @brief performs a database request to get the start time
+ */
 void NetworkInformation::getStartTime() {
     std::string query = "SELECT MIN(requestTime) FROM "
             + databaseInformation.name + "." + databaseInformation.table + ";";
@@ -215,6 +281,9 @@ void NetworkInformation::getStartTime() {
     delete resultFristTimestamp;
 }
 
+/*
+ * @brief performs a database request to get all distinct client ids
+ */
 void NetworkInformation::selectAllUsers() {
     std::string all = "ALL";
     std::string query = "";
@@ -244,15 +313,31 @@ void NetworkInformation::selectAllUsers() {
     delete resultSet;
 }
 
+/*
+ * @brief returns the client ids connected to a reverse proxy
+ * @param proxyName the name of the proxy we want the clientIds for
+ * @return a vector of strings which represents a list of client ids that will be connected to a proxy
+ */
 std::vector<std::string>* NetworkInformation::getClientIdsForReverseProxy(
         std::string proxyName) {
     return leafProxyVector[proxyName];
 }
 
+/*
+ * @brief returns the cache settings for a proxy
+ * @reutrn the cache settings for a proxy
+ */
 std::vector<ProxyCacheSettings_t>* NetworkInformation::getProxyCacheSettings() {
     return &proxyCacheSettings;
 }
 
+/*
+ * @brief signals if two proxies are connected
+ *
+ * If a connection in the connection table exists true is returned.
+ *
+ * @return a boolean that is true if two proxies are connected, false otherwise
+ */
 bool NetworkInformation::isConnected(int id, std::string proxy) {
     for (unsigned int i = 0; i < connectionTable[id]->size(); i++)
         if (proxyCacheSettings[connectionTable[id]->at(i)].name == proxy)
@@ -260,14 +345,31 @@ bool NetworkInformation::isConnected(int id, std::string proxy) {
     return false;
 }
 
+/*
+ * @brief returns the admission strategy of a proxy
+ *
+ * @param id the id of the proxy we want the admission strategy from
+ * @return a string that represents the admission strategy
+ */
 std::string NetworkInformation::getAdmissionStrategy(int id) {
     return proxyCacheSettings[id - 1].admissionStrategy;
 }
 
+/*
+ * @brief returns the eviction strategy of a proxy
+ *
+ * @param id the id of the proxy we want the eviction strategy from
+ * @return a string that represents the eviction strategy
+ */
 std::string NetworkInformation::getEvictionStrategy(int id) {
     return proxyCacheSettings[id - 1].evictionStrategy;
 }
 
+/*
+ * @brief a function that assignes user ids to the leaf proxies by random
+ *
+ * the brief says it all
+ */
 void NetworkInformation::generateUserIdsPerProxy() {
     unsigned int share = amountOfClients / getAmountOfLeafProxys();
     unsigned int ueberhang = amountOfClients % getAmountOfLeafProxys();
@@ -309,6 +411,11 @@ void NetworkInformation::generateUserIdsPerProxy() {
     }
 }
 
+/*
+ * @brief generates the cache settings for each proxy
+ *
+ * the brief says it all
+ */
 void NetworkInformation::generateProxyCacheSettings() {
     for (auto line : config) {
         if (line[0] == 'R') {
@@ -339,6 +446,13 @@ void NetworkInformation::generateProxyCacheSettings() {
     config.erase(config.begin(), config.begin() + proxyCacheSettings.size());
 }
 
+/*
+ * @brief takes the string of storage alterations and generates a vector of double pairs from it
+ *
+ * this is basically parsing the the strings to double pairs
+ *
+ * @return a vector of double pairs
+ */
 std::vector<std::pair<double, double>>* NetworkInformation::generateVectorOfDoublePairs(
         std::vector<std::string> values) {
     std::vector<std::pair<double, double>>* storageAlterationVector =
@@ -355,6 +469,11 @@ std::vector<std::pair<double, double>>* NetworkInformation::generateVectorOfDoub
     return storageAlterationVector;
 }
 
+/*
+ * @brief generates the connection Table
+ *
+ * the brief description says it all
+ */
 void NetworkInformation::generateConnectionTable() {
     std::string line = config[0];
     this->cdnDelay = std::stoi(removeSpaces(splitString(line, "=").at(1)));
@@ -376,12 +495,26 @@ void NetworkInformation::generateConnectionTable() {
     }
 }
 
+/*
+ * @brief parses a string to a boolean value if the string is "true" true is returned. False otherwise
+ *
+ * brief says it all
+ *
+ * @return a boolean value
+ */
 bool NetworkInformation::toBool(std::string s) {
     if (s == "true")
         return true;
     return false;
 }
 
+/*
+ * @brief retrurns the amount of Leaf Proxies
+ *
+ * the amount of leaf proxies is used to calculate how many clients are connected to a single reverse proxy
+ *
+ * @return the amount of leaf proxies
+ */
 int NetworkInformation::getAmountOfLeafProxys() {
     int amountOfLeafProxys = 0;
     for (auto i : proxyCacheSettings)
@@ -390,46 +523,116 @@ int NetworkInformation::getAmountOfLeafProxys() {
     return amountOfLeafProxys;
 }
 
+/*
+ * @brief returns the connection table
+ *
+ * brief says it all
+ *
+ * @return the connection table
+ */
 std::map<int, std::vector<int>*>* NetworkInformation::getConnectionTable() {
     return &connectionTable;
 }
 
+/*
+ * @brief returns map that assigns each leaf proxy vector its client ids
+ *
+ * in the leafProxyVector a proxy id is desigend a vector of client strings.
+ * Maybe the name is misleading
+ *
+ * @return a list of client ids assigned to a proxy id
+ */
 std::map<std::string, std::vector<std::string>*>* NetworkInformation::getLeafProxyVector() {
     return &leafProxyVector;
 }
 
+/*
+ * @briefs returns the amount of reverse proxies
+ *
+ * brief says it all
+ *
+ * @return the amount of reverse proxies
+ */
 int NetworkInformation::getAmountOfReverseProxys() {
     return this->amountOfReverseProxys;
 }
 
+/*
+ * @brief returns the amount of clients
+ *
+ * brief says it all
+ *
+ * @return the amount of clients
+ */
 int NetworkInformation::getAmountOfClients() {
     return this->amountOfClients;
 }
 
+/*
+ * @brief returns the gate size of a proxy
+ *
+ * @param id the id of the proxy we want to know the gate size of
+ *
+ * @return the gate size of a proxy
+ */
 int NetworkInformation::getGateSize(int id) {
     return connectionTable[id]->size();
 }
 
+/*
+ * @brief returns the time of the first request
+ *
+ * the time is used in order to know when to start the simulation
+ *
+ * @return a double value as a unix timestamp that represents the time of the first request
+ */
 double NetworkInformation::getFirstRequestTimed() {
     return this->firstRequestTime;
 }
 
+/*
+ * @brief increments the amount of hits by 1 (is never used)
+ */
 void NetworkInformation::increaseHit() {
     this->hits = hits + 1;
 }
 
+/*
+ * @brief returns the amount of hits (is never used)
+ *
+ * @return the amount of hits
+ */
 int NetworkInformation::getHits() {
     return this->hits;
 }
 
+/*
+ * @brief returns the amount of levels
+ *
+ * the amount of levels of the topology is returned
+ *
+ * @return the amount of levels
+ */
 int NetworkInformation::getAmountOfLevels() {
     return this->amountOfLevels;
 }
 
+/*
+ * @brief returns the inter-cdn delay
+ *
+ * used with the amount of levels to calculate the delay of the channels between the reverse proxies
+ *
+ * @return the inter-cdn delay
+ */
 int NetworkInformation::getCDNDelay() {
     return this->cdnDelay;
 }
 
+/*
+ * @brief a function that reads a text file line by line
+ *
+ * brief says it all
+ */
 void NetworkInformation::readFile() {
     std::ifstream infile(path);
     std::string line;
@@ -438,6 +641,12 @@ void NetworkInformation::readFile() {
     }
 }
 
+/*
+ * @brief returns the cache settings for a reverse proxy
+ * @param id the id of the reverse proxy we want the cache settings for
+ *
+ * @return the cache settings for a reverse proxy
+ */
 ProxyCacheSettings_t* NetworkInformation::getSettings(int id) {
     return &proxyCacheSettings.at(id - 1);
 }

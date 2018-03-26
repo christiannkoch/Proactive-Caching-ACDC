@@ -32,12 +32,12 @@ public:
     void periodicEvents() override;
     void insertIntoCache(VideoSegment *pkg) override; // gibt die ID des Videos zurück, wenn es aus dem LFU gelöscht wird um sie dann in die zweite Ghostlist zu schreiben. Wenn die ID 0 ist, muss nichts in die GhostList geschreiben werden, da nichts gelöscht wurde.
     bool contains(SegmentRequest *rqst) override;
-    VideoSegment *retrievePackage(SegmentRequest *rqst) override;
+    VideoSegment *retrieveSegment(SegmentRequest *rqst) override;
     long long getSize() override;
     void clearCache() override;
     int getReadOperations();
     int getWriteOperations();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     bool expanded;

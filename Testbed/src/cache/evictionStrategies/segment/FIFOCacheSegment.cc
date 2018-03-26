@@ -97,7 +97,7 @@ bool FIFOCacheSegment::contains(SegmentRequest* rqst) {
         return true;
 }
 
-VideoSegment* FIFOCacheSegment::retrievePackage(SegmentRequest *rqst) {
+VideoSegment* FIFOCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());

@@ -32,7 +32,7 @@ public:
     long long getMaxSize();
     void periodicEvents();
     void clearCache();
-    VideoSegment *retrievePackage(SegmentRequest *rqst);
+    VideoSegment *retrieveSegment(SegmentRequest *rqst);
     std::list<std::string>* insertIntoCache(VideoSegment *pkg);
     bool contains(SegmentRequest *rqst);
     void drop(VideoSegment* pkg);
@@ -40,7 +40,7 @@ public:
     std::list<std::string>* reduce(int i);
     int getReadOperations();
     int getWriteOperations();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     RecencyNode* head;

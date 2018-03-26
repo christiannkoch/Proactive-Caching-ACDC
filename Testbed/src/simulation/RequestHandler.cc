@@ -19,13 +19,17 @@
 #include <omnetpp.h>
 
 RequestHandler::RequestHandler() {
-    // TODO Auto-generated constructor stub
 
 }
 
 RequestHandler::~RequestHandler() {
 }
 
+/*
+ * @brief inserts a request into a queue of requests
+ *
+ * @return true if a queue for this requested video id already existed, false of not
+ */
 bool RequestHandler::insertRequest(const std::string id, int gate) {
     if (contains(id)) {
         std::pair<int, double>* newPair = new std::pair<int, double>(gate,
@@ -42,6 +46,13 @@ bool RequestHandler::insertRequest(const std::string id, int gate) {
     }
 }
 
+/*
+ * @brief returns a list of the gates to which to send the video segment to
+ *
+ * @param id the video id
+ *
+ * @return a list of gates to which the video segment has to be sent to
+ */
 std::vector<std::pair<int, double>*>* RequestHandler::getRequestList(
         const std::string id) {
     if (container.find(id) == container.end())
@@ -51,6 +62,11 @@ std::vector<std::pair<int, double>*>* RequestHandler::getRequestList(
 
 }
 
+/*
+ * @brief returns true if a queue for a video id already exists
+ *
+ * @return true if a queue for a video already exists, false otherwise
+ */
 bool RequestHandler::contains(std::string id) {
     if (container.find(id) == container.end())
         return false;
@@ -58,6 +74,11 @@ bool RequestHandler::contains(std::string id) {
         return true;
 }
 
+/*
+ * @brief deletes the queue of a given video id
+ *
+ * @param id the id of a video
+ */
 void RequestHandler::deleteList(std::string id) {
     for (std::vector<std::pair<int, double>*>::iterator iter =
             container.at(id)->begin(); iter != container.at(id)->end();

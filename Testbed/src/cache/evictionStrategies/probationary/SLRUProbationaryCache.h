@@ -29,7 +29,7 @@ public:
     void periodicEvents();
     std::list<std::string>* insertIntoCache(VideoSegment *pkg);
     bool contains(SegmentRequest *rqst);
-    VideoSegment *retrievePackage(SegmentRequest *rqst);
+    VideoSegment *retrieveSegment(SegmentRequest *rqst);
     void setSize(long long size);
     long long getSize();
     long long getMaxSize();
@@ -38,7 +38,7 @@ public:
     int getReadOperations();
     int getWriteOperations();
     void drop(VideoSegment* pkg);
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     unsigned long long maxCacheSize;

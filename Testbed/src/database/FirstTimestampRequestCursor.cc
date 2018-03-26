@@ -21,18 +21,25 @@
 #include <vector>
 #include <string>
 
+/*
+ * @brief returns an instance of the FirstTimestampRequestCursor
+ * @param query the query to execute
+ * @param connection the connection to the database
+ * @return an instance of the FirstTimestampRequestCursor
+ */
 FirstTimestampRequestCursor::FirstTimestampRequestCursor(const std::string query,
         sql::Connection* connection) {
-    // TODO Auto-generated constructor stub
     this->query = query;
     this->connection = connection;
 
 }
 
 FirstTimestampRequestCursor::~FirstTimestampRequestCursor() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief executes the query on the database and saves the result
+ */
 void FirstTimestampRequestCursor::execute() {
     this->stmt = connection->createStatement();
     this->res = stmt->executeQuery(this->query);
@@ -44,6 +51,10 @@ void FirstTimestampRequestCursor::execute() {
     resultSet->push_back(result);
 }
 
+/*
+ * @brief returns the result from the execution of the query on the database
+ * @return the result from the execution of the query on the database
+ */
 std::vector<std::vector<std::string>*>* FirstTimestampRequestCursor::getResultSet() {
     return this->resultSet;
 }

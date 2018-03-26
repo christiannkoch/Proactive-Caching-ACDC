@@ -14,7 +14,17 @@
 // 
 
 #include "LargestGhostListSSAS.h"
-
+/*
+ * @brief returns an instance of a LargestGhostListSSAS
+ * @param probationaryCache the probationary cache
+ * @param probationaryGhostList the probationary ghostlist
+ * @param cacheSegmentVector the category cache vector
+ * @param ghostListVector the ghostlists for the category caches
+ * @param cacheSize the size of the cache
+ * @param subCacheSize the subcache size
+ * @param minSegSize the minimum subcache size
+ * @return an instance of a LargestGhostListSSAS
+ */
 LargestGhostListSSAS::LargestGhostListSSAS(
         ARCProbationaryCache* probationaryCache,
         BasicGhostList* probationaryGhostList,
@@ -31,6 +41,14 @@ LargestGhostListSSAS::LargestGhostListSSAS(
 
 }
 
+/*
+ * @brief returns the id of the subcache that is reduced
+ * @param toExpand the id of the subcahe that is expanded
+ *
+ * decides which of subcache is reduced based upon the size of the ghostlists
+ *
+ * @return the id of the subcache that is reduced. 0 means the probationary cache
+ */
 int LargestGhostListSSAS::getIdToReduce(unsigned int toExpand) {
     int idToReduce = 0;
     double ghostListSize = 0;
@@ -61,9 +79,13 @@ int LargestGhostListSSAS::getIdToReduce(unsigned int toExpand) {
 }
 
 LargestGhostListSSAS::~LargestGhostListSSAS() {
-    // TODO Auto-generated destructor stub
 }
 
+/*
+ * @brief returns the smallest cache segment
+ * @param toExpand the cache segment to expand
+ * @return the smallest cache segment
+ */
 int LargestGhostListSSAS::getSmallestCacheSegment(int toExpand) {
     int smallestCache = 0;
     int smallestCacheSize = 0;

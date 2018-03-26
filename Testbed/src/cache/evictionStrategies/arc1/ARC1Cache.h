@@ -57,12 +57,12 @@ public:
      */
     bool contains(SegmentRequest *rqst);
     /**
-     * @brief Retrieves the Videopackage from the Cache. This should only be executed, if contains returns true.
+     * @brief Retrieves the video segment from the cache. This should only be executed, if contains returns true.
      * @param rqst A Videorequest
      * @return The Videopackage that fullfills the Videorequest
      * @todo exceptionhandling to make sure, this can only be executed, if the object is in the cache.
      */
-    VideoSegment *retrievePackage(SegmentRequest *rqst);
+    VideoSegment *retrieveSegment(SegmentRequest *rqst);
 
     /**
      * @brief Get the size of the cache
@@ -76,7 +76,7 @@ public:
      */
     void clearCache();
     void resetRates();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     int getWriteOperations();
     int getReadOperations();
 protected:

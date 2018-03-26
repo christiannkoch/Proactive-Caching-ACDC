@@ -37,11 +37,11 @@ public:
     void periodicEvents();
     void insertIntoCache(VideoSegment *pkg);
     bool contains(SegmentRequest *rqst);
-    VideoSegment *retrievePackage(SegmentRequest *rqst);
+    VideoSegment *retrieveSegment(SegmentRequest *rqst);
     long long getSize();
     void clearCache();
     void resetRates();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     int getWriteOperations();
     int getReadOperations();
 protected:

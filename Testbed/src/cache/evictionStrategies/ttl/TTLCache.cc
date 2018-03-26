@@ -12,7 +12,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file ACDCCache.cc
+/* @file TTLCache.cc
  * @author Johannes Pfannmüller
  * @date
  * @version 1.0
@@ -31,7 +31,14 @@
 #include <vector>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-
+/*
+ * @brief Creates a new TTLCache for caching functionalities
+ * @param parameters the parameters for this eviction strategy
+ * @param size The desired Size of this Cache
+ * @param storageAlterations a vector of pairs of double value representing storage alterations
+ * @param storageAlterationStrategy the strategy used when altering the size of the storage
+ * @return A pointer to this class
+ */
 TTLCache::TTLCache(std::vector<std::string>* parameters, long long size,
         std::vector<std::pair<double, double>>* storageAlterations,
         std::string storageAlterationStrategy) {
@@ -52,11 +59,20 @@ TTLCache::TTLCache(std::vector<std::string>* parameters, long long size,
 TTLCache::~TTLCache() {
     delete storageAlterations;
 }
-
+/**
+ * @brief executes periodic events
+ *
+ * periodic events can regularily check on something
+ */
 void TTLCache::periodicEvents() {
     purge();
 }
-
+/**
+ * @brief resets the cache hit and miss
+ *
+ * resets the values we use for tracking the performance of the caching strategy.
+ * Also triggers the storage alteration if any exist
+ */
 void TTLCache::resetRates() {
     this->readOperation = 0;
     this->writeOperation = 0;
@@ -69,8 +85,15 @@ void TTLCache::resetRates() {
         }
     }
 }
-
-void TTLCache::deletePackage(std::string id) {
+/**
+ * @brief deletes video segment from the storage of the cache
+ *
+ * When a video segment is deleted, we check if the corresponding recency node
+ * is now empty. if so, we update the pointers and delete the recency node in
+ * order to save storage.
+ * @param id the video id of the video segment that has to be deleted
+ */
+void TTLCache::deleteSegment(std::string id) {
     int freedSize = container[id]->second->first->getSize();
     RecencyNode* rec = container[id]->second->second;
     delete container[id]->second->first;
@@ -83,13 +106,18 @@ void TTLCache::deletePackage(std::string id) {
     cacheSize = cacheSize - freedSize;
     writeOperation++;
 }
-
+/**
+ * @brief Inserts a video segment into the Cache
+ *
+ * A segment is inserted into the cache following the LFUDA algorithm
+ * @param *pkg A VideoSegment
+ */
 void TTLCache::insertIntoCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         std::string toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
             new RecencyNode(keyBuilder, head, head->getNext()));
@@ -101,18 +129,24 @@ void TTLCache::insertIntoCache(VideoSegment *pkg) {
     cacheSize = cacheSize + pkg->getSize();
     writeOperation++;
 }
-
+/*
+ * @brief deletes all expired elementes from the cache
+ */
 void TTLCache::purge() {
     for (auto i : container) {
         if ((omnetpp::simTime().dbl() - i.second->first) > timeToLive) {
             std::string toDelete = i.first;
-            deletePackage(toDelete);
+            deleteSegment(toDelete);
         }
         readOperation++;
     }
 
 }
-
+/**
+ * @brief Checks if the requested segment is already in the Cache
+ * @param rqst a segment request
+ * @return A bool Value, indicating whether the Cache contains the segment or not
+ */
 bool TTLCache::contains(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
@@ -122,7 +156,15 @@ bool TTLCache::contains(SegmentRequest *rqst) {
     else
         return true;
 }
-VideoSegment* TTLCache::retrievePackage(SegmentRequest *rqst) {
+/**
+ * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
+ * @param rqst A segment request
+ *
+ * The video segment is returned and we call rearrangeCache.
+ * @return The video segment that fullfills the segment request
+ *
+ */
+VideoSegment* TTLCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
@@ -131,9 +173,16 @@ VideoSegment* TTLCache::retrievePackage(SegmentRequest *rqst) {
     rearrangeCache(pkg);
     return pkg->dup();
 }
+/**
+ * @brief Get the size of the cache
+ * @return Returns an integer Value describing the size of the cache
+ */
 long long TTLCache::getSize() {
     return this->cacheSize;
 }
+/**
+ * @brief deletes all Objects in the Cache
+ */
 void TTLCache::clearCache() {
     for (auto i : container) {
         delete i.second->second->first;
@@ -142,15 +191,37 @@ void TTLCache::clearCache() {
     }
     delete head;
 }
+/**
+ * @brief returns the write operations
+ *
+ * Returns the amount of write operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of write operations performed
+ */
 int TTLCache::getWriteOperations() {
     return this->writeOperation;
 }
+/**
+ * @brief returns the read operations
+ *
+ * Returns the amount of read operations performed since the last reset of the rates
+ * @return an Integer Value representing the amount of read operations performed
+ */
 int TTLCache::getReadOperations() {
     return this->readOperation;
 }
+/**
+ * @brief Sets the size of the Cache
+ * @param size An Integer Value
+ */
 void TTLCache::setSize(long long size) {
     cacheSize = size;
 }
+
+/*
+ * @brief rearranges the cache on hit in the TTL manner
+ *
+ * @param pkg the video segment that triggered the rearrangement
+ */
 void TTLCache::rearrangeCache(VideoSegment *pkg) {
     std::string keyBuilder = pkg->getVideoId()
             + std::to_string(pkg->getSegmentId());
@@ -163,7 +234,13 @@ void TTLCache::rearrangeCache(VideoSegment *pkg) {
     rec->setPrev(head);
     head->setNext(rec);
 }
-
+/**
+ * @brief alters the cache size
+ *
+ * a function that alters the maximum size of the cache to a given double value
+ *
+ * @param newCacheSize a double value representing the new size of the cache
+ */
 void TTLCache::alterCacheSize(double newCacheSize) {
     maxCacheSize = newCacheSize;
 }

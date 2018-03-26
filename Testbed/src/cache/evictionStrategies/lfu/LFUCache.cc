@@ -33,6 +33,7 @@
 #include "VideoSegment_m.h"
 /*
  * @brief Creates a new LFU Cache for caching functionalities
+ * @param parameters the parameters for this eviction strategy
  * @param size The desired Size of this Cache
  * @param storageAlterations a vector of pairs of double value representing storage alterations
  * @param storageAlterationStrategy the strategy used when altering the size of the storage
@@ -84,7 +85,7 @@ void LFUCache::resetRates() {
  * order to save storage.
  * @param id the video id of the video segment that has to be deleted
  */
-void LFUCache::deletePackage(std::string id) {
+void LFUCache::deleteSegment(std::string id) {
     int freedSize = container[id]->first->getSize();
     FrequencyNode* freq = container[id]->second;
     freq->getItems()->erase(id);
@@ -126,7 +127,7 @@ void LFUCache::insertIntoCache(VideoSegment *pkg) {
             + std::to_string(pkg->getSegmentId());
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         std::string toDelete = getLeastFrequent();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
     }
     FrequencyNode* freq = head->getNext();
     if (freq->getValue() != 1) {
@@ -171,7 +172,7 @@ bool LFUCache::contains(SegmentRequest *rqst) {
  * @return The video segment that fullfills the segment request
  *
  */
-VideoSegment *LFUCache::retrievePackage(SegmentRequest *rqst) {
+VideoSegment *LFUCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
