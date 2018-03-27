@@ -9,7 +9,7 @@ except:
     db.rollback();
 db.close();
 
-db = mysql.connector.connect(user='root', password='root', host='localhost',database='student3')
+db = mysql.connector.connect(user='root', password='root', host='localhost',database='student')
 cursor = db.cursor();
 
 try:
