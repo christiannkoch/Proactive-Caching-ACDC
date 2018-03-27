@@ -9,10 +9,10 @@ db = mysql.connector.connect(user='root', password='root', host='localhost',data
 cursor = db.cursor();
 
 
-numberOfUniqueVideos = 20
-numberOfUniqueClients = 40
-simulationTime = 360
-numberOfRequests = 80
+numberOfUniqueVideos = 200
+numberOfUniqueClients = 300
+simulationTime = 604800
+numberOfRequests = 672
 
 CategoryList = ['Music','Entertainment','Pepole','Comedy','Games','Film','Howto','Sports','Autos','News','Education','Tech','Nonprofit','Travel','Animals','Shows','Trailers','Movies']
 uniqueUserIdList = []
