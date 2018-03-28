@@ -8,12 +8,19 @@ def exec_full(filepath):
         exec(compile(file.read(), filepath, 'exec'), global_namespace)
 
 # execute the file
-
-exec_full("GenerateTopology1Data.py")
-exec_full("GenerateTopology2Data.py")
-exec_full("GenerateTopology3Data.py")
-exec_full("GenerateTopology4Data.py")
-exec_full("GenerateTopology1Figures.py")
-exec_full("GenerateTopology2Figures.py")
-exec_full("GenerateTopology3Figures.py")
-exec_full("GenerateTopology4Figures.py")
+if(os.listdir('SimulationResults/Top1') != []):
+	exec_full("GenerateTopology1Data.py")
+if(os.listdir('SimulationResults/Top2') != []):
+	exec_full("GenerateTopology2Data.py")
+if(os.listdir('SimulationResults/Top3') != []):
+	exec_full("GenerateTopology3Data.py")
+if(os.listdir('SimulationResults/Top4') != []):
+	exec_full("GenerateTopology4Data.py")
+if(os.listdir('SimulationResults/Top1') != []):
+	exec_full("GenerateTopology1Figures.py")
+if(os.listdir('SimulationResults/Top2') != []):
+	exec_full("GenerateTopology2Figures.py")
+if(os.listdir('SimulationResults/Top3') != []):
+	exec_full("GenerateTopology3Figures.py")
+if(os.listdir('SimulationResults/Top4') != []):
+	exec_full("GenerateTopology4Figures.py")
