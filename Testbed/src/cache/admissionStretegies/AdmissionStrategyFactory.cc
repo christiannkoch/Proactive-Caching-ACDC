@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file AdmissionStrategyFactory.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the Admission Strategy Factory
+ *
+ * @section DESCRIPTION
+ */
 #include "AdmissionStrategyFactory.h"
 #include <string>
 #include "NHIT.h"
@@ -26,7 +34,7 @@ AdmissionStrategyFactory::AdmissionStrategyFactory() {
     // TODO Auto-generated constructor stub
 
 }
-/** @brief creates the desired admissino strategy
+/** @brief creates the desired admission strategy
  * @param admission a string representing the type of admission strategy
  * @param parameters a pointer to an optional vector of strings that can contain settings for the specific admission strategy
  * @return The specific admission strategy

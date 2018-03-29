@@ -12,14 +12,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file ReverseProxyCreator.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the ReverseProxyCreator
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_SIMULATION_REVERSEPROXYCREATOR_H_
 #define SRC_SIMULATION_REVERSEPROXYCREATOR_H_
 #include <vector>
 #include <string>
 #include <omnetpp.h>
+
+#include "../cache/ProxyCacheSettingst.h"
 #include "NetworkInformation.h"
-#include "ProxyCachseSettingst.h"
 
 class ReverseProxyCreator {
 public:

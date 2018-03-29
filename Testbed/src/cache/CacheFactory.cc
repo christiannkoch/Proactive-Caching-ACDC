@@ -13,11 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /* @file CacheFactory.cc
- * @author Johannes Pfannmüller
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief Implements Leave Copy Down Strategy
+ * @brief a factory for the desired Base Cache
  *
  * @section DESCRIPTION
  *

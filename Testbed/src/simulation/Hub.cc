@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file Hub.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the Hub module
+ *
+ * @section DESCRIPTION
+ */
 #include "Hub.h"
 #include <omnetpp.h>
 #include "SegmentRequest_m.h"

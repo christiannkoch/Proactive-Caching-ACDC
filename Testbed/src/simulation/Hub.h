@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file Hub.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the Hub
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_SIMULATION_HUB_H_
 #define SRC_SIMULATION_HUB_H_
 

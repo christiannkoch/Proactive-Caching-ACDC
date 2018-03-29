@@ -53,6 +53,7 @@ INCLUDE_PATH =\
     -Isrc/cache/evictionStrategies/ttl \
     -Isrc/database \
     -Isrc/simulation
+
 # Additional object and library files to link with
 EXTRA_OBJS =
 
@@ -79,15 +80,12 @@ OBJS = \
     $O/src/cache/evictionStrategies/BasicEvictionStrategy.o \
     $O/src/cache/evictionStrategies/CacheSegmentFactory.o \
     $O/src/cache/evictionStrategies/EvictionStrategyFactory.o \
-    $O/src/cache/evictionStrategies/SLRUProbationaryCacheFactory.o \
+    $O/src/cache/evictionStrategies/ProbationaryCacheFactory.o \
     $O/src/cache/evictionStrategies/acdc/ACDCCache.o \
     $O/src/cache/evictionStrategies/acdc/BasicSSAS.o \
     $O/src/cache/evictionStrategies/acdc/LargestGhostListSSAS.o \
-    $O/src/cache/evictionStrategies/acdc/LeftFirstSSAS.o \
-    $O/src/cache/evictionStrategies/acdc/ProbationaryFirstSSAS.o \
     $O/src/cache/evictionStrategies/acdc/RelativeLargestGhostListSSAS.o \
     $O/src/cache/evictionStrategies/acdc/RelativeSmallestGhostListSSAS.o \
-    $O/src/cache/evictionStrategies/acdc/RightFirstSSAS.o \
     $O/src/cache/evictionStrategies/acdc/SmallestGhostListSSAS.o \
     $O/src/cache/evictionStrategies/acdc/SSASFactory.o \
     $O/src/cache/evictionStrategies/arc1/ARC1Cache.o \

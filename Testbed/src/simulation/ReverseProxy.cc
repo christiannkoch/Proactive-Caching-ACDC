@@ -12,6 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/* @file ReverseProxy.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the reverse proxy module
+ *
+ * @section DESCRIPTION
+ */
 #include "CacheFactory.h"
 #include "ReverseProxy.h"
 #include <stdio.h>

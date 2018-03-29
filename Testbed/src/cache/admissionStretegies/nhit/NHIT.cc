@@ -13,12 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/* @file NHIT.h
- * @author Johannes Pfannmüller
+/* @file NHIT.cc
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief Implements Leave Copy Down Strategy
+ * @brief Implements the NHIT Strategy
  *
  * @section DESCRIPTION
  *

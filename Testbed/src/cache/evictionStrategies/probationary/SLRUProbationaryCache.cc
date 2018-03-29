@@ -12,7 +12,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file SLRUProbationaryCache.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the probationary cache used in SLRU
+ *
+ * @section DESCRIPTION
+ *
+ * since slru uses a probationary cache that can insert an element at the end of the cache
+ * the ARCProbationaryCache could not be used.
+ */
 #include "SLRUProbationaryCache.h"
 #include <list>
 #include "SegmentRequest_m.h"

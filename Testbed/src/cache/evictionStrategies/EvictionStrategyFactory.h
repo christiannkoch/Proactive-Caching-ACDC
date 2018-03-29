@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file EvictionStrategyFactory.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the EvictionStrategyFactory
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_EVICTIONSTRATEGYFACTORY_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_EVICTIONSTRATEGYFACTORY_H_
 #include <string>

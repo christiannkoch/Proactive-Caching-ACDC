@@ -12,7 +12,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file RecencyNode.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements RecencyNodes
+ *
+ * @section DESCRIPTION
+ *
+ * Recency nodes are used in LRU and LRU-like implementations of eviction strategies.
+ * They are used for finding the least recently used element fast.
+ */
 #include <RecencyNode.h>
 /*
  * @brief returns an instance of a RecencyNode

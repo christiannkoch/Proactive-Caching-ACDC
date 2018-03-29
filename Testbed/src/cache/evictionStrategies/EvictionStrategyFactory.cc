@@ -12,7 +12,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file EvictionStrategyFactory.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief a factory for the desired eviction strategy
+ *
+ * @section DESCRIPTION
+ *
+ * returns the desired eviction strategy
+ */
 #include "EvictionStrategyFactory.h"
 #include <string>
 #include <vector>
@@ -47,7 +57,7 @@ BasicEvictionStrategy* EvictionStrategyFactory::createEvictionStrategy(
         std::string implementation, std::vector<std::string>* parameters,
         long long size, std::vector<std::pair<double, double>>* storageAlterations,
         std::string storageAlterationStrategy) {
-    if (implementation == "ACARC")
+    if (implementation == "ACDC")
         return new ACDCCache(parameters, size, storageAlterations,
                 storageAlterationStrategy.c_str());
     else if (implementation == "ARC1")

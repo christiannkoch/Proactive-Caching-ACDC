@@ -12,13 +12,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file ReverseProxy.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the ReverseProxy
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_SIMULATION_REVERSEPROXY_H_
 #define SRC_SIMULATION_REVERSEPROXY_H_
 
 #include <stdio.h>
 #include <string.h>
 #include <omnetpp.h>
+
+#include "../cache/ProxyCacheSettingst.h"
 #include "BaseCache.h"
 #include "BasicEvictionStrategy.h"
 #include "BasicAdmissionStrategy.h"
@@ -27,7 +37,6 @@
 #include "ClientCreator.h"
 #include "NetworkInformation.h"
 #include "RequestHandler.h"
-#include "ProxyCachseSettingst.h"
 
 using namespace omnetpp;
 

@@ -1,0 +1,22 @@
+Database Type = mysql
+Database Name = ACDCTestData
+Database Table = YouTubeDataset
+Database Login = root
+Database Password = root
+Database Address = 127.0.0.1
+Database Port = 3306
+Start Time = 1397426400.07611
+End Time = 1398031200.07611
+Category = ALL
+ReverseProxy1: Admission Strategy = NHIT; Parameter List = 1,259200.00; Eviction Strategy = ACARC; Size = 2097152; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy1; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
+ReverseProxy2: Admission Strategy = NHIT; Parameter List = 1,259200.00; Eviction Strategy = ACARC; Size = 2097152; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy2; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
+ReverseProxy3: Admission Strategy = NHIT; Parameter List = 1,259200.00; Eviction Strategy = ACARC; Size = 2097152; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy3; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
+ReverseProxy4: Admission Strategy = NHIT; Parameter List = 1,259200.00; Eviction Strategy = ACARC; Size = 2097152; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy4; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
+cdnDelay = 48
+Levels = 1
+c 0 1 2 3 4
+0 x + + + +
+1 + x - - -
+2 + - x - -
+3 + - - x -
+4 + - - - x

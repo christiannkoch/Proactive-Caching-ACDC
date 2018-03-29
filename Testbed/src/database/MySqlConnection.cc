@@ -12,6 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/* @file MySqlConnection.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief returns a connection to a mysql database
+ *
+ * @section DESCRIPTION
+ */
 #include "MySqlConnection.h"
 #include <stdlib.h>
 #include <iostream>

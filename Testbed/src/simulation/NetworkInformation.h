@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file NetworkInformation.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the NetworkInformation
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_SIMULATION_NETWORKINFORMATION_H_
 #define SRC_SIMULATION_NETWORKINFORMATION_H_
 #include <vector>
@@ -24,8 +32,9 @@
 #include <sstream>
 #include <fstream>
 #include <map>
+
+#include "../cache/ProxyCacheSettingst.h"
 #include "DatabaseInformation.h"
-#include "ProxyCachseSettingst.h"
 
 using namespace omnetpp;
 

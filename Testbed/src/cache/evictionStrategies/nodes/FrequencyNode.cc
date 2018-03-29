@@ -12,7 +12,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file FrequencyNode.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements Frequency Nodes
+ *
+ * @section DESCRIPTION
+ * Frequency nodes are used for implementing queues used by LFU to get the least frequently used
+ * element fast.
+ */
 #include <FrequencyNode.h>
 #include <string>
 #include <set>

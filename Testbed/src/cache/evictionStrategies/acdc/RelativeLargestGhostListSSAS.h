@@ -12,6 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/* @file RelativeLargestGhostListSSAS.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the RelativeLargestGhostListSSAS
+ *
+ * @section DESCRIPTION
+ */
 #include "BasicSSAS.h"
 #include "BasicGhostList.h"
 #include "BasicCacheSegment.h"

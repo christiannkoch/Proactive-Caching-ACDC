@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file BasicGhostList.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief abstract class for all ghost lists
+ *
+ * @section DESCRIPTION
+ */
 #include <ghostLists/BasicGhostList.h>
 
 BasicGhostList::BasicGhostList() {

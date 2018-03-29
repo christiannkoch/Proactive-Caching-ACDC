@@ -13,18 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /* @file LCD.h
- * @author Johannes Pfannmüller
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief Implements Leave Copy Down Strategy
+ * @brief header file for LCD
  *
  * @section DESCRIPTION
- *
- * This is a Class responsible for implementing the behaviour of the Leave Copy Down Strategy.
- * Its main responsibility is to return a boolean value indicating if the video segment generated
- * a hit on the reverse proxy above in the topology and signaling the reverse proxy to store a copy
- * of this video segment.
  *
  */
 #ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_

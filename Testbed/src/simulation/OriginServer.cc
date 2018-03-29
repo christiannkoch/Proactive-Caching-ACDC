@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file OriginServer.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the origin server module
+ *
+ * @section DESCRIPTION
+ */
 #include "OriginServer.h"
 #include <stdio.h>
 #include <string.h>

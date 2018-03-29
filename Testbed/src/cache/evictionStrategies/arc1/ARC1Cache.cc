@@ -12,12 +12,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file ACDCCache.cc
- * @author Johannes Pfannmüller
+/* @file ARC1Cache.cc
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief Implements the Adaptive Replacement Cache Eviction Strategy
+ * @brief Implements a version of the Adaptive Replacement Cache Eviction Strategy
  *
  * @section DESCRIPTION
  *

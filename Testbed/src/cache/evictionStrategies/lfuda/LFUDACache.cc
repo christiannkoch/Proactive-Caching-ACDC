@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /* @file LFUDACache.cc
- * @author Johannes Pfannmüller
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *

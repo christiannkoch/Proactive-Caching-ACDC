@@ -12,6 +12,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/* @file RequestHandler.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the RequestHandler
+ *
+ * @section DESCRIPTION
+ * The request handler handles requests that arrive in a time where a request for the same
+ * video segment is already forwareded and stores this request to not send another request for the same
+ * video segment.
+ */
 #include "RequestHandler.h"
 #include <string>
 #include <vector>

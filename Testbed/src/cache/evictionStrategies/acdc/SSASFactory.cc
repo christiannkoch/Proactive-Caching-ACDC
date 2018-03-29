@@ -12,16 +12,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file SSASFactory.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief returns the desired SSAS
+ *
+ * @section DESCRIPTION
+ */
 #include "SSASFactory.h"
 #include "BasicSSAS.h"
 #include "LargestGhostListSSAS.h"
 #include "SmallestGhostListSSAS.h"
 #include "RelativeLargestGhostListSSAS.h"
 #include "RelativeSmallestGhostListSSAS.h"
-#include "LeftFirstSSAS.h"
-#include "ProbationaryFirstSSAS.h"
-#include "RightFirstSSAS.h"
 /*
  * @brief returns an instance of the SSASFactory
  * @return an instance of the SSASFactory
@@ -68,22 +73,6 @@ BasicSSAS* SSASFactory:: createAdaptionStrategy(
                 probationaryGhostList, cacheSegmentVector, ghostListVector,
                 cacheSize, subCacheSize, minSegSize);
     }
-    else if (type == "probationaryFirst") {
-        returnedSSAS = new ProbationaryFirstSSAS(probationaryCache,
-                probationaryGhostList, cacheSegmentVector, ghostListVector,
-                cacheSize, subCacheSize, minSegSize);
-    }
-    else if (type == "leftFirst") {
-        returnedSSAS = new LeftFirstSSAS(probationaryCache,
-                probationaryGhostList, cacheSegmentVector, ghostListVector,
-                cacheSize, subCacheSize, minSegSize);
-    }
-    else if (type == "rightFirst") {
-        returnedSSAS = new RightFirstSSAS(probationaryCache,
-                probationaryGhostList, cacheSegmentVector, ghostListVector,
-                cacheSize, subCacheSize, minSegSize);
-    }
-
     else
         throw "This type of adaption Strategy does not exist\n";
     return returnedSSAS;

@@ -1,5 +1,5 @@
 Database Type = mysql
-Database Name = student
+Database Name = ACDCTestData
 Database Table = YouTubeDataset
 Database Login = root
 Database Password = root

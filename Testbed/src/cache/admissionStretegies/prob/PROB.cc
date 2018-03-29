@@ -14,7 +14,7 @@
 // 
 
 /* @file LCD.h
- * @author Johannes Pfannmüller
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *

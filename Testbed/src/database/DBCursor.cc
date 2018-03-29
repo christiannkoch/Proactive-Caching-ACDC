@@ -13,6 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/* @file DBCursor.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief abstract class for all cursors
+ *
+ * @section DESCRIPTION
+ */
 #include "DBCursor.h"
 
 DBCursor::DBCursor() {

@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file LimitedGhostList.cc
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief Implements the LimitedGhostList
+ *
+ * @section DESCRIPTION
+ */
 #include <ghostLists/LimitedGhostList.h>
 #include <nodes/RecencyNode.h>
 #include <map>

@@ -12,7 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/* @file SLRUProbationaryCache.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief header file for the SLRUProbationaryCache
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_CACHE_SLRU_PROBATIONARYCACHE_
 #define SRC_CACHE_SLRU_PROBATIONARYCACHE_
 #include <nodes/RecencyNode.h>

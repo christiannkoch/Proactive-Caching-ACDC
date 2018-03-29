@@ -1,3 +1,12 @@
+/* @file DatabaseInformation.h
+ * @author Johannes Pfannmüller, Christian Koch
+ * @date
+ * @version 1.0
+ *
+ * @brief a struct that holds all the database information
+ *
+ * @section DESCRIPTION
+ */
 #ifndef SRC_SIMULATION_DATABASEINFORMATION_H_
 #define SRC_SIMULATION_DATABASEINFORMATION_H_
 

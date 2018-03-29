@@ -12,8 +12,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file MCD.h
- * @author Johannes Pfannmüller
+/* @file MCD.cc
+ * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
