@@ -20,7 +20,7 @@ def parseData(filename):
         writeOps1 = []
         avgDelay1 = []
         ttfs1 = []
-        ACARC = False
+        ACDC = False
         Results['Run'] = filename.split('-', 1)[0][3:]
         Results['Repetition'] = filename.split('-', 1)[1][:-4].replace("#", "")
         for line in f:
@@ -33,7 +33,7 @@ def parseData(filename):
                     if(splitLine[5] == "LCE" or splitLine[5] == "LCD" or splitLine[5] == "MCD"):
                         Results['Admission'] = splitLine[5]
                         Results['AdmissionParams'] = " "
-                        if(splitLine[6] != "TTL" and splitLine[6] != "ACARC"):
+                        if(splitLine[6] != "TTL" and splitLine[6] != "ACDC"):
                             if(splitLine[6] == "ARC2"):
                                 Results['Eviction'] = "ARC"
                             else:
@@ -41,8 +41,8 @@ def parseData(filename):
                             Results['EvictionParams'] = " "
                             Results['Size'] = splitLine[7][:-3]
                         else:
-                            if(splitLine[6] == "ACARC"):
-                                ACARC = True
+                            if(splitLine[6] == "ACDC"):
+                                ACDC = True
                                 Results['Eviction'] = "ACDC"
                                 Results['EvictionParams'] = " "
                             else:
@@ -53,7 +53,7 @@ def parseData(filename):
                     else:
                         Results['Admission'] = splitLine[5]
                         Results['AdmissionParams'] = splitLine[6].split(',', 1)[0]
-                        if(splitLine[7] != "TTL" and splitLine[7] != "ACARC"):
+                        if(splitLine[7] != "TTL" and splitLine[7] != "ACDC"):
                             if(splitLine[7] == "ARC2"):
                                 Results['Eviction'] = "ARC"
                             else:
@@ -61,8 +61,8 @@ def parseData(filename):
                             Results['EvictionParams'] = " "
                             Results['Size'] = splitLine[8][:-3]
                         else:
-                            if(splitLine[7] == "ACARC"):
-                                ACARC = True
+                            if(splitLine[7] == "ACDC"):
+                                ACDC = True
                                 Results['Eviction'] = "ACDC"
                                 Results['EvictionParams'] = " "
                             else:
@@ -70,7 +70,7 @@ def parseData(filename):
                                 Results['EvictionParams'] = splitLine[8]
                             Results['Size'] = splitLine[9][:-3]
                             
-                if(ACARC == True):
+                if(ACDC == True):
                     if(splitLine[0] == "15"):
                         time.append(float(splitLine[2])+134006400)
                         if(splitLine[3] == "-nan"):
