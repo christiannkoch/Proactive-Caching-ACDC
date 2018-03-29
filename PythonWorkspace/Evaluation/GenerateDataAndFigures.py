@@ -1,3 +1,4 @@
+import os
 def exec_full(filepath):
     import os
     global_namespace = {
