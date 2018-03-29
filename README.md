@@ -2,7 +2,7 @@
 
 
 # Dependencies
-* sudo apt install mysql-server libmysqlcppconn-dev libboost-dev python3 python3-pip git
+* sudo apt install mysql-server libmysqlcppconn-dev libboost-dev python3 python3-pip git python3-tk
 
 * sudo pip3 install mysql-connector pandas seaborn
 
