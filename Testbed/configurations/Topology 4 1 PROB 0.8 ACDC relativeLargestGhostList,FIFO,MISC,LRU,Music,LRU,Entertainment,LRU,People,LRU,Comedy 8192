@@ -8,7 +8,7 @@ Database Port = 3306
 Start Time = 1397426400.07611
 End Time = 1398031200.07611
 Category = ALL
-ReverseProxy1: Admission Strategy = PROB; Parameter List = 0.8; Eviction Strategy = ACARC; Size = 8192; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy1; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
+ReverseProxy1: Admission Strategy = PROB; Parameter List = 0.8; Eviction Strategy = ACDC; Size = 8192; parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5; Proxy Name = Proxy1; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = true
 cdnDelay = 48
 Levels = 1
 c 0 1
