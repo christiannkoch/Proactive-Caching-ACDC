@@ -117,7 +117,7 @@ void ClientCreator::createClients() {
     for (unsigned int i = 0; i < this->userIds->size(); i++) {
 
         cModuleType *moduleType = cModuleType::get(
-                "ba_project.src.simulation.Client");
+                "testbed.src.simulation.Client");
         cModule *module = moduleType->create("Client", parent);
 
         /*cDelayChannel *channelTop = cDelayChannel::create("channelTop");
