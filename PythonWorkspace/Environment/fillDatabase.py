@@ -5,7 +5,7 @@ import random
 import pandas as pd
 import numpy as np
 
-db = mysql.connector.connect(user='root', password='root', host='localhost',database='student')
+db = mysql.connector.connect(user='root', password='root', host='localhost',database='ACDCTestData')
 cursor = db.cursor();
 
 
@@ -55,7 +55,7 @@ for i in range(1,numberOfRequests+1):
 df = pd.DataFrame(Table)
 for index, row in df.iterrows():
     try:
-        executeStatement = """INSERT INTO `student`.`YouTubeDataset` 
+        executeStatement = """INSERT INTO `ACDCTestData`.`YouTubeDataset` 
             (`row_names`, `requestTime`, `userId`, `videoId`, 
             `sessionDuration`, `avgChunkDuration`, `chunks`, `duration`, 
             `uploaded`, `uploader`, `category`, `bitrate`, `index`) 

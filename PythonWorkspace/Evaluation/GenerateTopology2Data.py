@@ -10,7 +10,6 @@ from matplotlib.ticker import FuncFormatter
 import matplotlib.dates as mdate
 
 pd.__version__
-%matplotlib inline
 def parseData(filename):
     Results={'Run':[],'Repetition':[],'Admission':[],'AdmissionParams':[],'Eviction':[],'EvictionParams':[],'Size':[],'ProxyCount':[],'Topology':[],'Time':[],'Hitrate':[], 'ReadOperations':[], 'WriteOperations':[],'Serves':[],'AverageDelay':[],'TimeToFirstSegment':[]}
     with open("SimulationResults/Top2/"+filename, 'r') as f:

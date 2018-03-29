@@ -3,17 +3,17 @@ import mysql.connector
 db = mysql.connector.connect(user='root', password='root', host='localhost')
 cursor = db.cursor();
 try:
-    cursor.execute("""CREATE SCHEMA `student`;""");
+    cursor.execute("""CREATE SCHEMA `ACDCTestData`;""");
     db.commit();
 except:
     db.rollback();
 db.close();
 
-db = mysql.connector.connect(user='root', password='root', host='localhost',database='student')
+db = mysql.connector.connect(user='root', password='root', host='localhost',database='ACDCTestData')
 cursor = db.cursor();
 
 try:
-    cursor.execute("""CREATE TABLE `student`.`YouTubeDataset` (
+    cursor.execute("""CREATE TABLE `ACDCTestData`.`YouTubeDataset` (
     `row_names` TEXT NULL,
     `requestTime` DOUBLE NULL,
     `userId` BIGINT(20) NULL,

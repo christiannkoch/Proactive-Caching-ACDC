@@ -18,7 +18,6 @@ data = pd.read_pickle('data/Top4ResultsMean.pkl')
 
 for i in range(0,len(data)):
     Configtitle = "Topology " + data.Topology[i] + ": "+ data.ProxyCount[i]+" Reverseproxys. Admission Strategy: " + data.Admission[i]+ (" with parameters " + data.AdmissionParams[i] if(data.AdmissionParams[i] != " ") else "") + ". Eviction Strategy: " + data.Eviction[i] + (" with parameters " + data.EvictionParams[i] if (data.EvictionParams[i] != " ") else "") + ". Storage size of the Network: "+ data.Size[i]
-    #Hitrates = {'Hitrate1':data.Hitrate[i][0],'Hitrate2':data.Hitrate[i][1],'Hitrate3':data.Hitrate[i][2],'Hitrate4':data.Hitrate[i][3],'Hitrate5':data.Hitrate[i][4],'Hitrate6':data.Hitrate[i][5],'Hitrate7':data.Hitrate[i][6]}    
     secs = mdate.epoch2num(data.Time[0])
     df = pd.DataFrame(data.Hitrate[i])
     df = df.transpose()
@@ -30,7 +29,6 @@ for i in range(0,len(data)):
     my_plot.xaxis.set_major_formatter(date_formatter)
     my_plot.xaxis.set_tick_params(labelsize=15)
     my_plot.yaxis.set_tick_params(labelsize=15)
-    #ticks = my_plot.set_xticklabels([d.strftime('%a') for d in df.index])
     my_plot.set_xlabel("Time", fontsize=20)
     my_plot.set_ylabel("Hitrate", fontsize=20)
     ymax = max(data.Hitrate[i][0])
@@ -38,7 +36,6 @@ for i in range(0,len(data)):
     my_plot.set_ylim([0,ymax])
     nlines = len(data.Hitrate[i])
     ncol = int(math.ceil(nlines/2.))
-    #area = trapz(data.Hitrate[i], dx=170)
     my_plot.legend(["Proxy 1"],ncol = 4, facecolor='white',prop={'size':15},frameon=True)
     fig = my_plot.get_figure()
     fig.autofmt_xdate()
@@ -76,8 +73,6 @@ for n in df.Size.unique():
     ax.set_title("Size of the Network = " + n)
     title="Heatmap_Top" + str(data.Topology[0][0]) + "_Level" + str(level)+"_"+typ+"_"+str(n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f', vmin=0)
-    #myplot.xaxis.set_tick_params(labelsize=15)
-    #myplot.yaxis.set_tick_params(labelsize=15)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)
     figur = myplot.get_figure()
@@ -86,11 +81,6 @@ for n in df.Size.unique():
     
 data = pd.read_pickle('data/Top4ResultsMean.pkl')
 secs = mdate.epoch2num(data.Time[0])
-#Hitrates = {'Hitrate1':data.Hitrate[i][0],'Hitrate2':data.Hitrate[i][1],'Hitrate3':data.Hitrate[i][2],'Hitrate4':data.Hitrate[i][3],'Hitrate5':data.Hitrate[i][4],'Hitrate6':data.Hitrate[i][5],'Hitrate7':data.Hitrate[i][6]}
-#df = pd.DataFrame(data.Hitrate[100])
-#df = df.transpose()
-#df = df.set_index(secs)
-#df.head()
 TotalHits = {'Admission':[],'AdmissionParams':[],'Eviction':[],'EvictionParams':[],'Size':[],'Hits':[]}
 
 for j in range(0,len(data.Hitrate)):
@@ -120,8 +110,6 @@ for n in df.Size.unique():
     fig, ax = plt.subplots()
     ax.set_title("Size of the Network = " + n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f')
-    #myplot.xaxis.set_tick_params(labelsize=15)
-    #myplot.yaxis.set_tick_params(labelsize=15)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)
     figur = myplot.get_figure()
@@ -131,11 +119,6 @@ for n in df.Size.unique():
     
 data = pd.read_pickle('data/Top4ResultsMean.pkl')
 secs = mdate.epoch2num(data.Time[0])
-#Hitrates = {'Hitrate1':data.Hitrate[i][0],'Hitrate2':data.Hitrate[i][1],'Hitrate3':data.Hitrate[i][2],'Hitrate4':data.Hitrate[i][3],'Hitrate5':data.Hitrate[i][4],'Hitrate6':data.Hitrate[i][5],'Hitrate7':data.Hitrate[i][6]}
-#df = pd.DataFrame(data.Hitrate[100])
-#df = df.transpose()
-#df = df.set_index(secs)
-#df.head()
 TotalHits = {'Admission':[],'AdmissionParams':[],'Eviction':[],'EvictionParams':[],'Size':[],'Hits':[]}
 
 for j in range(0,len(data.Hitrate)):
@@ -165,8 +148,6 @@ for n in df.Size.unique():
     fig, ax = plt.subplots()
     ax.set_title("Size of the Network = " + n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f')
-    #myplot.xaxis.set_tick_params(labelsize=15)
-    #myplot.yaxis.set_tick_params(labelsize=15)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)
     figur = myplot.get_figure()
@@ -176,11 +157,6 @@ for n in df.Size.unique():
     
 data = pd.read_pickle('data/Top4ResultsMean.pkl')
 secs = mdate.epoch2num(data.Time[0])
-#Hitrates = {'Hitrate1':data.Hitrate[i][0],'Hitrate2':data.Hitrate[i][1],'Hitrate3':data.Hitrate[i][2],'Hitrate4':data.Hitrate[i][3],'Hitrate5':data.Hitrate[i][4],'Hitrate6':data.Hitrate[i][5],'Hitrate7':data.Hitrate[i][6]}
-#df = pd.DataFrame(data.Hitrate[100])
-#df = df.transpose()
-#df = df.set_index(secs)
-#df.head()
 TotalHits = {'Admission':[],'AdmissionParams':[],'Eviction':[],'EvictionParams':[],'Size':[],'Hits':[]}
 
 for j in range(0,len(data.Hitrate)):
@@ -222,11 +198,6 @@ for n in df.Size.unique():
     
 data = pd.read_pickle('data/Top4ResultsMean.pkl')
 secs = mdate.epoch2num(data.Time[0])
-#Hitrates = {'Hitrate1':data.Hitrate[i][0],'Hitrate2':data.Hitrate[i][1],'Hitrate3':data.Hitrate[i][2],'Hitrate4':data.Hitrate[i][3],'Hitrate5':data.Hitrate[i][4],'Hitrate6':data.Hitrate[i][5],'Hitrate7':data.Hitrate[i][6]}
-#df = pd.DataFrame(data.Hitrate[100])
-#df = df.transpose()
-#df = df.set_index(secs)
-#df.head()
 TotalHits = {'Admission':[],'AdmissionParams':[],'Eviction':[],'EvictionParams':[],'Size':[],'Hits':[]}
 
 for j in range(0,len(data.Hitrate)):
@@ -258,8 +229,6 @@ for n in df.Size.unique():
     fig, ax = plt.subplots()
     ax.set_title("Size of the Network = " + n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f', vmin=0)
-    #myplot.xaxis.set_tick_params(labelsize=15)
-    #myplot.yaxis.set_tick_params(labelsize=15)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)
     figur = myplot.get_figure()
