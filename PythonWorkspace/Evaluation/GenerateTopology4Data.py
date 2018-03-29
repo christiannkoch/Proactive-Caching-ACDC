@@ -71,7 +71,7 @@ def parseData(filename):
                             Results['Size'] = splitLine[9][:-3]
                             
                 if(ACDC == True):
-                    if(splitLine[0] == "15"):
+                    if(splitLine[0] == "3"):
                         time.append(float(splitLine[2])+134006400)
                         if(splitLine[3] == "-nan"):
                             hitrate1.append(0.0)
@@ -79,13 +79,13 @@ def parseData(filename):
                             hitrate1.append(float(splitLine[3]))                        
                     if(splitLine[0] == "0"):
                         serves.append(float(splitLine[3]))
-                    if(splitLine[0] == "16"):
+                    if(splitLine[0] == "6"):
                         readOps1.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "17"):
+                    if(splitLine[0] == "7"):
                         writeOps1.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "18"):
+                    if(splitLine[0] == "4"):
                         avgDelay1.append(float(splitLine[3]))
-                    if(splitLine[0] == "19"):
+                    if(splitLine[0] == "5"):
                         ttfs1.append(float(splitLine[3]))
                 else:
                     if(splitLine[0] == "3"):

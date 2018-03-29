@@ -86,7 +86,7 @@ def parseData(filename):
                             Results['Size'] = splitLine[9][:-3]
                             
                 if(ACDC == True):
-                    if(splitLine[0] == "15"):
+                    if(splitLine[0] == "3"):
                         time.append(float(splitLine[2])+134006400)
                         if(splitLine[3] == "-nan"):
                             hitrate1.append(0.0)
@@ -94,52 +94,52 @@ def parseData(filename):
                             hitrate1.append(float(splitLine[3]))                        
                     if(splitLine[0] == "0"):
                         serves.append(float(splitLine[3]))
-                    if(splitLine[0] == "16"):
+                    if(splitLine[0] == "6"):
                         readOps1.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "17"):
+                    if(splitLine[0] == "7"):
                         writeOps1.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "18"):
+                    if(splitLine[0] == "4"):
                         avgDelay1.append(float(splitLine[3]))
-                    if(splitLine[0] == "19"):
+                    if(splitLine[0] == "5"):
                         ttfs1.append(float(splitLine[3]))
-                    if(splitLine[0] == "34"):
+                    if(splitLine[0] == "22"):
                         if(splitLine[3] == "-nan"):
                             hitrate2.append(0.0)
                         else:
                             hitrate2.append(float(splitLine[3]))
-                    if(splitLine[0] == "35"):
+                    if(splitLine[0] == "25"):
                         readOps2.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "36"):
+                    if(splitLine[0] == "26"):
                         writeOps2.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "37"):
+                    if(splitLine[0] == "23"):
                         avgDelay2.append(float(splitLine[3]))
-                    if(splitLine[0] == "38"):
+                    if(splitLine[0] == "23"):
                         ttfs2.append(float(splitLine[3]))
-                    if(splitLine[0] == "53"):
+                    if(splitLine[0] == "41"):
                         if(splitLine[3] == "-nan"):
                             hitrate3.append(0.0)
                         else:
                             hitrate3.append(float(splitLine[3]))
-                    if(splitLine[0] == "54"):
+                    if(splitLine[0] == "44"):
                         readOps3.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "55"):
+                    if(splitLine[0] == "45"):
                         writeOps3.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "56"):
+                    if(splitLine[0] == "42"):
                         avgDelay3.append(float(splitLine[3]))
-                    if(splitLine[0] == "57"):
+                    if(splitLine[0] == "43"):
                         ttfs3.append(float(splitLine[3]))
-                    if(splitLine[0] == "72"):
+                    if(splitLine[0] == "60"):
                         if(splitLine[3] == "-nan"):
                             hitrate4.append(0.0)
                         else:
                             hitrate4.append(float(splitLine[3]))
-                    if(splitLine[0] == "73"):
+                    if(splitLine[0] == "63"):
                         readOps4.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "74"):
+                    if(splitLine[0] == "64"):
                         writeOps4.append(math.log10(float(splitLine[3])) if (float(splitLine[3]) > 0) else 0)
-                    if(splitLine[0] == "75"):
+                    if(splitLine[0] == "61"):
                         avgDelay4.append(float(splitLine[3]))
-                    if(splitLine[0] == "76"):
+                    if(splitLine[0] == "62"):
                         ttfs4.append(float(splitLine[3]))
                 else:
                     if(splitLine[0] == "3"):
