@@ -71,9 +71,8 @@ matplotlib.rcParams.update({'font.size': 22})
 sns.set(font_scale=1.7)
 level=1
 typ = "hitrate"
-sizes = ["10 TB", "1 TB", "100 GB", "10 GB", "1 GB"]
 
-for n in sizes:
+for n in df.Size.unique():
     df2 = df[df['Size']==n]
     df2 = df2.pivot("EvictionP","AdmissionP","Hits")
     fig, ax = plt.subplots()

@@ -82,8 +82,6 @@ for n in df.Size.unique():
     ax.set_title("Size of the Network = " + n)
     title="Heatmap_Top" + str(data.Topology[0][0]) + "_Level" + str(level)+"_"+typ+"_"+str(n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f', vmin=0)
-    #myplot.xaxis.set_tick_params(labelsize=15)
-    #myplot.yaxis.set_tick_params(labelsize=15)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)
     figur = myplot.get_figure()
