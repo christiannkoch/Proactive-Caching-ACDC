@@ -58,7 +58,7 @@ Navigate to the project folder and run:
 $ cd Proactive-Caching-ACDC
 $ opp_makemake -f --deep -lmysqlcppconn
 ```    
-Next, open the \emph{Makefile} and manually insert the include paths mentioned below. This needs to be done because of a known issue of OMNeT++ (https://groups.google.com/forum/\#!msg/omnetpp/VEE4oXtuPes/cSQG7vZ-AAAJ). 
+Next, open the *Makefile* and manually insert the include paths mentioned below. This needs to be done because of a known issue of OMNeT++ (https://groups.google.com/forum/\#!msg/omnetpp/VEE4oXtuPes/cSQG7vZ-AAAJ). 
 
 ```{r, engine='bash'}
 #C++ include paths (with -I)
@@ -107,7 +107,7 @@ $ make -j 8
 
 
 # Execution
-For the execution, you need to specify a certain configuration by its name, e.g., *Run6*. The existing 1,008 configurations available are listed in the \emph{omnetpp.ini} file and located in the configurations folder. To run the simulation with graphical interface, execute the first command. For larger simulations, we recommend using no GUI by executing the second command.
+For the execution, you need to specify a certain configuration by its name, e.g., *Run6*. The existing 1,008 configurations available are listed in the *omnetpp.ini* file and located in the configurations folder. To run the simulation with graphical interface, execute the first command. For larger simulations, we recommend using no GUI by executing the second command.
 
 ```{r, engine='bash'}
 ./Testbed -c Run6 omnetpp.ini -r 0 (with GUI)
@@ -156,7 +156,7 @@ The results can be found in the figures folder and are sorted according to their
 
 
 # Creating Customized  Simulation Configurations
-Our program builds a Network from a given configuration file. The first few lines in this file are used to specify the databse connection used. After that, we design the caches,, i.e., reverse proxies. At the end, we specify an adjacency matrix that represents the connection between the caches.
+Our program builds a Network from a given configuration file. The first few lines in this file are used to specify the database connection used. After that, we design the caches, i.e., reverse proxies. At the end, we specify an adjacency matrix that represents the connection between the caches.
 
 ## Database
 
@@ -190,26 +190,26 @@ A Reverse Proxy has several settings and can be designed using the following par
 -   Admission Strategy – The admission strategy
 -   Parameter List – Parameters for the admission strategy, e.g., 2 for NHIT2
 -   Eviction Strategy – The eviction strategy
--   Parameter List – Paramenters for the evcition strategy
--   Proxy Name – The name of the prox for evaluation
+-   Parameter List – Parameters for the eviction strategy
+-   Proxy Name – The name of the proxy for evaluation
 -   Storage Alterations – A list of dates and sizes that indicate a growth or shrinkage of the storage
--   StorageAlterationStrategy - The strategy with which the storage expands or shrikns
--   Leaf – A boolean value that tells if the proxy is a leaf proxy
+-   StorageAlterationStrategy - The strategy with which the storage increases or decreases
+-   Leaf – A Boolean value that tells if the proxy is a leaf proxy
 
 ### Admission Strategy
 
-We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Admission Strategies decide, wheather a passing video segment will be saved in the cache. The following are implemented:
+We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Admission Strategies decide, whether a passing video segment will be saved in the cache. The following are implemented:
 -   LCE – Leave Copy Everywhere
--   LCD – Leace Copy Down (only feasable in a topology with multiple levels)
--   MCD – Move Copy Down (only feasable in a topology with multiple levels)
+-   LCD – Leave Copy Down (only feasible in a topology with multiple levels)
+-   MCD – Move Copy Down (only feasible in a topology with multiple levels)
 -   NHIT – Cache on N+1th hit
 	- An Integer representing +1 that describes when the segment is stored and a double value that describes the time in seconds in which it has to be seen in order to count as a second hit. Example: Parameter List = 1,259200.00;
 -   PROB – Cache with a Probability
-	- Double Value representing a propability with which a segment will be cached. Example Parameter List = 0.75;
+	- Double Value representing a probability with which a segment will be cached. Example Parameter List = 0.75;
 
 ### Eviction Strategy
 
-We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Eviciton strategies decide which video segment has to be deleted, when a new one is inserted and something has to be deleted to get enough free space to allow inserting the new segment:
+We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Eviction strategies decide which video segment has to be deleted, when a new one is inserted and something has to be deleted to get enough free space to allow inserting the new segment:
 
 -   ARC2 – Adaptive Replacement Caching
 -   LFU – Least Frequently Used
@@ -217,7 +217,7 @@ We provide you with a number of implemented admission strategies. You can google
 -   LRU – Least Recently Used
 -   SLRU – Segmented Least Recently Used
 -   TTL – Time To Live
-	- A double value that descirbes the time in seconds after which a segment will be deleted. Example Parameter List = 259200.00;
+	- A double value that describes the time in seconds after which a segment will be deleted. Example Parameter List = 259200.00;
 -   INFINITY – A Cache with infinite Size – nothing will be deleted
 -   RAND – Random Eviction
 -   ACDC– Adaptive Content-Aware Designed Cache
@@ -225,9 +225,9 @@ We provide you with a number of implemented admission strategies. You can google
 
 ### ACDC Configuration
 
-ACDC is triggered by naming the configuration ACDC). ACDC has many different subsettings. We can configure the ACDC cache by specifying the parameter list with the:
+ACDC is triggered by naming the configuration ACDC). ACDC has many different sub settings. We can configure the ACDC cache by specifying the parameter list with the:
 
--   Segment Size adaption Strategy
+-   Segment Size Adaption Strategy (SSAS)
 	- relaitveLargestGhostList
 	- relativeSmallesGhostList
 	- largestGhostList
@@ -235,7 +235,7 @@ ACDC is triggered by naming the configuration ACDC). ACDC has many different sub
 	- probationaryFirst
 	- leftFirst
 	- rightFirst
--   The segment eviction strategy for the MISC sategory. The MISC sategory is the category that includes all not specified categories.
+-   The segment eviction strategy for the MISC category. The MISC category is the category that includes all not specified categories.
 -   The MISC category
 -   A List of tuples of segment eviction strategies and categories. A cache segment will be created for each tuple. Example: LRU,Music,LRU,Entertainment
 -   A Double value that represents the minimum segment size.
@@ -248,13 +248,13 @@ parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,L
 
 ### Proxy Name
 
-The Proxy name will be used later for identifying the recoreded values like cache hit and delay. Use a distinct name for each proxy.
+The Proxy name will be used later for identifying the recorded values like cache hit and delay. Use a distinct name for each proxy.
 
 Example: Proxy Name = Proxy1;
 
 ### Storage Alterations
 
-We wanted to simulate the increase of storage at given timeponits. You can provide a list of tuples of a time in seconds and size in Integer form determining at which point in time the storage of the reverse proxy will be expanded. You can leave this empty if you do not want any alterations.  An example for doubling the storage size each day with a base storage size of 1,677,721 Mbit would look like this:
+We wanted to simulate the increase of storage at given time points. You can provide a list of tuples of a time in seconds and size in Integer form determining at which point in time the storage of the reverse proxy will be expanded. You can leave this empty if you do not want any alterations.  An example for doubling the storage size each day with a base storage size of 1,677,721 Mbit would look like this:
 
 ```{r, engine='bash'}
 StorageAlterations = 86400:3355442,172800:6710884,259200:13421768,345600:26843536,432000:53687072,518400:107374144;
@@ -275,7 +275,7 @@ If *StorageAlterations* has no values, the *StorageAlterationStrategy* will be i
 
 ### Leaf
 
-This boolean value tells the program if clients will be attached to the proxy. This will play a role in the cache adjacency matrix. 
+This Boolean value tells the program if clients will be attached to the proxy. This will play a role in the cache adjacency matrix. 
 
 ## Adjacency Matrix
 
