@@ -18,6 +18,7 @@ sudo pip3 install mysql-connector pandas seaborn
 ```
 
 
+
 ## OMNeT++
 Here, we provide a brief HowTo on installing OMNeT++. You can download OMNeT++ here: https://www.omnetpp.org/. If you tap into any issues, please refer to the the OMNeT++ installation guide located in the folder /doc/InstallGuide.pdf. 
 In case you have installed python **anaconda3**, you have to uncomment the path for conda in ~/.bashrc file during the installation - this is a known issue of a OMNeT++ dependency (QT). To build and install OMNeT++, execute:
@@ -38,7 +39,7 @@ make install
 
 
 # Database Setup
-We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 100 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
+We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In addition, you can filter your requests by the *Category* parameter. If it is set to *ALL*, all requests are used in the simulation, otherwise the requests matching the given string are filtered for simulation. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 100 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
 ```{r, engine='bash'}
 cd /PythonWorkspace/Environment
 python3 setupSchema
@@ -151,3 +152,149 @@ If you want to collect the results of another topology, name the folder accordin
 python3 GenerateDataAndFigures.py
 ``` 
 The results can be found in the figures folder and are sorted according to their topology.
+
+
+
+# Creating Customized  Simulation Configurations
+Our program builds a Network from a given configuration file. The first few lines in this file are used to specify the databse connection used. After that, we design the caches,, i.e., reverse proxies. At the end, we specify an adjacency matrix that represents the connection between the caches.
+
+## Database
+
+The configuration file starts with database-specific information, which are mostly self-explaining. The database type can in principle also determine other database systems such as MongoDB or CouchDB. Currently, only a mysql database handler is implemented. 
+```{r, engine='bash'}
+Database Type = mysql
+Database Name = student
+Database Table = YouTubeDataset
+Database Login = admin
+Database Password = start123
+Database Address = 127.0.0.1
+Database Port = 3306
+``` 
+## Request Specification
+Start and end Time are used to specify the time interval by two unix timestamps from which we take the requests of our request dataset. Thereby, we can simulate parts of the dataset and, thereby, decrease the simulation time.
+```{r, engine='bash'}
+Start Time = 1397426400.07611
+End Time = 1398031200.07611
+``` 
+
+The category refers in our use case to a YouTube category. We can specify a single category to get a subset of requests that belong to this category for the simulation. If you choose *ALL*, no filter is applied. 
+```{r, engine='bash'}
+Category = ALL
+``` 
+
+
+## Reverse Proxies
+
+A Reverse Proxy has several settings and can be designed using the following parameter and adjacency matrix.
+
+-   Admission Strategy – The admission strategy
+-   Parameter List – Parameters for the admission strategy, e.g., 2 for NHIT2
+-   Eviction Strategy – The eviction strategy
+-   Parameter List – Paramenters for the evcition strategy
+-   Proxy Name – The name of the prox for evaluation
+-   Storage Alterations – A list of dates and sizes that indicate a growth or shrinkage of the storage
+-   StorageAlterationStrategy - The strategy with which the storage expands or shrikns
+-   Leaf – A boolean value that tells if the proxy is a leaf proxy
+
+### Admission Strategy
+
+We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Admission Strategies decide, wheather a passing video segment will be saved in the cache. The following are implemented:
+-   LCE – Leave Copy Everywhere
+-   LCD – Leace Copy Down (only feasable in a topology with multiple levels)
+-   MCD – Move Copy Down (only feasable in a topology with multiple levels)
+-   NHIT – Cache on N+1th hit
+	- An Integer representing +1 that describes when the segment is stored and a double value that describes the time in seconds in which it has to be seen in order to count as a second hit. Example: Parameter List = 1,259200.00;
+-   PROB – Cache with a Probability
+	- Double Value representing a propability with which a segment will be cached. Example Parameter List = 0.75;
+
+### Eviction Strategy
+
+We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Eviciton strategies decide which video segment has to be deleted, when a new one is inserted and something has to be deleted to get enough free space to allow inserting the new segment:
+
+-   ARC2 – Adaptive Replacement Caching
+-   LFU – Least Frequently Used
+-   LFUDA – Least Frequently Used with Dynamic Aging
+-   LRU – Least Recently Used
+-   SLRU – Segmented Least Recently Used
+-   TTL – Time To Live
+	- A double value that descirbes the time in seconds after which a segment will be deleted. Example Parameter List = 259200.00;
+-   INFINITY – A Cache with infinite Size – nothing will be deleted
+-   RAND – Random Eviction
+-   ACDC– Adaptive Content-Aware Designed Cache
+	- Described Below
+
+### ACDC Configuration
+
+ACDC is triggered by naming the configuration ACDC). ACDC has many different subsettings. We can configure the ACDC cache by specifying the parameter list with the:
+
+-   Segment Size adaption Strategy
+	- relaitveLargestGhostList
+	- relativeSmallesGhostList
+	- largestGhostList
+	- smallestGhostList
+	- probationaryFirst
+	- leftFirst
+	- rightFirst
+-   The segment eviction strategy for the MISC sategory. The MISC sategory is the category that includes all not specified categories.
+-   The MISC category
+-   A List of tuples of segment eviction strategies and categories. A cache segment will be created for each tuple. Example: LRU,Music,LRU,Entertainment
+-   A Double value that represents the minimum segment size.
+
+An Example Configuration would look like this:
+
+```{r, engine='bash'}
+parameterList = relativeLargestGhostList,FIFO,MISC,LRU,Music,LRU,Entertainment,LRU,People,LRU,Comedy,2.5;
+``` 
+
+### Proxy Name
+
+The Proxy name will be used later for identifying the recoreded values like cache hit and delay. Use a distinct name for each proxy.
+
+Example: Proxy Name = Proxy1;
+
+### Storage Alterations
+
+We wanted to simulate the increase of storage at given timeponits. You can provide a list of tuples of a time in seconds and size in Integer form determining at which point in time the storage of the reverse proxy will be expanded. You can leave this empty if you do not want any alterations.  An example for doubling the storage size each day with a base storage size of 1,677,721 Mbit would look like this:
+
+```{r, engine='bash'}
+StorageAlterations = 86400:3355442,172800:6710884,259200:13421768,345600:26843536,432000:53687072,518400:107374144;
+``` 
+
+
+### StorageAlterationStrategy
+
+If you chose a cache with an eviction strategy that segments the cache, e.g., ARC or ACDC, you can decide here how the segments should adapt to the new size. You have two options:
+
+1.  **Equal**: The size of each cache segment is set to the new subSize of the segments which is calculated by dividing the new size with the number of cache segments. Hence, each cache segment has an equal storage share.
+2.  **Partial**: The size of each cache segment is set to the new subSize of the segments which is calculated as the percentage of the size of the individual segment at the time of alteration and, thereby, assigning it a new size based on its previous size.
+
+For Example: 2 Segments – segment1 has a size of 5GB and segment2 has a size of 1GB. We have a shared storage of 6GB. The new storage size shall be 12gb.
+With „**equal**“ the size of segment1 and Segment2 will be 6GB each.
+With „**partial**“ the size of segment1 will be 10GB and the size of Segment2 will be 2GB.
+If *StorageAlterations* has no values, the *StorageAlterationStrategy* will be ignored.
+
+### Leaf
+
+This boolean value tells the program if clients will be attached to the proxy. This will play a role in the cache adjacency matrix. 
+
+## Adjacency Matrix
+
+Next we specify the time it takes for a segment to pass through all levels of the topology. The time is denoted in milliseconds. This value is used to assign a delay to the connections of a cache hierarchy. The value calculates with the amount of levels which are specified in the line down. Example:
+
+```{r, engine='bash'}
+cdnDelay = 48
+Levels = 2
+``` 
+
+
+Next is the cache adjacency matrix. An **x** is the connection to itself, a **+** stands for a connection and a **–** for no connection. A sample topology is shown here and the adjacent matrix is right next to it.
+```{r, engine='bash'}
+c 0 1 2 3 4 5
+0 x + - - - -
+1 + x + + + +
+2 - + x - - -
+3 - + - x - -
+4 - + - - x -
+5 - + - - - x
+``` 
+We provide you with several sample configurations in the folder *Testbed/configurations/* so that you can easily create your own configuration.
