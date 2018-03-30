@@ -9,19 +9,19 @@ def exec_full(filepath):
         exec(compile(file.read(), filepath, 'exec'), global_namespace)
 
 # execute the file
-if(os.listdir('SimulationResults/Top1') != []):
+if(len(os.listdir('SimulationResults/Top1')) > 1):
 	exec_full("GenerateTopology1Data.py")
-if(os.listdir('SimulationResults/Top2') != []):
+if(len(os.listdir('SimulationResults/Top2')) > 1):
 	exec_full("GenerateTopology2Data.py")
-if(os.listdir('SimulationResults/Top3') != []):
+if(len(os.listdir('SimulationResults/Top3')) > 1):
 	exec_full("GenerateTopology3Data.py")
-if(os.listdir('SimulationResults/Top4') != []):
+if(len(os.listdir('SimulationResults/Top4')) > 1):
 	exec_full("GenerateTopology4Data.py")
-if(os.listdir('SimulationResults/Top1') != []):
+if(len(os.listdir('SimulationResults/Top1')) > 1):
 	exec_full("GenerateTopology1Figures.py")
-if(os.listdir('SimulationResults/Top2') != []):
+if(len(os.listdir('SimulationResults/Top2')) > 1):
 	exec_full("GenerateTopology2Figures.py")
-if(os.listdir('SimulationResults/Top3') != []):
+if(len(os.listdir('SimulationResults/Top3')) > 1):
 	exec_full("GenerateTopology3Figures.py")
-if(os.listdir('SimulationResults/Top4') != []):
+if(len(os.listdir('SimulationResults/Top4')) > 1):
 	exec_full("GenerateTopology4Figures.py")
