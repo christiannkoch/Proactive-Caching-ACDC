@@ -11,7 +11,18 @@ from matplotlib.ticker import FuncFormatter
 import matplotlib.dates as mdate
 
 pd.__version__
+import os
 
+def exec_full(filepath):
+    import os
+    global_namespace = {
+        "__file__": filepath,
+        "__name__": "__main__",
+    }
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), global_namespace)
+
+exec_full("GenerateTopology1Data.py")
 data = pd.read_pickle('data/Top1ResultsMean.pkl')
 
 Averaged = {'Order':[],'Delay':[],'Topology':[],'Admission':[],'AdmissionParams':[],'Eviction':[],'AdmissionEviction':[],'EvictionParams':[],'Size':[],'Hits':[],'Writes':[],'TimeToFirstSegment':[]}
@@ -79,7 +90,7 @@ for j in range(0,len(data.Hitrate)):
             Averaged['Order'].append("6")
         if(data.Size[j] == "1 PB"):
             Averaged['Order'].append("7")
-        
+exec_full("GenerateTopology2Data.py")        
 data = pd.read_pickle('data/Top2ResultsMean.pkl')
        
 for j in range(0,len(data.Hitrate)):
@@ -132,7 +143,7 @@ for j in range(0,len(data.Hitrate)):
             Averaged['Order'].append("6")
         if(data.Size[j] == "1 PB"):
             Averaged['Order'].append("7")  
-        
+exec_full("GenerateTopology3Data.py")        
 data = pd.read_pickle('data/Top3ResultsMean.pkl')
         
 for j in range(0,len(data.Hitrate)):
@@ -189,7 +200,7 @@ for j in range(0,len(data.Hitrate)):
             Averaged['Order'].append("6")
         if(data.Size[j] == "1 PB"):
             Averaged['Order'].append("7")    
-        
+exec_full("GenerateTopology4Data.py")        
 data = pd.read_pickle('data/Top4ResultsMean.pkl')        
 
 for j in range(0,len(data.Hitrate)):
