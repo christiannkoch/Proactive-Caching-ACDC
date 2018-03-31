@@ -231,7 +231,7 @@ We provide you with a number of implemented admission strategies. You can google
 -   ACDC– Adaptive Content-Aware Designed Cache
 	- Described Below
 
-\* We implemented ARC1 as stated in  https://youtu.be/_XDHPhdQHMQ?t=240 with LFU. However, the original patent define ARC to be implemented with LRU (https://en.wikipedia.org/wiki/Adaptive_replacement_cache, https://patents.google.com/patent/US6996676B2/en) which we denote as ARC2 and typically results for VoD workloads  in superior performance.
+\* We implemented ARC1 as stated in  https://youtu.be/_XDHPhdQHMQ?t=240 with LFU. However, the original patent defines ARC to be implemented with LRU (https://en.wikipedia.org/wiki/Adaptive_replacement_cache, https://patents.google.com/patent/US6996676B2/en) which we denote as ARC2 and typically results for VoD workloads  in superior performance.
 
 ### ACDC Configuration
 
