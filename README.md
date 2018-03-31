@@ -1,3 +1,4 @@
+
 # Adaptive Category-aware Designed Caching (ACDC)
 
 Proactive caching is a recent research discipline. In this project, we provide the source code to setup and run **ACDC** as proposed in our publication: 
@@ -39,7 +40,7 @@ make install
 
 
 # Database Setup
-We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In addition, you can filter your requests by the *Category* parameter. If it is set to *ALL*, all requests are used in the simulation, otherwise the requests matching the given string are filtered for simulation. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 300 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
+We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 400 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
 ```{r, engine='bash'}
 cd /PythonWorkspace/Environment
 python3 setupSchema
@@ -146,7 +147,7 @@ The results of the simulation are stored in the project folder under *Testbed/re
 | Run Range | 0-174,  600-634 | 300-424, 660-684 | 425-599,  685-719 | 300-424,  635-659 |
 
 To process and plot the results, you need to copy them to *PythonWorkspace/Evaluation/SimulationResults/Top1*.
-If you want to collect the results of another topology, name the folder accordingly, i.e., Top{1,2,3,4}. You can plot all figures by running:
+If you want to collect the results of another topology, copy them in the respective folder, i.e., /Top{1,2,3,4}/. You can plot all figures by running:
 
 ```{r, engine='bash'}
 python3 GenerateDataAndFigures.py
