@@ -211,7 +211,7 @@ We provide you with a number of implemented admission strategies. You can google
 
 We provide you with a number of implemented admission strategies. You can google them if you want to know how they work in detail (or you look in the code). Eviction strategies decide which video segment has to be deleted, when a new one is inserted and something has to be deleted to get enough free space to allow inserting the new segment:
 
--   ARC2 – Adaptive Replacement Caching
+-   ARC2 – Adaptive Replacement Caching* 
 -   LFU – Least Frequently Used
 -   LFUDA – Least Frequently Used with Dynamic Aging
 -   LRU – Least Recently Used
@@ -222,6 +222,8 @@ We provide you with a number of implemented admission strategies. You can google
 -   RAND – Random Eviction
 -   ACDC– Adaptive Content-Aware Designed Cache
 	- Described Below
+
+\* We implemented ARC1 as stated in  https://youtu.be/_XDHPhdQHMQ?t=240 with LFU. However, the original patent define ARC to be implemented with LRU (https://en.wikipedia.org/wiki/Adaptive_replacement_cache, https://patents.google.com/patent/US6996676B2/en) which we denote as ARC2 and typically results for VoD workloads  in superior performance.
 
 ### ACDC Configuration
 
