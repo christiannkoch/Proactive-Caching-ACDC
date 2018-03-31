@@ -142,9 +142,9 @@ C 0 1 2 3 4 5 6 7
 # Evaluation Plots
 The results of the simulation are stored in the project folder under *Testbed/results/*. After the simulation is complete you have to sort the results by name and copy them to their according topology folder. For example, the results belonging to topology 1 are represented by the run numbers 0-293 as depicted by Table below.
 
-| Topology  | 1               | 2                | 3                 | 4                 |
-|-----------|-----------------|------------------|-------------------|-------------------|
-| Run Range | 0-174,  600-634 | 300-424, 660-684 | 425-599,  685-719 | 300-424,  635-659 |
+| Topology  | 1     | 2       | 3       | 4        |
+|-----------|------ |-------------------|----------|
+| Run Range | 0-293 | 294-503 | 504-797 | 798-1007 |
 
 To process and plot the results, you need to copy them to *PythonWorkspace/Evaluation/SimulationResults/Top1*.
 If you want to collect the results of another topology, copy them in the respective folder, i.e., /Top{1,2,3,4}/. You can plot all figures by running:
