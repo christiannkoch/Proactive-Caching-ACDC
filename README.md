@@ -153,6 +153,13 @@ python3 GenerateDataAndFigures.py
 ``` 
 The results can be found in the figures folder and are sorted according to their topology.
 
+To compute the gain of ACDC compared to other cache strategies (ref. Figure 6 in the paper), we provide a script. It can be executed by the command below. It requires to have at least one simulation per topology and with the same configuration but at least two different eviction strategies. For example, Run5 and Run0-4 can be used as they differ only by the eviction policy used. Note that one of the eviction policies chosen must be ACDC.
+
+```{r, engine='bash'}
+python3 CompareACDC.py
+``` 
+
+
 
 
 # Creating Customized  Simulation Configurations
