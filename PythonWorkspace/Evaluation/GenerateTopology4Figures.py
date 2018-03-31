@@ -17,7 +17,7 @@ pd.__version__
 data = pd.read_pickle('data/Top4ResultsMean.pkl')
 
 for i in range(0,len(data)):
-    Configtitle = "Topology " + data.Topology[i] + ": "+ data.ProxyCount[i]+" Reverseproxys. Admission Strategy: " + data.Admission[i]+ (" with parameters " + data.AdmissionParams[i] if(data.AdmissionParams[i] != " ") else "") + ". Eviction Strategy: " + data.Eviction[i] + (" with parameters " + data.EvictionParams[i] if (data.EvictionParams[i] != " ") else "") + ". Storage size of the Network: "+ data.Size[i]
+    Configtitle = "Topology " + data.Topology[i] + ": "+ data.ProxyCount[i]+" Reverse Proxies. Admission Strategy: " + data.Admission[i]+ (" with parameters " + data.AdmissionParams[i] if(data.AdmissionParams[i] != " ") else "") + ". Eviction Strategy: " + data.Eviction[i] + (" with parameters " + data.EvictionParams[i] if (data.EvictionParams[i] != " ") else "") + ". Storage size of the Network: "+ data.Size[i]
     secs = mdate.epoch2num(data.Time[0])
     df = pd.DataFrame(data.Hitrate[i])
     df = df.transpose()
@@ -30,7 +30,7 @@ for i in range(0,len(data)):
     my_plot.xaxis.set_tick_params(labelsize=15)
     my_plot.yaxis.set_tick_params(labelsize=15)
     my_plot.set_xlabel("Time", fontsize=20)
-    my_plot.set_ylabel("Hitrate", fontsize=20)
+    my_plot.set_ylabel("Hit Rate", fontsize=20)
     ymax = max(data.Hitrate[i][0])
     ymax = (ymax * 1.2)
     my_plot.set_ylim([0,ymax])
@@ -71,7 +71,7 @@ for n in df.Size.unique():
     df2 = df2.pivot("EvictionP","AdmissionP","Hits")
     fig, ax = plt.subplots()
     ax.set_title("Size of the Network = " + n)
-    title="Heatmap_Top" + str(data.Topology[0][0]) + "_Level" + str(level)+"_"+typ+"_"+str(n)
+    title="Heatmap_Top" + str(data.Topology[0][0]) + "_Level" + str(level)+"_"+"hit_rate"+"_"+str(n)
     myplot = sns.heatmap(df2, annot=True, cmap="YlGnBu", fmt='.2f', vmin=0)
     ax.set_xlabel("Admission Strategy", fontsize=20)
     ax.set_ylabel("Eviction Strategy", fontsize=20)

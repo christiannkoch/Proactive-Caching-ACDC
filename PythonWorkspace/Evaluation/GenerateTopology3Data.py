@@ -424,6 +424,10 @@ df.to_pickle('data/Top3ResultsMean.pkl')
 data = pd.read_pickle('data/Top3ResultsMean.pkl')
 
 for i in range(0,len(data)):
+    if(str(data.loc[i].Size) == "8589934592"):
+        data.loc[i].Size = "1 PB"
+    if(str(data.loc[i].Size) == "838860800"):
+        data.loc[i].Size = "100 TB"
     if(str(data.loc[i].Size) == "83886080"):
         data.loc[i].Size = "10 TB"
     if(data.loc[i].Size == "8388608"):
@@ -435,10 +439,15 @@ for i in range(0,len(data)):
     if(data.loc[i].Size == "8192"):
         data.loc[i].Size = "1 GB"
 data.to_pickle('data/Top3ResultsMean.pkl')
+data.to_csv('data/Top3ResultsMean.csv')
 
 data = pd.read_pickle('data/Top3Results.pkl')
 
 for i in range(0,len(data)):
+    if(str(data.loc[i].Size) == "8589934592"):
+        data.loc[i].Size = "1 PB"
+    if(str(data.loc[i].Size) == "838860800"):
+        data.loc[i].Size = "100 TB"
     if(str(data.loc[i].Size) == "83886080"):
         data.loc[i].Size = "10 TB"
     if(data.loc[i].Size == "8388608"):
@@ -450,3 +459,4 @@ for i in range(0,len(data)):
     if(data.loc[i].Size == "8192"):
         data.loc[i].Size = "1 GB"
 data.to_pickle('data/Top3Results.pkl')
+data.to_csv('data/Top3Results.csv')
