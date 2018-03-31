@@ -39,7 +39,7 @@ make install
 
 
 # Database Setup
-We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In addition, you can filter your requests by the *Category* parameter. If it is set to *ALL*, all requests are used in the simulation, otherwise the requests matching the given string are filtered for simulation. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 100 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
+We are not allowed to make our dataset public since it contains confidential information. To this end, we provide scripts to generate exemplary data that can be used to experiment with the system. However, any other dataset in the right format can be used for evaluation. To setup the database scheme and fill it with randomly generated data, execute the following two python scripts. In the *fillDatabase.py*, you can vary the number of unique videos, unique users, overall requests, and the time interval the dataset captures. By default, it fills your database with about 700 requests consisting of 200 unique video IDs performed by 300 users in a time interval of one week. In addition, you can filter your requests by the *Category* parameter. If it is set to *ALL*, all requests are used in the simulation, otherwise the requests matching the given string are filtered for simulation. In case you use our simulation with the graphical OMNeT++ interface you should configure less than 300 distinct users or otherwise it may run slow. For usage without the graphical interface, you should create less than 800.000 distinct users, due to a limitation in OMNeT++.
 ```{r, engine='bash'}
 cd /PythonWorkspace/Environment
 python3 setupSchema
@@ -170,10 +170,10 @@ Our program builds a Network from a given configuration file. The first few line
 The configuration file starts with database-specific information, which are mostly self-explaining. The database type can in principle also determine other database systems such as MongoDB or CouchDB. Currently, only a mysql database handler is implemented. 
 ```{r, engine='bash'}
 Database Type = mysql
-Database Name = student
+Database Name = ACDCTestData
 Database Table = YouTubeDataset
-Database Login = admin
-Database Password = start123
+Database Login = root
+Database Password = root
 Database Address = 127.0.0.1
 Database Port = 3306
 ``` 
@@ -234,16 +234,13 @@ We provide you with a number of implemented admission strategies. You can google
 
 ### ACDC Configuration
 
-ACDC is triggered by naming the configuration ACDC). ACDC has many different sub settings. We can configure the ACDC cache by specifying the parameter list with the:
+ACDC is triggered by naming the configuration ACDC. ACDC has many different sub settings. We can configure the ACDC cache by specifying the parameter list with the:
 
 -   Segment Size Adaption Strategy (SSAS)
 	- relaitveLargestGhostList
 	- relativeSmallesGhostList
 	- largestGhostList
 	- smallestGhostList
-	- probationaryFirst
-	- leftFirst
-	- rightFirst
 -   The segment eviction strategy for the MISC category. The MISC category is the category that includes all not specified categories.
 -   The MISC category
 -   A List of tuples of segment eviction strategies and categories. A cache segment will be created for each tuple. Example: LRU,Music,LRU,Entertainment
