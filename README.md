@@ -21,7 +21,7 @@ sudo pip3 install mysql-connector pandas seaborn
 
 ## OMNeT++
 Here, we provide a brief HowTo on installing OMNeT++. You can download OMNeT++ here: https://www.omnetpp.org/. If you tap into any issues, please refer to the the OMNeT++ installation guide located in the folder /doc/InstallGuide.pdf. 
-In case you have installed python **anaconda3**, you have to uncomment the path for conda in ~/.bashrc file during the installation - this is a known issue of a OMNeT++ dependency (QT). To build and install OMNeT++, execute:
+In case you have installed python **anaconda3**, you have to uncomment the path for conda in ~/.bashrc file during the installation - this is a known issue of a OMNeT++ dependency (QT) (https://github.com/PointCloudLibrary/pcl/issues/1341). To build and install OMNeT++, execute:
 
 ```{r, engine='bash'}
 sudo apt-get install build-essential gcc g++ bison flex perl qt5-default tcl-dev tk-dev libxml2-dev zlib1g-dev default-jre doxygen graphviz libwebkitgtk-3.0-0 libopenscenegraph-dev openscenegraph-plugin-osgearth libosgearth-dev openmpi-bin libopenmpi-dev
