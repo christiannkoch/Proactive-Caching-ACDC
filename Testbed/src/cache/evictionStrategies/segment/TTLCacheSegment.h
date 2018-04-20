@@ -39,7 +39,7 @@ public:
     int getReadOperations();
     int getWriteOperations();
     std::string getCategory();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     RecencyNode* head;

@@ -29,6 +29,7 @@ public:
     BasicSSAS();
     virtual ~BasicSSAS();
     virtual int getIdToReduce(unsigned int id) = 0;
+    virtual void setNewSubcacheSize(long long newSubcacheSize) = 0;
 };
 
 #endif /* SRC_CACHE_EVICTIONSTRATEGIES_ACDC_BASICSSAS_H_ */

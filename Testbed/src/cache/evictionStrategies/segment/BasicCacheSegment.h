@@ -35,7 +35,7 @@ public:
     virtual int getReadOperations() = 0;
     virtual int getWriteOperations() = 0;
     virtual std::string getCategory() = 0;
-    virtual void deletePackage(std::string id) = 0;
+    virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
 protected:
     virtual void rearrangeCache(VideoSegment *pkg) = 0;

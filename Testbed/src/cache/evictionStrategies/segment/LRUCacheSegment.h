@@ -41,7 +41,7 @@ public:
     int getWriteOperations();
     std::string getCategory();
     VideoSegment* getElementWithSecondChance();
-    void deletePackage(std::string id);
+    void deleteSegment(std::string id);
     void resetRates();
 protected:
     unsigned long long maxCacheSize;
