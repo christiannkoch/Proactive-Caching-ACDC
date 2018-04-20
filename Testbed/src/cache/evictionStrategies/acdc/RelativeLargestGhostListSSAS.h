@@ -37,6 +37,7 @@ public:
             std::vector<BasicGhostList*>* ghostListVector, unsigned int cacheSize,
             double subCacheSize, int minSegSize);
     int getIdToReduce(unsigned int id);
+    void setNewSubcacheSize(long long newSubcacheSize);
     virtual ~RelativeLargestGhostListSSAS();
 private:
     ARCProbationaryCache* probationaryCache;

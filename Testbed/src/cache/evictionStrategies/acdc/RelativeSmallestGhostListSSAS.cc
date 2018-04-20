@@ -139,6 +139,20 @@ int RelativeSmallestGhostListSSAS::getLargestCacheSegment(int toExpand) {
     return largestCache;
 }
 
+
 RelativeSmallestGhostListSSAS::~RelativeSmallestGhostListSSAS() {
-    // TODO Auto-generated destructor stub
+
+}
+
+/*
+ * @brief sets the new SubCacheSize
+ *
+ * a new subcache size needs to be set after a cache size alteration happened
+ * to ensure that the SSAS works properly
+ * @param newSubcacheSize the new size of the subcaches
+ *
+ */
+void RelativeSmallestGhostListSSAS::setNewSubcacheSize(
+        long long newSubcacheSize) {
+    this->subCacheSize = newSubcacheSize;
 }

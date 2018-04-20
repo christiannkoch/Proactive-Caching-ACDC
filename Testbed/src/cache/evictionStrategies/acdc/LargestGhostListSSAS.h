@@ -37,6 +37,7 @@ public:
             double subCacheSize, int minSegSize);
     int getIdToReduce(unsigned int id);
     virtual ~LargestGhostListSSAS();
+    void setNewSubcacheSize(long long newSubcacheSize);
 private:
     ARCProbationaryCache* probationaryCache;
     BasicGhostList* probationaryGhostList;
