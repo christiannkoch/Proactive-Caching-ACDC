@@ -71,7 +71,7 @@ SLRUCache::SLRUCache(std::vector<std::string>* parameters, long long size,
  */
 void SLRUCache::deleteSegment(std::string id) {
     probationaryCache->deleteSegment(id);
-    protectedCache->deletePackage(id);
+    protectedCache->deleteSegment(id);
 }
 /**
  * @brief alters the cache size

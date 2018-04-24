@@ -129,7 +129,7 @@ void ACDCCache::deleteSegment(std::string id) {
     probationaryCache->deleteSegment(id);
     probationaryGhostList->deleteEntry(id);
     for (auto i : cacheSegmentVector) {
-        i->deletePackage(id);
+        i->deleteSegment(id);
     }
     for (auto i : ghostListVector) {
         i->deleteEntry(id);

@@ -98,7 +98,7 @@ void ARC2Cache::resetRates() {
 void ARC2Cache::deleteSegment(std::string id) {
     t1->deleteSegment(id);
     b1->deleteEntry(id);
-    t2->deletePackage(id);
+    t2->deleteSegment(id);
     b2->deleteEntry(id);
 }
 

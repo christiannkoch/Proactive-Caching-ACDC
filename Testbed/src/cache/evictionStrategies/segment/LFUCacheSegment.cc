@@ -220,7 +220,7 @@ std::list<std::string>* LFUCacheSegment::insertIntoCache(VideoSegment *pkg) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         toDelete = getLeastFrequent();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     FrequencyNode* freq = head->getNext();
@@ -258,7 +258,7 @@ std::list<std::string>* LFUCacheSegment::reduce(int size) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - size) {
         toDelete = getLeastFrequent();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     maxCacheSize = maxCacheSize - size;

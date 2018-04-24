@@ -132,7 +132,7 @@ std::list<std::string>* RANDCacheSegment::insertIntoCache(VideoSegment* pkg) {
     while (cacheSize >= maxCacheSize - pkg->getSize()) {
         int random = rand() % container.size();
         toDelete = keyList[random];
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     container[keyBuilder] = pkg;
@@ -157,7 +157,7 @@ std::list<std::string>* RANDCacheSegment::reduce(int size) {
     while (cacheSize > maxCacheSize - size) {
         int random = rand() % container.size();
         toDelete = keyList[random];
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     maxCacheSize = maxCacheSize - size;

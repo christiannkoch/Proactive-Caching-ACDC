@@ -132,7 +132,7 @@ std::list<std::string>* TTLCacheSegment::insertIntoCache(VideoSegment* pkg) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
@@ -162,7 +162,7 @@ std::list<std::string>* TTLCacheSegment::reduce(int size) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - size) {
         toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     writeOperation++;
@@ -253,7 +253,7 @@ void TTLCacheSegment::purge() {
     for (auto i : container) {
         if ((omnetpp::simTime().dbl() - i.second->first) > timeToLive) {
             std::string toDelete = i.first;
-            deletePackage(toDelete);
+            deleteSegment(toDelete);
         }
         readOperation++;
     }

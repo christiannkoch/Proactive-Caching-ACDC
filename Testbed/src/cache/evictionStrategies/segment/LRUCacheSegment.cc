@@ -95,7 +95,7 @@ std::list<std::string>* LRUCacheSegment::insertIntoCache(VideoSegment *pkg) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
@@ -124,7 +124,7 @@ std::list<std::string>* LRUCacheSegment::reduce(int size) {
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
     while (cacheSize > maxCacheSize - size) {
         toDelete = head->getPrev()->getValue();
-        deletePackage(toDelete);
+        deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
     maxCacheSize = maxCacheSize - size;
