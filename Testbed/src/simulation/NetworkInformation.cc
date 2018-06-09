@@ -66,7 +66,7 @@ DBConnection* NetworkInformation::connectToDatabase() {
     std::string addressBuilder = "tcp://" + databaseInformation.address + ":";
     return DatabaseFactory::getConnection(databaseInformation.type,
             databaseInformation.login, databaseInformation.password,
-            addressBuilder, databaseInformation.port);
+            addressBuilder, databaseInformation.name, databaseInformation.port);
 }
 
 /*

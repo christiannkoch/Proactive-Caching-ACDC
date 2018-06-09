@@ -36,7 +36,7 @@
 
 class MySqlConnection : public DBConnection {
 public:
-    MySqlConnection(std::string username, std::string password, std::string server, int port);
+    MySqlConnection(std::string username, std::string password, std::string server,std::string dbName, int port);
     virtual ~MySqlConnection();
     bool connect();
     void close();
@@ -60,6 +60,7 @@ private:
     std::string server;
     int port;
     DBCursor* dbCursor;
+    std::string dbName;
 };
 
 #endif /* SRC_DATABASE_MYSQLCONNECTION_H_ */

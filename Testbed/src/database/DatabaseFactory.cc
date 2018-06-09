@@ -41,9 +41,9 @@ using namespace omnetpp;
  */
 DBConnection* DatabaseFactory::getConnection(const std::string type,
         const std::string username, const std::string password,
-        const std::string server, int port) {
+        const std::string server, const std::string dbName, int port) {
     if (type == "mysql")
-        return new MySqlConnection(username, password, server, port);
+        return new MySqlConnection(username, password, server, dbName, port);
     else
         throw "This type of Database does not exist, please choose a different one or implement it";
 }

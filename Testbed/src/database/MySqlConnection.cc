@@ -53,13 +53,14 @@ using namespace omnetpp;
  * @return a pointer to the MySQL Connection
  */
 MySqlConnection::MySqlConnection(std::string username, std::string password,
-        std::string server, int port) {
+        std::string server, std::string dbName,int port) {
     this->username = username;
     this->password = password;
     this->server = server;
     this->port = port;
     this->startTime = startTime;
     this->endTime= endTime;
+    this->dbName = dbName;
     // TODO Auto-generated constructor stub
 
 }
@@ -83,7 +84,7 @@ bool MySqlConnection::connect() {
     std::string serveradress = getServer() + serverAddressPort;
     con = driver->connect(serveradress, getUsername(), getPassword());
     stmt = con->createStatement();
-    stmt->execute("USE student;");
+    stmt->execute("USE "+dbName+";");
     delete stmt;
     if (con->isValid())
         return true;

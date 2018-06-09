@@ -33,7 +33,7 @@ public:
     ;
     static DBConnection* getConnection(const std::string type,
             const std::string username, const std::string password,
-            const std::string server, int port);
+            const std::string server, const std::string dbName, int port);
 };
 
 #endif /* SRC_CACHE_DATABASECONNECTION_H_ */
