@@ -182,5 +182,5 @@ int ReverseProxyCreator::getGate(int id, std::string proxy) {
             return i;
 
     }
-    throw "Die Eingabematrix muss falsch sein";
+    throw "The matrix was wrong";
 }
