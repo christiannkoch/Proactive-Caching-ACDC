@@ -1,4 +1,4 @@
 /.computed/
-/.out/
-/results/
+out/
+results/
 .qtenvrc
