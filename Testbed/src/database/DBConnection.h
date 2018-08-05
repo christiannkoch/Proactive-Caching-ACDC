@@ -25,6 +25,7 @@
 #define SRC_DATABASE_DBCONNECTION_H_
 #include "DBCursor.h"
 #include <string>
+#include "DatabaseInformation.h"
 
 class DBConnection {
 public:
@@ -32,10 +33,10 @@ public:
     virtual ~DBConnection();
     virtual bool connect()=0;
     virtual void close() = 0;
-    virtual DBCursor* selectMetaData(const std::string query) = 0;
-    virtual DBCursor* selectAllRequests(const std::string query) = 0;
-    virtual DBCursor* selectAllClients(const std::string query) = 0;
-    virtual DBCursor* selectFirstTimestamp(const std::string query)= 0;
+    virtual DBCursor* selectMetaData(DatabseInformation_t databaseInformation) = 0;
+    virtual DBCursor* selectAllRequests(DatabseInformation_t databaseInformation) = 0;
+    virtual DBCursor* selectAllClients(DatabseInformation_t databaseInformation) = 0;
+    virtual DBCursor* selectFirstTimestamp(DatabseInformation_t databaseInformation)= 0;
 protected:
     std::string getUsername();
     std::string getPassword();

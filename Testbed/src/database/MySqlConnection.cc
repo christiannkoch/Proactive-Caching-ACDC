@@ -33,6 +33,8 @@
 #include <string>
 #include "MetaRequestCursor.h"
 #include "CursorFactory.h"
+#include "DatabaseInformation.h"
+#include <boost/lexical_cast.hpp>
 
 using namespace omnetpp;
 
@@ -53,13 +55,13 @@ using namespace omnetpp;
  * @return a pointer to the MySQL Connection
  */
 MySqlConnection::MySqlConnection(std::string username, std::string password,
-        std::string server, std::string dbName,int port) {
+        std::string server, std::string dbName, int port) {
     this->username = username;
     this->password = password;
     this->server = server;
     this->port = port;
     this->startTime = startTime;
-    this->endTime= endTime;
+    this->endTime = endTime;
     this->dbName = dbName;
     // TODO Auto-generated constructor stub
 
@@ -79,12 +81,12 @@ MySqlConnection::~MySqlConnection() {
  */
 bool MySqlConnection::connect() {
     driver = get_driver_instance();
-    std::string serverAddressPort = static_cast<std::ostringstream*>(&(std::ostringstream()
-            << getPort()))->str();
+    std::string serverAddressPort =
+            static_cast<std::ostringstream*>(&(std::ostringstream() << getPort()))->str();
     std::string serveradress = getServer() + serverAddressPort;
     con = driver->connect(serveradress, getUsername(), getPassword());
     stmt = con->createStatement();
-    stmt->execute("USE "+dbName+";");
+    stmt->execute("USE " + dbName + ";");
     delete stmt;
     if (con->isValid())
         return true;
@@ -108,11 +110,12 @@ void MySqlConnection::close() {
  *
  * @return a pointer to the cursor that selects the metadata
  */
-DBCursor* MySqlConnection::selectMetaData(const std::string query) {
+DBCursor* MySqlConnection::selectMetaData(
+        DatabseInformation_t databaseInformation) {
     connect();
+    std::string query = "";
     try {
-        dbCursor = CursorFactory::createCursor(query, this->con,
-                "meta");
+        dbCursor = CursorFactory::createCursor(query, this->con, "meta");
     } catch (char const* msg) {
         EV << msg;
     }
@@ -129,11 +132,33 @@ DBCursor* MySqlConnection::selectMetaData(const std::string query) {
  * @return a pointer to the cursor that selects all requests
  */
 
-DBCursor* MySqlConnection::selectAllRequests(const std::string query) {
+DBCursor* MySqlConnection::selectAllRequests(
+        DatabseInformation_t databaseInformation) {
     connect();
+    std::string query = "";
+    std::string all = "ALL";
+    if (std::strcmp(databaseInformation.category.c_str(), all.c_str()) == 0) {
+        query = "SELECT * FROM " + databaseInformation.name + "."
+                + databaseInformation.table + " WHERE requestTime BETWEEN "
+                + boost::lexical_cast < std::string
+                > (databaseInformation.startTime) + " AND "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.endTime) + " ORDER BY requestTime DESC;";
+        std::cout << query;
+    } else {
+        query = "SELECT * FROM " + databaseInformation.name + "."
+                + databaseInformation.table + " WHERE category =  \""
+                + boost::lexical_cast < std::string
+                > (databaseInformation.category) + "\" AND requestTime BETWEEN "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.startTime) + " AND "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.endTime) + " ORDER BY requestTime DESC;";
+        std::cout << query;
+    }
+
     try {
-        dbCursor = CursorFactory::createCursor(query, this->con,
-                "request");
+        dbCursor = CursorFactory::createCursor(query, this->con, "request");
     } catch (char const* msg) {
         EV << msg;
     }
@@ -149,11 +174,30 @@ DBCursor* MySqlConnection::selectAllRequests(const std::string query) {
  *
  * @return a pointer to the cursor that selects all unique clients
  */
-DBCursor* MySqlConnection::selectAllClients(const std::string query) {
+DBCursor* MySqlConnection::selectAllClients(
+        DatabseInformation_t databaseInformation) {
     connect();
+    std::string all = "ALL";
+    std::string query = "";
+    if (std::strcmp(databaseInformation.category.c_str(), all.c_str()) == 0) {
+        query = "SELECT DISTINCT userId FROM " + databaseInformation.name + "."
+                + databaseInformation.table + " WHERE requestTime BETWEEN "
+                + boost::lexical_cast < std::string
+                > (databaseInformation.startTime) + " AND "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.endTime) + ";";
+    } else {
+        query = "SELECT DISTINCT userId FROM " + databaseInformation.name + "."
+                + databaseInformation.table + " WHERE category =  \""
+                + boost::lexical_cast < std::string
+                > (databaseInformation.category) + "\" AND requestTime BETWEEN "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.startTime) + " AND "
+                        + boost::lexical_cast < std::string
+                > (databaseInformation.endTime) + ";";
+    }
     try {
-        dbCursor = CursorFactory::createCursor(query, this->con,
-                "allClients");
+        dbCursor = CursorFactory::createCursor(query, this->con, "allClients");
     } catch (char const* msg) {
         EV << msg;
     }
@@ -169,8 +213,10 @@ DBCursor* MySqlConnection::selectAllClients(const std::string query) {
  *
  * @return a pointer to the cursor that selects the time of the first request in the dataset
  */
-DBCursor* MySqlConnection::selectFirstTimestamp(const std::string query) {
-
+DBCursor* MySqlConnection::selectFirstTimestamp(
+        DatabseInformation_t databaseInformation) {
+    std::string query = "SELECT MIN(requestTime) FROM "
+            + databaseInformation.name + "." + databaseInformation.table + ";";
     connect();
     try {
         dbCursor = CursorFactory::createCursor(query, this->con,

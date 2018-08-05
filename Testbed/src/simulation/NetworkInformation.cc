@@ -143,7 +143,7 @@ std::string NetworkInformation::removeSpaces(std::string s) {
  */
 std::vector<std::string> NetworkInformation::splitString(std::string s,
         const std::string& delimiter) {
-    std::vector<std::string> tokens;
+    std::vector < std::string > tokens;
     size_t pos = 0;
     std::string token;
 
@@ -205,28 +205,9 @@ void NetworkInformation::setupAllRequests() {
 
     std::cout << "setting up all Requests, may take some time" << endl;
     const clock_t begin_time = clock();
-    std::string query = "";
-    std::string all = "ALL";
-    if (std::strcmp(databaseInformation.category.c_str(), all.c_str()) == 0) {
-        query = "SELECT * FROM " + databaseInformation.name + "."
-                + databaseInformation.table + " WHERE requestTime BETWEEN "
-                + boost::lexical_cast<std::string>(
-                        databaseInformation.startTime) + " AND "
-                + boost::lexical_cast<std::string>(databaseInformation.endTime)
-                + " ORDER BY requestTime DESC;";
-        std::cout << query;
-    } else {
-        query = "SELECT * FROM " + databaseInformation.name + "."
-                + databaseInformation.table + " WHERE category =  \""
-                + boost::lexical_cast<std::string>(databaseInformation.category)
-                + "\" AND requestTime BETWEEN "
-                + boost::lexical_cast<std::string>(
-                        databaseInformation.startTime) + " AND "
-                + boost::lexical_cast<std::string>(databaseInformation.endTime)
-                + " ORDER BY requestTime DESC;";
-        std::cout << query;
-    }
-    DBCursor* dbCursor = dataBaseConnection->selectAllRequests(query);
+
+    DBCursor* dbCursor = dataBaseConnection->selectAllRequests(
+            databaseInformation);
     std::vector<std::vector<std::string>*>* resultAllRequests =
             dbCursor->getResultSet();
     std::cout << "Reading the Database done in "
@@ -280,9 +261,7 @@ DBConnection* NetworkInformation::getDatabaseConnection() {
  * @brief performs a database request to get the start time
  */
 void NetworkInformation::getStartTime() {
-    std::string query = "SELECT MIN(requestTime) FROM "
-            + databaseInformation.name + "." + databaseInformation.table + ";";
-    DBCursor* dbCursor = dataBaseConnection->selectFirstTimestamp(query);
+    DBCursor* dbCursor = dataBaseConnection->selectFirstTimestamp(databaseInformation);
     std::vector<std::vector<std::string>*>* resultFristTimestamp =
             dbCursor->getResultSet();
     firstRequestTime = std::atof(resultFristTimestamp->at(0)->at(0).c_str());
@@ -295,27 +274,9 @@ void NetworkInformation::getStartTime() {
  * @brief performs a database request to get all distinct client ids
  */
 void NetworkInformation::selectAllUsers() {
-    std::string all = "ALL";
-    std::string query = "";
-    if (std::strcmp(databaseInformation.category.c_str(), all.c_str()) == 0) {
-        query = "SELECT DISTINCT userId FROM " + databaseInformation.name + "."
-                + databaseInformation.table + " WHERE requestTime BETWEEN "
-                + boost::lexical_cast<std::string>(
-                        databaseInformation.startTime) + " AND "
-                + boost::lexical_cast<std::string>(databaseInformation.endTime)
-                + ";";
-    } else {
-        query = "SELECT DISTINCT userId FROM " + databaseInformation.name + "."
-                + databaseInformation.table + " WHERE category =  \""
-                + boost::lexical_cast<std::string>(databaseInformation.category)
-                + "\" AND requestTime BETWEEN "
-                + boost::lexical_cast<std::string>(
-                        databaseInformation.startTime) + " AND "
-                + boost::lexical_cast<std::string>(databaseInformation.endTime)
-                + ";";
-    }
 
-    DBCursor* dbCursor = dataBaseConnection->selectAllClients(query);
+
+    DBCursor* dbCursor = dataBaseConnection->selectAllClients(databaseInformation);
     std::vector<std::vector<std::string>*>* resultSet =
             dbCursor->getResultSet();
     userIds = resultSet->at(0);
@@ -386,11 +347,11 @@ void NetworkInformation::generateUserIdsPerProxy() {
     //int j = 0;
 
     for (int i = 0; i <= getAmountOfLeafProxys(); ++i) {
-        std::vector<std::string>* newVec = new std::vector<std::string>();
+        std::vector < std::string > *newVec = new std::vector<std::string>();
         userIdsPerProxy->push_back(newVec);
     }
-    srand(time(NULL));
-    for (auto id : *userIds) {
+    srand (time(NULL));for
+(    auto id : *userIds) {
         bool canNotConnect = true;
         int toConnect = 0;
         while (canNotConnect) {
@@ -430,7 +391,7 @@ void NetworkInformation::generateProxyCacheSettings() {
     for (auto line : config) {
         if (line[0] == 'R') {
             //std::string valueString = splitString(line, ":").at(1);
-            std::vector<std::string> values = splitString(line, ";");
+            std::vector < std::string > values = splitString(line, ";");
             proxyCacheSettings.emplace_back(
                     removeSpaces(splitString(values.at(0), "=").at(1)),
                     removeSpaces(splitString(values.at(2), "=").at(1)),
@@ -469,7 +430,8 @@ std::vector<std::pair<double, double>>* NetworkInformation::generateVectorOfDoub
             new std::vector<std::pair<double, double>>();
     if (!(values.at(values.size() - 1) == "")) {
         for (auto i : values) {
-            std::vector<std::string> value = splitString(removeSpaces(i), ":");
+            std::vector < std::string > value = splitString(removeSpaces(i),
+                    ":");
             storageAlterationVector->emplace_back(
                     std::make_pair(std::stod(value.at(0)),
                             std::stod(value.at(1))));
@@ -494,7 +456,7 @@ void NetworkInformation::generateConnectionTable() {
     config.erase(config.begin());
     config.erase(config.begin());
     for (unsigned int i = 0; i < config.size(); i++) {
-        std::vector<std::string> column = splitString(config[i], " ");
+        std::vector < std::string > column = splitString(config[i], " ");
         column.erase(column.begin());
         std::vector<int>* connections = new std::vector<int>();
         for (unsigned int j = 0; j < column.size(); j++) {

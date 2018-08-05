@@ -33,6 +33,7 @@
 #include <DBCursor.h>
 #include <string>
 #include "DBConnection.h"
+#include "DatabaseInformation.h"
 
 class MySqlConnection : public DBConnection {
 public:
@@ -40,10 +41,10 @@ public:
     virtual ~MySqlConnection();
     bool connect();
     void close();
-    DBCursor* selectMetaData(const std::string query);
-    DBCursor* selectAllRequests(const std::string query);
-    DBCursor* selectAllClients(const std::string query);
-    DBCursor* selectFirstTimestamp(const std::string query);
+    DBCursor* selectMetaData(DatabseInformation_t databaseInformation);
+    DBCursor* selectAllRequests(DatabseInformation_t databaseInformation);
+    DBCursor* selectAllClients(DatabseInformation_t databaseInformation);
+    DBCursor* selectFirstTimestamp(DatabseInformation_t databaseInformation);
 protected:
     sql::Driver *driver;
     sql::Connection *con;
