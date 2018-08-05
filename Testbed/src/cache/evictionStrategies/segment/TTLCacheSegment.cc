@@ -69,7 +69,7 @@ long long TTLCacheSegment::getSize() {
  * @brief Get the maximum size of the cache
  * @return Returns an integer Value describing the maximum size of the cache
  */
-long long TTLCacheSegment::getMaxSize(){
+long long TTLCacheSegment::getMaxSize() {
     return this->maxCacheSize;
 }
 void TTLCacheSegment::periodicEvents() {
@@ -108,7 +108,7 @@ bool TTLCacheSegment::contains(SegmentRequest* rqst) {
  */
 void TTLCacheSegment::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        RecencyNode* rec = container[id]->second->second;
+        int freedSize = container[id]->second->first->getSize();
         delete container[id]->second->first;
         rec->getPrev()->setNext(rec->getNext());
         rec->getNext()->setPrev(rec->getPrev());
@@ -116,6 +116,7 @@ void TTLCacheSegment::deleteSegment(std::string id) {
         delete container[id]->second;
         delete container[id];
         container.erase(id);
+        cacheSize = cacheSize - freedSize;
         writeOperation++;
     }
 }
