@@ -23,13 +23,11 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_ARCPROBATIONARYCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_ARCPROBATIONARYCACHE_H_
-#include <nodes/RecencyNode.h>
+#include "../nodes/RecencyNode.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
 #include "BasicProbationaryCache.h"
-#include "PointerAndCounter.h"
+#include "../../PointerAndCounter.h"
 
 class ARCProbationaryCache : public BasicProbationaryCache {
 public:

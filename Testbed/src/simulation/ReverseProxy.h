@@ -29,9 +29,10 @@
 #include <omnetpp.h>
 
 #include "../cache/ProxyCacheSettingst.h"
-#include "BaseCache.h"
-#include "BasicEvictionStrategy.h"
-#include "BasicAdmissionStrategy.h"
+#include "../cache/CacheFactory.h"
+#include "../cache/BaseCache.h"
+#include "../cache/evictionStrategies/BasicEvictionStrategy.h"
+#include "../cache/admissionStrategies/BasicAdmissionStrategy.h"
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "ClientCreator.h"

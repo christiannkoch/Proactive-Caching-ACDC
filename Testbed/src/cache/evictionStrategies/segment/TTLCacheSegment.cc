@@ -28,7 +28,6 @@
 #include "TTLCacheSegment.h"
 #include <string>
 #include <map>
-#include "PointerAndCounter.h"
 #include <sstream>
 
 TTLCacheSegment::TTLCacheSegment(long long size, std::string category) {

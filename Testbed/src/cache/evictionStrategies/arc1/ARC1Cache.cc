@@ -25,19 +25,11 @@
  * Eviction Strategy
  *
  */
-#include <ghostLists/GhostList.h>
+#include "ARC1Cache.h"
 #include <omnetpp.h>
 #include <map>
 #include <string>
 #include <vector>
-#include "ARC1Cache.h"
-#include "LFUCacheSegment.h"
-#include "ARCProbationaryCache.h"
-#include "ProbationaryCacheFactory.h"
-#include "CacheSegmentFactory.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "ReverseProxy.h"
 #include <sstream>
 
 ARC1Cache::ARC1Cache(std::vector<std::string>* parameters, long long size,

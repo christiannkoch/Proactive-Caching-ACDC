@@ -23,12 +23,12 @@
  */
 #include "AdmissionStrategyFactory.h"
 #include <string>
-#include "NHIT.h"
-#include "LCD.h"
-#include "LCE.h"
-#include "PROB.h"
-#include "RandomAdmission.h"
-#include "MCD.h"
+#include "nhit/NHIT.h"
+#include "lcd/LCD.h"
+#include "lce/LCE.h"
+#include "prob/PROB.h"
+#include "rand/RandomAdmission.h"
+#include "mcd/MCD.h"
 
 AdmissionStrategyFactory::AdmissionStrategyFactory() {
     // TODO Auto-generated constructor stub

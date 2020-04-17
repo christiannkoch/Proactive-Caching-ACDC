@@ -24,16 +24,16 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ARC1_ARC1CACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ARC1_ARC1CACHE_H_
 
-#include <ghostLists/GhostList.h>
 #include <map>
 #include <string>
 #include <vector>
-#include "ARCProbationaryCache.h"
-#include "BasicEvictionStrategy.h"
-#include "LFUCacheSegment.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "ReverseProxy.h"
+#include "../BasicEvictionStrategy.h"
+#include "../ghostLists/GhostList.h"
+#include "../probationary/ARCProbationaryCache.h"
+#include "../ProbationaryCacheFactory.h"
+#include "../CacheSegmentFactory.h"
+#include "../segment/LFUCacheSegment.h"
+#include "../../../simulation/ReverseProxy.h"
 /**
  * @brief The ARCCache class provides functionality to model the behaviour of an Adaptive Replacement Cache
  */

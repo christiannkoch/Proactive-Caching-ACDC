@@ -23,14 +23,12 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_TTL_TTLCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_TTL_TTLCACHE_H_
-#include <nodes/RecencyNode.h>
 #include <string>
 #include <map>
 #include <vector>
-#include "BasicEvictionStrategy.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
+#include "../BasicEvictionStrategy.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class TTLCache: public BasicEvictionStrategy {
 public:

@@ -24,16 +24,14 @@
 #ifndef SRC_DATABASE_MYSQLCONNECTION_H_
 #define SRC_DATABASE_MYSQLCONNECTION_H_
 
+#include "DBConnection.h"
 #include <mysql_connection.h>
 #include <iostream>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
-#include <DBCursor.h>
 #include <string>
-#include "DBConnection.h"
-#include "DatabaseInformation.h"
 
 class MySqlConnection : public DBConnection {
 public:

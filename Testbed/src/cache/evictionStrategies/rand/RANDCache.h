@@ -23,11 +23,9 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_RAND_RANDCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_RAND_RANDCACHE_H_
-#include "BasicEvictionStrategy.h"
 #include <string>
 #include <map>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../BasicEvictionStrategy.h"
 
 class RANDCache: public BasicEvictionStrategy {
 public:

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <segment/BasicCacheSegment.h>
+#include "BasicCacheSegment.h"
 
 BasicCacheSegment::BasicCacheSegment() {
     // TODO Auto-generated constructor stub

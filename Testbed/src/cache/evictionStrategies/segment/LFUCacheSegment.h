@@ -15,13 +15,13 @@
 
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_LFUCACHESEGMENT_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_LFUCACHESEGMENT_H_
-#include <nodes/FrequencyNode.h>
+#include "../nodes/FrequencyNode.h"
 #include <string>
 #include <map>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
 #include "BasicCacheSegment.h"
-#include "PointerAndCounter.h"
+#include "../../PointerAndCounter.h"
 
 class LFUCacheSegment: public BasicCacheSegment {
 public:

@@ -27,9 +27,6 @@
 #include <omnetpp.h>
 #include <list>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*

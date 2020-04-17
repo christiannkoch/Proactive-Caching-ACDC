@@ -7,7 +7,8 @@
 
 #ifndef SRC_CACHE_POINTERANDCOUNTER_H_
 #define SRC_CACHE_POINTERANDCOUNTER_H_
-#include "VideoSegment_m.h"
+#include "../simulation/VideoSegment_m.h"
+
 class PointerAndCounter {
 public:
     PointerAndCounter(VideoSegment* seg, int count);

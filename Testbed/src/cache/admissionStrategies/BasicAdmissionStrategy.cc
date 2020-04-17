@@ -21,7 +21,7 @@
  *
  * @section DESCRIPTION
  */
-#include <BasicAdmissionStrategy.h>
+#include "BasicAdmissionStrategy.h"
 
 BasicAdmissionStrategy::BasicAdmissionStrategy() {
     // TODO Auto-generated constructor stub

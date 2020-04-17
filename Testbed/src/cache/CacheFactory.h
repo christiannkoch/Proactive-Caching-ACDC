@@ -26,7 +26,12 @@
 #include <string>
 #include <vector>
 #include <omnetpp.h>
-#include "ReverseProxy.h"
+#include "../simulation/ReverseProxy.h"
+#include "BaseCache.h"
+#include "admissionStrategies/BasicAdmissionStrategy.h"
+#include "evictionStrategies/BasicEvictionStrategy.h"
+#include "admissionStrategies/AdmissionStrategyFactory.h"
+#include "evictionStrategies/EvictionStrategyFactory.h"
 
 class CacheFactory {
 public:

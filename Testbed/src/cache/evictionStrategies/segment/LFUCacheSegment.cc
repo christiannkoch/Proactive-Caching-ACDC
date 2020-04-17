@@ -25,13 +25,9 @@
  * Eviction Strategy
  *
  */
-#include <nodes/FrequencyNode.h>
 #include "LFUCacheSegment.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*

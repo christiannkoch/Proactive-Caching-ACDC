@@ -24,7 +24,7 @@
  */
 #ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
 #define SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
-#include "BasicAdmissionStrategy.h"
+#include "../BasicAdmissionStrategy.h"
 
 
 /**

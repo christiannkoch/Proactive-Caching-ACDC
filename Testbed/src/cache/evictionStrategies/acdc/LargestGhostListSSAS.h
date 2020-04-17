@@ -24,10 +24,8 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ACDC_LARGESTGHOSTLISTSSAS_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ACDC_LARGESTGHOSTLISTSSAS_H_
 #include "BasicSSAS.h"
-#include "BasicGhostList.h"
-#include "BasicCacheSegment.h"
-#include "ARCProbationaryCache.h"
 #include <vector>
+
 class LargestGhostListSSAS : public BasicSSAS {
 public:
     LargestGhostListSSAS(ARCProbationaryCache* probationaryCache,

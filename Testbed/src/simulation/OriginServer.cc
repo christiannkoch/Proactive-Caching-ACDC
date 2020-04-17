@@ -26,11 +26,6 @@
 #include <string.h>
 #include <omnetpp.h>
 #include <fstream>
-#include <ReverseProxyCreator.h>
-#include "NetworkInformation.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "ReverseProxy.h"
 
 Define_Module(OriginServer);
 

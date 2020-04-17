@@ -23,13 +23,11 @@
  */
 #ifndef SRC_CACHE_SLRU_PROBATIONARYCACHE_
 #define SRC_CACHE_SLRU_PROBATIONARYCACHE_
-#include <nodes/RecencyNode.h>
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
 #include "BasicProbationaryCache.h"
-#include "PointerAndCounter.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class SLRUProbationaryCache: public BasicProbationaryCache {
 public:

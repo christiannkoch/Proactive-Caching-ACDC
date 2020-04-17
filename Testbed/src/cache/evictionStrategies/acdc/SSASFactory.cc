@@ -22,11 +22,6 @@
  * @section DESCRIPTION
  */
 #include "SSASFactory.h"
-#include "BasicSSAS.h"
-#include "LargestGhostListSSAS.h"
-#include "SmallestGhostListSSAS.h"
-#include "RelativeLargestGhostListSSAS.h"
-#include "RelativeSmallestGhostListSSAS.h"
 /*
  * @brief returns an instance of the SSASFactory
  * @return an instance of the SSASFactory

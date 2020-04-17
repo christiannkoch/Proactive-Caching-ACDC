@@ -27,8 +27,6 @@
  */
 #include "InfinityCache.h"
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
 
 InfinityCache::InfinityCache(std::vector<std::string>* parameters, long long size,
         std::vector<std::pair<double, double>>* storageAlterations,

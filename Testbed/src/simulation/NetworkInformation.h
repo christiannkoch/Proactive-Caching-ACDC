@@ -28,7 +28,8 @@
 #include <utility>
 #include <map>
 #include <omnetpp.h>
-#include <DBConnection.h>
+#include "../database/DBConnection.h"
+#include "../database/DatabaseFactory.h"
 #include <sstream>
 #include <fstream>
 #include <map>

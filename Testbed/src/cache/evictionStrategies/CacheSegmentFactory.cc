@@ -25,11 +25,11 @@
  */
 #include "CacheSegmentFactory.h"
 #include <string>
-#include "LFUCacheSegment.h"
-#include "LRUCacheSegment.h"
-#include "FIFOCacheSegment.h"
-#include "RANDCacheSegment.h"
-#include "TTLCacheSegment.h"
+#include "segment/LFUCacheSegment.h"
+#include "segment/LRUCacheSegment.h"
+#include "segment/FIFOCacheSegment.h"
+#include "segment/RANDCacheSegment.h"
+#include "segment/TTLCacheSegment.h"
 
 CacheSegmentFactory::CacheSegmentFactory() {
     // TODO Auto-generated constructor stub

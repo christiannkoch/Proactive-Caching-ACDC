@@ -23,7 +23,7 @@
  */
 #ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
 #define SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
-#include "BasicAdmissionStrategy.h"
+#include "../BasicAdmissionStrategy.h"
 
 class LCE : public BasicAdmissionStrategy{
 public:

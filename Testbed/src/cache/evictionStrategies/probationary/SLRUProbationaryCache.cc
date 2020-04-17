@@ -26,9 +26,6 @@
  */
 #include "SLRUProbationaryCache.h"
 #include <list>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*

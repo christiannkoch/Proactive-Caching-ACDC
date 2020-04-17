@@ -26,7 +26,6 @@
  *
  */
 #include "FIFOCache.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 /*
  * @brief Creates a new FIFO Cache for caching functionalities

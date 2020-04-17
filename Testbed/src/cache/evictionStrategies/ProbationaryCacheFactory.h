@@ -23,7 +23,7 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARYCACHEFACTORY_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARYCACHEFACTORY_H_
-#include "BasicProbationaryCache.h"
+#include "probationary/BasicProbationaryCache.h"
 #include <string>
 class ProbationaryCacheFactory {
 public:

@@ -26,8 +26,8 @@
 
 #include <vector>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../simulation/SegmentRequest_m.h"
+#include "../../simulation/VideoSegment_m.h"
 
 /** The Base Class for Caches
  *  This is an abstract Class where all Caches inherit from

@@ -24,7 +24,7 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_CACHESEGMENTFACTORY_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_CACHESEGMENTFACTORY_H_
 #include <string>
-#include "BasicCacheSegment.h"
+#include "segment/BasicCacheSegment.h"
 
 class CacheSegmentFactory {
 public:

@@ -24,7 +24,6 @@
  * The NetworkInformation is a central class that holds much data for the simulation.
  */
 #include "NetworkInformation.h"
-#include <DatabaseFactory.h>
 #include <vector>
 #include <string>
 #include <omnetpp.h>

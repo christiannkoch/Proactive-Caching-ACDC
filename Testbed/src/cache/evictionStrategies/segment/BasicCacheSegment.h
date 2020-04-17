@@ -16,8 +16,8 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_BASICCACHESEGMENT_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_BASICCACHESEGMENT_H_
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
 class BasicCacheSegment {
 public:
     BasicCacheSegment();

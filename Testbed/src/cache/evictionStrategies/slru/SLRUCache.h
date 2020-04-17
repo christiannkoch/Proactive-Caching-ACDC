@@ -26,11 +26,13 @@
 #include <list>
 #include <string>
 #include <vector>
-#include "BasicEvictionStrategy.h"
-#include "LRUCacheSegment.h"
-#include "SLRUProbationaryCache.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../BasicEvictionStrategy.h"
+#include "../segment/LRUCacheSegment.h"
+#include "../probationary/SLRUProbationaryCache.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
+#include "../ProbationaryCacheFactory.h"
+#include "../CacheSegmentFactory.h"
 
 class SLRUCache: public BasicEvictionStrategy {
 public:

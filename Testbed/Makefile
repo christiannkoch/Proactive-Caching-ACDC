@@ -16,43 +16,7 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(QTENV_LIBS) $(CMDENV_LI
 #USERIF_LIBS = $(QTENV_LIBS)
 
 # C++ include paths (with -I)
-INCLUDE_PATH = \
-	-I. \
-    -Iconfigurations \
-    -Iconfigurations/ACARCConfigs \
-    -Iconfigurations/categorial \
-    -Iconfigurations/Hybrid \
-    -Iconfigurations/Infinity \
-    -Iconfigurations/Special \
-    -Iconfigurations/Topologies \
-    -Iresults \
-    -Isrc \
-    -Isrc/cache \
-    -Isrc/cache/admissionStretegies \
-    -Isrc/cache/admissionStretegies/lcd \
-    -Isrc/cache/admissionStretegies/lce \
-    -Isrc/cache/admissionStretegies/mcd \
-    -Isrc/cache/admissionStretegies/nhit \
-    -Isrc/cache/admissionStretegies/prob \
-    -Isrc/cache/admissionStretegies/rand \
-    -Isrc/cache/evictionStrategies \
-    -Isrc/cache/evictionStrategies/acdc \
-    -Isrc/cache/evictionStrategies/arc1 \
-    -Isrc/cache/evictionStrategies/arc2 \
-    -Isrc/cache/evictionStrategies/fifo \
-    -Isrc/cache/evictionStrategies/ghostLists \
-    -Isrc/cache/evictionStrategies/infinity \
-    -Isrc/cache/evictionStrategies/lfu \
-    -Isrc/cache/evictionStrategies/lfuda \
-    -Isrc/cache/evictionStrategies/lru \
-    -Isrc/cache/evictionStrategies/nodes \
-    -Isrc/cache/evictionStrategies/probationary \
-    -Isrc/cache/evictionStrategies/rand \
-    -Isrc/cache/evictionStrategies/segment \
-    -Isrc/cache/evictionStrategies/slru \
-    -Isrc/cache/evictionStrategies/ttl \
-    -Isrc/database \
-    -Isrc/simulation
+INCLUDE_PATH =
 
 # Additional object and library files to link with
 EXTRA_OBJS =
@@ -69,14 +33,15 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 OBJS = \
     $O/src/cache/BaseCache.o \
     $O/src/cache/CacheFactory.o \
-    $O/src/cache/admissionStretegies/AdmissionStrategyFactory.o \
-    $O/src/cache/admissionStretegies/BasicAdmissionStrategy.o \
-    $O/src/cache/admissionStretegies/lcd/LCD.o \
-    $O/src/cache/admissionStretegies/lce/LCE.o \
-    $O/src/cache/admissionStretegies/mcd/MCD.o \
-    $O/src/cache/admissionStretegies/nhit/NHIT.o \
-    $O/src/cache/admissionStretegies/prob/PROB.o \
-    $O/src/cache/admissionStretegies/rand/RandomAdmission.o \
+    $O/src/cache/PointerAndCounter.o \
+    $O/src/cache/admissionStrategies/AdmissionStrategyFactory.o \
+    $O/src/cache/admissionStrategies/BasicAdmissionStrategy.o \
+    $O/src/cache/admissionStrategies/lcd/LCD.o \
+    $O/src/cache/admissionStrategies/lce/LCE.o \
+    $O/src/cache/admissionStrategies/mcd/MCD.o \
+    $O/src/cache/admissionStrategies/nhit/NHIT.o \
+    $O/src/cache/admissionStrategies/prob/PROB.o \
+    $O/src/cache/admissionStrategies/rand/RandomAdmission.o \
     $O/src/cache/evictionStrategies/BasicEvictionStrategy.o \
     $O/src/cache/evictionStrategies/CacheSegmentFactory.o \
     $O/src/cache/evictionStrategies/EvictionStrategyFactory.o \
@@ -208,7 +173,7 @@ $O/%.o: %.cc $(COPTS_FILE) | msgheaders smheaders
 
 %_m.cc %_m.h: %.msg
 	$(qecho) MSGC: $<
-	$(Q)$(MSGC) -s _m.cc -MD -MP -MF $O/$(basename $@).d $(MSGCOPTS) $?
+	$(Q)$(MSGC) -s _m.cc -MD -MP -MF $O/$(basename $<)_m.h.d $(MSGCOPTS) $?
 
 %_sm.cc %_sm.h: %.sm
 	$(qecho) SMC: $<
@@ -231,4 +196,4 @@ cleanall:
 	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)
 
 # include all dependencies
--include $(OBJS:%.o=%.d)
+-include $(OBJS:%=%.d) $(MSGFILES:%.msg=$O/%_m.h.d)

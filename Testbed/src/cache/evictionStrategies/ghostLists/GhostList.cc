@@ -21,7 +21,7 @@
  *
  * @section DESCRIPTION
  */
-#include <ghostLists/GhostList.h>
+#include "GhostList.h"
 /*
  * @brief returns an instance of a GhostList
  * @return an instance of a GhostList

@@ -22,9 +22,6 @@
  * @section DESCRIPTION
  */
 #include "BasicSSAS.h"
-#include "BasicGhostList.h"
-#include "BasicCacheSegment.h"
-#include "ARCProbationaryCache.h"
 #include <vector>
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ACDC_RELATIVESMALLESTGHOSTLISTSSAS_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ACDC_RELATIVESMALLESTGHOSTLISTSSAS_H_

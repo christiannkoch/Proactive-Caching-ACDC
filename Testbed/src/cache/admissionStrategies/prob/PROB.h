@@ -23,7 +23,7 @@
  */
 #ifndef SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
 #define SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
-#include "BasicAdmissionStrategy.h"
+#include "../BasicAdmissionStrategy.h"
 
 class PROB : public BasicAdmissionStrategy{
 public:

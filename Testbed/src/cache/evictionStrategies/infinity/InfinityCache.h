@@ -28,9 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "BasicEvictionStrategy.h"
+#include "../BasicEvictionStrategy.h"
 
 class InfinityCache: public BasicEvictionStrategy {
 public:

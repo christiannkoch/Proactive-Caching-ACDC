@@ -25,13 +25,9 @@
  * Eviction Strategy
  *
  */
-#include <nodes/FrequencyNode.h>
 #include "LFUCache.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 /*
  * @brief Creates a new LFU Cache for caching functionalities

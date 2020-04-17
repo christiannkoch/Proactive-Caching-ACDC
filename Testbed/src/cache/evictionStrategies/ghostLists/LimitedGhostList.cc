@@ -21,8 +21,7 @@
  *
  * @section DESCRIPTION
  */
-#include <ghostLists/LimitedGhostList.h>
-#include <nodes/RecencyNode.h>
+#include "LimitedGhostList.h"
 #include <map>
 #include <string>
 

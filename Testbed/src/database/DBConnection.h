@@ -25,7 +25,7 @@
 #define SRC_DATABASE_DBCONNECTION_H_
 #include "DBCursor.h"
 #include <string>
-#include "DatabaseInformation.h"
+#include "../simulation/DatabaseInformation.h"
 
 class DBConnection {
 public:

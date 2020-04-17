@@ -29,9 +29,6 @@
 #include <list>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 /*
  * @brief Creates a new LRUCache for caching functionalities

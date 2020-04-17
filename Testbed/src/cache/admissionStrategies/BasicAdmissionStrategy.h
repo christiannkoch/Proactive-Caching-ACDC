@@ -23,7 +23,7 @@
  */
 #ifndef SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
 #define SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
-#include "VideoSegment_m.h"
+#include "../../simulation/VideoSegment_m.h"
 
 class BasicAdmissionStrategy {
 public:

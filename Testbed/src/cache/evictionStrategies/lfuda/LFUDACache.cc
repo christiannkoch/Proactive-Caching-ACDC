@@ -25,13 +25,9 @@
  * Eviction Strategy
  *
  */
-#include <evictionStrategies/lfuda/LFUDACache.h>
-#include <nodes/FrequencyNode.h>
+#include "LFUDACache.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*

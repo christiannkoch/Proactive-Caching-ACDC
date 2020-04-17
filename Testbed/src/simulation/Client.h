@@ -29,7 +29,8 @@
 #include <omnetpp.h>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-#include "DBConnection.h"
+#include "../database/DatabaseFactory.h"
+#include "../database/DBConnection.h"
 #include "NetworkInformation.h"
 
 using namespace omnetpp;

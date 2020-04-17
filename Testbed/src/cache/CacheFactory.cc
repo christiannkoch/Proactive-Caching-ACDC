@@ -29,11 +29,6 @@
 #include "CacheFactory.h"
 #include <string>
 #include <vector>
-#include "BaseCache.h"
-#include "BasicAdmissionStrategy.h"
-#include "BasicEvictionStrategy.h"
-#include "AdmissionStrategyFactory.h"
-#include "EvictionStrategyFactory.h"
 
 CacheFactory::CacheFactory() {
 

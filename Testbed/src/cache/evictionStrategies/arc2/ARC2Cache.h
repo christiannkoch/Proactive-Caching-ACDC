@@ -23,17 +23,17 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ARC2_ARC2CACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ARC2_ARC2CACHE_H_
-#include <ghostLists/LimitedGhostList.h>
 #include <omnetpp.h>
 #include <map>
 #include <string>
 #include <vector>
-#include "ARCProbationaryCache.h"
-#include "BasicEvictionStrategy.h"
-#include "LRUCacheSegment.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "ReverseProxy.h"
+#include "../BasicEvictionStrategy.h"
+#include "../ghostLists/LimitedGhostList.h"
+#include "../probationary/ARCProbationaryCache.h"
+#include "../segment/LRUCacheSegment.h"
+#include "../ProbationaryCacheFactory.h"
+#include "../CacheSegmentFactory.h"
+#include "../../../simulation/ReverseProxy.h"
 
 class ARC2Cache: public BasicEvictionStrategy {
 public:

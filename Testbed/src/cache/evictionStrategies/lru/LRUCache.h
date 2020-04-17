@@ -24,15 +24,14 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_LRU_LRUCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_LRU_LRUCACHE_H_
 
-#include <nodes/RecencyNode.h>
+
 #include <omnetpp.h>
 #include <map>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "BasicEvictionStrategy.h"
-#include "PointerAndCounter.h"
+#include "../BasicEvictionStrategy.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class LRUCache: public BasicEvictionStrategy {
 public:

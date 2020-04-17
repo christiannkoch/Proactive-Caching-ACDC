@@ -21,15 +21,11 @@
  *
  * @section DESCRIPTION
  */
-#include "CacheFactory.h"
+
 #include "ReverseProxy.h"
 #include <stdio.h>
 #include <string.h>
 #include <omnetpp.h>
-#include "NetworkInformation.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "RequestHandler.h"
 #include <vector>
 
 using namespace omnetpp;

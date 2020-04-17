@@ -23,8 +23,8 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_BASICPROBATIONARYCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_BASICPROBATIONARYCACHE_H_
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
 #include <string>
 
 class BasicProbationaryCache {

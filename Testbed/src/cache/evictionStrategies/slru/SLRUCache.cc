@@ -26,8 +26,6 @@
  *
  */
 #include "SLRUCache.h"
-#include "ProbationaryCacheFactory.h"
-#include "CacheSegmentFactory.h"
 #include <sstream>
 /*
  * @brief Creates a new SLRUCache for caching functionalities

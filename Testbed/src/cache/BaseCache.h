@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 
 #include "admissionStrategies/BasicAdmissionStrategy.h"
-#include "BasicEvictionStrategy.h"
+#include "evictionStrategies/BasicEvictionStrategy.h"
 
 class BaseCache {
 public:

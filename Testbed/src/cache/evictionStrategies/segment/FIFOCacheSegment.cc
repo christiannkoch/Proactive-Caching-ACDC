@@ -26,7 +26,6 @@
  *
  */
 #include "FIFOCacheSegment.h"
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*

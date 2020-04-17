@@ -27,7 +27,6 @@
  */
 #include "RANDCacheSegment.h"
 #include <algorithm>
-#include "PointerAndCounter.h"
 #include <sstream>
 
 /*
