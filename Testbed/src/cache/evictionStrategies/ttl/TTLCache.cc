@@ -156,8 +156,16 @@ bool TTLCache::contains(SegmentRequest *rqst) {
             + std::to_string(rqst->getSegmentId());
     if (container.find(keyBuilder) == container.end())
         return false;
-    else
-        return true;
+    else {
+            if ((omnetpp::simTime().dbl()
+                    - container.find(keyBuilder)->second->first) > timeToLive) {
+                deleteSegment(container.find(keyBuilder)->first);
+                return false;
+            }
+
+            else
+                return true;
+        }
 }
 /**
  * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
@@ -218,7 +226,7 @@ int TTLCache::getReadOperations() {
  * @param size An Integer Value
  */
 void TTLCache::setSize(long long size) {
-    cacheSize = size;
+    maxCacheSize = size;
 }
 
 /*

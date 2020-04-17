@@ -58,7 +58,7 @@ void TTLCacheSegment::resetRates() {
  * @todo Check if this should really be public
  */
 void TTLCacheSegment::setSize(long long size) {
-    this->cacheSize = size;
+    this->maxCacheSize = size;
 }
 /**
  * @brief Get the size of the cache
@@ -99,8 +99,13 @@ bool TTLCacheSegment::contains(SegmentRequest* rqst) {
             + std::to_string(rqst->getSegmentId());
     if (container.find(keyBuilder) == container.end())
         return false;
-    else
-        return true;
+    else {
+            if ((omnetpp::simTime().dbl() - container.find(keyBuilder)->second->first) > timeToLive)
+                return false;
+            else
+                return true;
+        }
+
 }
 /**
  * @brief deletes video segment from the storage of the cache
@@ -135,6 +140,7 @@ std::list<std::string>* TTLCacheSegment::insertIntoCache(VideoSegment* pkg) {
             + std::to_string(pkg->getSegmentId());
     std::string toDelete = "";
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
+    purge();
     while (cacheSize > maxCacheSize - pkg->getSize()) {
         toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);
@@ -165,6 +171,7 @@ std::list<std::string>* TTLCacheSegment::insertIntoCache(VideoSegment* pkg) {
 std::list<std::string>* TTLCacheSegment::reduce(int size) {
     std::string toDelete = "";
     std::list<std::string>* deletedVideoSegments = new std::list<std::string>();
+    purge();
     while (cacheSize > maxCacheSize - size) {
         toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);

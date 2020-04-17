@@ -141,7 +141,7 @@ void OriginServer::createReverseProxys() {
  * @brief called when the simulation is over
  */
 void OriginServer::finish() {
-    std::string filename = nwInfo->getRunNumber()+".txt";
+    std::string filename = "results/"+nwInfo->getRunNumber()+".txt";
     std::ofstream outputFile;
     outputFile.open(filename);
     for (auto i: reverseProxys){
