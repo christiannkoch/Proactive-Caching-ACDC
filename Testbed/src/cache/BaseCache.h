@@ -24,7 +24,8 @@
 #ifndef SRC_CACHE_BASECACHE_H_
 #define SRC_CACHE_BASECACHE_H_
 #include <omnetpp.h>
-#include "BasicAdmissionStrategy.h"
+
+#include "admissionStrategies/BasicAdmissionStrategy.h"
 #include "BasicEvictionStrategy.h"
 
 class BaseCache {
