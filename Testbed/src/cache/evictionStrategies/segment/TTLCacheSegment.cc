@@ -28,6 +28,8 @@
 #include "TTLCacheSegment.h"
 #include <string>
 #include <map>
+#include "PointerAndCounter.h"
+#include <sstream>
 
 TTLCacheSegment::TTLCacheSegment(long long size, std::string category) {
     // TODO Auto-generated constructor stub
@@ -108,7 +110,8 @@ bool TTLCacheSegment::contains(SegmentRequest* rqst) {
  */
 void TTLCacheSegment::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->second->first->getSize();
+        RecencyNode* rec = container[id]->second->second;
+        int freedSize = container[id]->second->first->getSegment()->getSize();
         delete container[id]->second->first;
         rec->getPrev()->setNext(rec->getNext());
         rec->getNext()->setPrev(rec->getPrev());
@@ -120,6 +123,7 @@ void TTLCacheSegment::deleteSegment(std::string id) {
         writeOperation++;
     }
 }
+
 /**
  * @brief Inserts a video segment into the Cache
  *
@@ -136,9 +140,9 @@ std::list<std::string>* TTLCacheSegment::insertIntoCache(VideoSegment* pkg) {
         deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
-    auto k = new std::pair<double, std::pair<VideoSegment*, RecencyNode*>*>(
+    auto k = new std::pair<double, std::pair<PointerAndCounter*, RecencyNode*>*>(
             omnetpp::simTime().dbl(), p);
     container[keyBuilder] = k;
     head->getNext()->setPrev(p->second);
@@ -179,7 +183,8 @@ VideoSegment* TTLCacheSegment::retrieveSegment(SegmentRequest* rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->second->first;
+    VideoSegment *pkg = container[keyBuilder]->second->first->getSegment();
+    container[keyBuilder]->second->first->increaseCount();
     container[keyBuilder]->first = omnetpp::simTime().dbl();
     rearrangeCache(pkg);
     return pkg->dup();
@@ -259,3 +264,13 @@ void TTLCacheSegment::purge() {
         readOperation++;
     }
 }
+
+std::string TTLCacheSegment::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

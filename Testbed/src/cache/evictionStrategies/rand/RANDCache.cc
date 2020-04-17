@@ -27,6 +27,7 @@
  */
 #include "RANDCache.h"
 #include <algorithm>
+#include <sstream>
 /*
  * @brief Creates a new RANDCache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -199,4 +200,13 @@ void RANDCache::setSize(long long size) {
  */
 void RANDCache::rearrangeCache(VideoSegment *pkg) {
 
+}
+
+std::string RANDCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->getCount() << "; ";
+    }
+
+    return buf.str();
 }

@@ -48,6 +48,7 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     void setSize(long long size);
     std::map<std::string, std::string> container;

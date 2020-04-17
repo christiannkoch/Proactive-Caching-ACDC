@@ -48,6 +48,7 @@ public:
     int getReadOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;
     void setSize(long long size);

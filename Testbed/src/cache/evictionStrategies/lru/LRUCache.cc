@@ -31,6 +31,8 @@
 #include <vector>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
+#include "PointerAndCounter.h"
+#include <sstream>
 /*
  * @brief Creates a new LRUCache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -86,7 +88,7 @@ void LRUCache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void LRUCache::deleteSegment(std::string id) {
-    int freedSize = container[id]->first->getSize();
+    int freedSize = container[id]->first->getSegment()->getSize();
     RecencyNode* rec = container[id]->second;
     delete container[id]->first;
     rec->getPrev()->setNext(rec->getNext());
@@ -118,7 +120,7 @@ void LRUCache::insertIntoCache(VideoSegment *pkg) {
         deleteSegment(toDelete);
         //std::cout << "Insert while schleife vom Loeschen" <<"\n";
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
     container[keyBuilder] = p;
     head->getNext()->setPrev(p->second);
@@ -153,7 +155,8 @@ VideoSegment *LRUCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -227,3 +230,13 @@ int LRUCache::getWriteOperations() {
 int LRUCache::getReadOperations() {
     return this->readOperation;
 }
+
+std::string LRUCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

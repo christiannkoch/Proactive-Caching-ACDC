@@ -21,6 +21,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicCacheSegment.h"
+#include "PointerAndCounter.h"
 
 class LFUCacheSegment: public BasicCacheSegment {
 public:
@@ -41,11 +42,12 @@ public:
     std::string getCategory();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     std::string getLeastFrequent();
     void rearrangeCache(VideoSegment* pkg);
     void setCategory(std::string category);
-    std::map<std::string, std::pair<VideoSegment*, FrequencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, FrequencyNode*>*> container;
 
     FrequencyNode* head;
     std::string category;

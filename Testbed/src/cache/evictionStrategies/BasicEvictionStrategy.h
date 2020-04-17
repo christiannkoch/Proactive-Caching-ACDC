@@ -46,6 +46,7 @@ public:
     virtual int getReadOperations() = 0;
     virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
+    virtual std::string getCountsOfElements() = 0;
 protected:
     virtual void setSize(long long size) = 0;
     std::vector<std::string>* parameters;

@@ -116,3 +116,8 @@ int InfinityCache::getWriteOperations() {
 int InfinityCache::getReadOperations() {
     return this->readOperation;
 }
+
+std::string InfinityCache::getCountsOfElements(){
+    return " ";
+}
+

@@ -67,6 +67,7 @@ public:
     double getEndTime();
     double getSimulationDuration();
     int getCDNDelay();
+    std::string getRunNumber();
 protected:
     int cdnDelay = 0;
     int amountOfLevels = 1;
@@ -88,6 +89,7 @@ protected:
 
     // Databse Parameters and functions
     std::string path;
+    std::string runNumber;
     struct DatabseInformation_t databaseInformation;
     DBConnection* dataBaseConnection;
     void setupDatabaseParameters(std::vector<std::string>* config);

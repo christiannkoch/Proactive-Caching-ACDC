@@ -31,6 +31,8 @@
 #include <string>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
+#include "PointerAndCounter.h"
+#include <sstream>
 
 /*
  * @brief Creates a new LFU CacheSegment
@@ -192,7 +194,7 @@ void LFUCacheSegment::deleteSegment(std::string id) {
             delete (freq);
 
         }
-        int freedSize = container[id]->first->getSize();
+        int freedSize = container[id]->first->getSegment()->getSize();
         cacheSize = cacheSize - freedSize;
         delete (container[id]->first);
         delete (container[id]);
@@ -227,7 +229,7 @@ std::list<std::string>* LFUCacheSegment::insertIntoCache(VideoSegment *pkg) {
     if (freq->getValue() != 1) {
         std::set<std::string>* items = new std::set<std::string>();
         items->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg,
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg, 0),
                 new FrequencyNode(1, items, head, freq));
         container[keyBuilder] = p;
         freq->setPrev(p->second);
@@ -235,7 +237,7 @@ std::list<std::string>* LFUCacheSegment::insertIntoCache(VideoSegment *pkg) {
 
     } else {
         freq->getItems()->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg, freq);
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg, 0), freq);
         container[keyBuilder] = p;
     }
     writeOperation++;
@@ -276,7 +278,8 @@ VideoSegment *LFUCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -319,3 +322,13 @@ int LFUCacheSegment::getReadOperations() {
 int LFUCacheSegment::getWriteOperations() {
     return this->writeOperation;
 }
+
+std::string LFUCacheSegment::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

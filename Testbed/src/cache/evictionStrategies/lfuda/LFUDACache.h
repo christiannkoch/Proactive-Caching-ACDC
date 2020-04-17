@@ -31,6 +31,8 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicEvictionStrategy.h"
+#include "PointerAndCounter.h"
+
 class LFUDACache: public BasicEvictionStrategy {
 public:
     LFUDACache(std::vector<std::string>* parameters, long long size,
@@ -47,12 +49,13 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;
     void setSize(long long size) override;
     void rearrangeCache(VideoSegment *pkg) override;
     std::string getLeastFrequent();
-    std::map<std::string, std::pair<VideoSegment*, FrequencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, FrequencyNode*>*> container;
     std::map<int, FrequencyNode*> nodeContainer;
     FrequencyNode* head;
     unsigned long long maxCacheSize;

@@ -31,6 +31,9 @@
 #include <vector>
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
+#include "PointerAndCounter.h"
+#include <sstream>
+
 /*
  * @brief Creates a new TTLCache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -119,9 +122,9 @@ void TTLCache::insertIntoCache(VideoSegment *pkg) {
         std::string toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
-    auto k = new std::pair<double, std::pair<VideoSegment*, RecencyNode*>*>(
+    auto k = new std::pair<double, std::pair<PointerAndCounter*, RecencyNode*>*>(
             omnetpp::simTime().dbl(), p);
     container[keyBuilder] = k;
     head->getNext()->setPrev(p->second);
@@ -168,7 +171,8 @@ VideoSegment* TTLCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->second->first;
+    VideoSegment *pkg = container[keyBuilder]->second->first->getSegment();
+    container[keyBuilder]->second->first->increaseCount();
     container[keyBuilder]->first = omnetpp::simTime().dbl();
     rearrangeCache(pkg);
     return pkg->dup();
@@ -244,3 +248,13 @@ void TTLCache::rearrangeCache(VideoSegment *pkg) {
 void TTLCache::alterCacheSize(double newCacheSize) {
     maxCacheSize = newCacheSize;
 }
+
+std::string TTLCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

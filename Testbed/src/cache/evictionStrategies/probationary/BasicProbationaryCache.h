@@ -43,6 +43,7 @@ public:
     virtual int getWriteOperations() = 0;
     virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
+    std::string getCountsOfElements();
 protected:
     unsigned long long maxCacheSize = 0;
     unsigned long long cacheSize = 0;

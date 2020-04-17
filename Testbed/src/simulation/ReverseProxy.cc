@@ -245,7 +245,6 @@ void ReverseProxy::finish() {
     recordScalar("Hit Rate", cacheHitTotal / (cacheHitTotal + cacheMissTotal));
     recordScalar("Write Operations", (double) cache->getWriteOperations());
     recordScalar("Read OPerations", (double) cache->getReadOperations());
-
     delete rqHandler;
     delete cache;
     //delete recordingEvent;
@@ -300,3 +299,8 @@ void ReverseProxy::recordData() {
     delayVector.clear();
     firstSegmentDelayVector.clear();
 }
+
+std::string ReverseProxy::getCountsOfElements(){
+    return settings->name + ": " + cache->getEvictionStrategy()->getCountsOfElements();
+}
+

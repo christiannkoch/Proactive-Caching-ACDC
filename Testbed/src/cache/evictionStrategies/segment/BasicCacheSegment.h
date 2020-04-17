@@ -37,6 +37,7 @@ public:
     virtual std::string getCategory() = 0;
     virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
+    std::string getCountsOfElements();
 protected:
     virtual void rearrangeCache(VideoSegment *pkg) = 0;
     unsigned long long cacheSize = 0;

@@ -29,6 +29,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicProbationaryCache.h"
+#include "PointerAndCounter.h"
 
 class SLRUProbationaryCache: public BasicProbationaryCache {
 public:
@@ -48,12 +49,13 @@ public:
     void drop(VideoSegment* pkg);
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     unsigned long long maxCacheSize;
     unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment *pkg);
     RecencyNode* head;
-    std::map<std::string, std::pair<VideoSegment*, RecencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, RecencyNode*>*> container;
     int writeOperation = 0;
     int readOperation = 0;
 };

@@ -22,6 +22,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicCacheSegment.h"
+#include "PointerAndCounter.h"
 
 class LRUCacheSegment: public BasicCacheSegment {
 public:
@@ -43,11 +44,12 @@ public:
     VideoSegment* getElementWithSecondChance();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     unsigned long long maxCacheSize;
         unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment* pkg);
-    std::map<std::string, std::pair<VideoSegment*, RecencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, RecencyNode*>*> container;
     void setCategory(std::string category);
     RecencyNode* head;
     std::string category;

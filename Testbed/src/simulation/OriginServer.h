@@ -31,6 +31,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "NetworkInformation.h"
+#include "ReverseProxy.h"
 
 using namespace omnetpp;
 
@@ -52,6 +53,7 @@ protected:
     void recordData();
     cMessage* recordingEvent;
     double timeDifference = 0.0;
+    std::vector<cModule*> reverseProxys;
 };
 
 #endif /* SRC_SIMULATION_ORIGINSERVER_H_ */

@@ -31,6 +31,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicEvictionStrategy.h"
+#include "PointerAndCounter.h"
 
 class LFUCache: public BasicEvictionStrategy {
 public:
@@ -48,12 +49,13 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;/**< a boolean value that is true, if all cache expand or reduce operations have been performed */
     void setSize(long long size) override;
     void rearrangeCache(VideoSegment *pkg) override;
     std::string getLeastFrequent();
-    std::map<std::string, std::pair<VideoSegment*, FrequencyNode*>*> container;/**< This models the storage of the cache */
+    std::map<std::string, std::pair<PointerAndCounter*, FrequencyNode*>*> container;/**< This models the storage of the cache */
     FrequencyNode* head;/**< The first node in the frequency node queue */
     unsigned long long maxCacheSize; /**< a vector storing all parameters for the eviction strategy */
     unsigned long long cacheSize = 0; /**< a long long representing the maximum size of the cache in kbit */

@@ -21,6 +21,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicCacheSegment.h"
+#include "PointerAndCounter.h"
 
 class TTLCacheSegment: public BasicCacheSegment {
 public:
@@ -41,13 +42,14 @@ public:
     std::string getCategory();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     RecencyNode* head;
     unsigned long long maxCacheSize;
         unsigned long long cacheSize;
     void rearrangeCache(VideoSegment* pkg);
     void setCategory(std::string category);
-    std::map<std::string, std::pair<double, std::pair<VideoSegment*,RecencyNode*>*>*> container;
+    std::map<std::string, std::pair<double, std::pair<PointerAndCounter*,RecencyNode*>*>*> container;
     std::string category;
     int writeOperation = 0;
     int readOperation = 0;

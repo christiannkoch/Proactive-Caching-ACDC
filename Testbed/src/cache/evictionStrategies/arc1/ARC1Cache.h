@@ -87,6 +87,7 @@ public:
     void deleteSegment(std::string id);
     int getWriteOperations();
     int getReadOperations();
+    std::string getCountsOfElements();
 protected:
     /**
      * @brief Sets the size of the Cache

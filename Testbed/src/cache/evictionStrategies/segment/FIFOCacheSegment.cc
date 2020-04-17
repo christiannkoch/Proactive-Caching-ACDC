@@ -26,6 +26,8 @@
  *
  */
 #include "FIFOCacheSegment.h"
+#include "PointerAndCounter.h"
+#include <sstream>
 
 /*
  * @brief Creates a new FIFO CacheSegment
@@ -67,7 +69,7 @@ void FIFOCacheSegment::resetRates() {
  */
 void FIFOCacheSegment::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->first->getSize();
+        int freedSize = container[id]->first->getSegment()->getSize();
         RecencyNode* rec = container[id]->second;
         rec->getPrev()->setNext(rec->getNext());
         rec->getNext()->setPrev(rec->getPrev());
@@ -103,7 +105,7 @@ std::list<std::string>* FIFOCacheSegment::insertIntoCache(VideoSegment *pkg) {
         deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
     container[keyBuilder] = p;
     head->getNext()->setPrev(p->second);
@@ -162,7 +164,8 @@ VideoSegment* FIFOCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -261,3 +264,13 @@ void FIFOCacheSegment::setCategory(std::string category) {
 std::string FIFOCacheSegment::getCategory() {
     return this->category;
 }
+
+std::string FIFOCacheSegment::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

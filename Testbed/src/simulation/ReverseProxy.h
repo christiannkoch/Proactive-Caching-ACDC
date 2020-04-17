@@ -41,6 +41,8 @@
 using namespace omnetpp;
 
 class ReverseProxy: public cSimpleModule {
+public:
+    std::string getCountsOfElements();
 protected:
     void sendMessage(cMessage *msg, int gate);
     void handleMessage(cMessage *msg) override;
@@ -73,6 +75,7 @@ protected:
     void scheduleSelfMessages();
     std::vector<double> delayVector;
     std::vector<double> firstSegmentDelayVector;
+    std::string elementCounterAtEnd;
 };
 
 #endif /* SRC_SIMULATION_REVERSEPROXY_H_ */

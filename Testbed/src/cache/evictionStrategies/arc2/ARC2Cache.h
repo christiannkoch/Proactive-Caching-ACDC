@@ -52,6 +52,7 @@ public:
     void deleteSegment(std::string id);
     int getWriteOperations();
     int getReadOperations();
+    std::string getCountsOfElements();
 protected:
     void setSize(long long size);
     bool expanded; /**< a boolean value that is true, if all cache expand or reduce operations have been performed */

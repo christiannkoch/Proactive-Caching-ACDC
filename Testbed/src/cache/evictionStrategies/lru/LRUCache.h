@@ -49,11 +49,12 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;
     RecencyNode* head;
     void setSize(long long size);
-    std::map<std::string, std::pair<VideoSegment*, RecencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, RecencyNode*>*> container;
     unsigned long long maxCacheSize;
     unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment *pkg);

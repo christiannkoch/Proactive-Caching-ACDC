@@ -27,6 +27,8 @@
  */
 #include "RANDCacheSegment.h"
 #include <algorithm>
+#include "PointerAndCounter.h"
+#include <sstream>
 
 /*
  * @brief Creates a new Rand CacheSegment
@@ -94,7 +96,7 @@ void RANDCacheSegment::clearCache() {
  */
 void RANDCacheSegment::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->getSize();
+        int freedSize = container[id]->getSegment()->getSize();
         cacheSize = cacheSize - freedSize;
         delete container[id];
         container.erase(id);
@@ -135,7 +137,7 @@ std::list<std::string>* RANDCacheSegment::insertIntoCache(VideoSegment* pkg) {
         deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
-    container[keyBuilder] = pkg;
+    container[keyBuilder] = new PointerAndCounter(pkg, 0);
     keyList.push_back(keyBuilder);
     cacheSize = cacheSize + pkg->getSize();
     return deletedVideoSegments;
@@ -174,7 +176,7 @@ VideoSegment* RANDCacheSegment::retrieveSegment(SegmentRequest* rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    return container[keyBuilder]->dup();
+    return container[keyBuilder]->getSegment()->dup();
 }
 /**
  * @brief expands the size of the cache segment
@@ -230,3 +232,13 @@ void RANDCacheSegment::rearrangeCache(VideoSegment* pkg) {
 void RANDCacheSegment::setCategory(std::string category) {
     this->category = category;
 }
+
+std::string RANDCacheSegment::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

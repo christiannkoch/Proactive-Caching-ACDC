@@ -50,6 +50,7 @@ using namespace omnetpp;
 NetworkInformation::NetworkInformation(omnetpp::cModule* owner) {
     this->owner = owner;
     std::string test = owner->getParentModule()->par("SetupfileName");
+    runNumber = owner->getParentModule()->par("Runnumber");
     path = "configurations/" + test;
     readFile();
     setupDatabaseParameters(&config);
@@ -622,3 +623,8 @@ void NetworkInformation::readFile() {
 ProxyCacheSettings_t* NetworkInformation::getSettings(int id) {
     return &proxyCacheSettings.at(id - 1);
 }
+
+std::string NetworkInformation::getRunNumber(){
+    return this->runNumber;
+}
+

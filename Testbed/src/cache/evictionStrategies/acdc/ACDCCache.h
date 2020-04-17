@@ -48,6 +48,7 @@ public:
     int getReadOperations();
     void resetRates();
     void deleteSegment(std::string id);
+    std::string getCountsOfElements();
 protected:
     bool expanded = false;
     std::string expandStrat = "";
