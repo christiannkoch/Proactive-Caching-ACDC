@@ -30,7 +30,7 @@
 #include "BasicEvictionStrategy.h"
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
-#include "PointerAndCounter.h",
+#include "PointerAndCounter.h"
 
 class TTLCache: public BasicEvictionStrategy {
 public:

@@ -80,7 +80,7 @@ void FIFOCache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void FIFOCache::deleteSegment(std::string id) {
-    int freedSize = container[id]->first->getSize();
+    int freedSize = container[id]->first->getSegment()->getSize();
     delete container[id]->first;
     RecencyNode* rec = container[id]->second;
     rec->getPrev()->setNext(rec->getNext());

@@ -32,6 +32,7 @@
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "BasicEvictionStrategy.h"
+#include "PointerAndCounter.h"
 
 class LRUCache: public BasicEvictionStrategy {
 public:

@@ -97,7 +97,7 @@ void TTLCache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void TTLCache::deleteSegment(std::string id) {
-    int freedSize = container[id]->second->first->getSize();
+    int freedSize = container[id]->second->first->getSegment()->getSize();
     RecencyNode* rec = container[id]->second->second;
     delete container[id]->second->first;
     rec->getPrev()->setNext(rec->getNext());

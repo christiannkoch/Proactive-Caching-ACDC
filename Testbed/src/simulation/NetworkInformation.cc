@@ -50,7 +50,8 @@ using namespace omnetpp;
 NetworkInformation::NetworkInformation(omnetpp::cModule* owner) {
     this->owner = owner;
     std::string test = owner->getParentModule()->par("SetupfileName");
-    runNumber = owner->getParentModule()->par("Runnumber");
+    std::string temp = owner->getParentModule()->par("Runnumber");
+    runNumber = temp;
     path = "configurations/" + test;
     readFile();
     setupDatabaseParameters(&config);
