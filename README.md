@@ -34,7 +34,7 @@ Now, open a terminal, change directory to the OMNeT++ folder and execute the fol
 
 ```{r, engine='bash'}
 . setenv
-./configure
+./configure WITH_OSGEARTH=no WITH_OSG=no
 make
 make install
 ```    
