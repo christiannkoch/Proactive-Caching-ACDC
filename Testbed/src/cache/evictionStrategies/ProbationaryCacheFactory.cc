@@ -23,8 +23,8 @@
  */
 #include "ProbationaryCacheFactory.h"
 #include <string>
-#include "SLRUProbationaryCache.h"
-#include "ARCProbationaryCache.h"
+#include "probationary/SLRUProbationaryCache.h"
+#include "probationary/ARCProbationaryCache.h"
 
 ProbationaryCacheFactory::ProbationaryCacheFactory() {
     // TODO Auto-generated constructor stub

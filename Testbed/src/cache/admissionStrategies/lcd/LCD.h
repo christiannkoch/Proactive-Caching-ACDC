@@ -12,25 +12,37 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file BasicAdmissionStrategy.h
+/* @file LCD.h
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for BasicAdmissionStrategy
+ * @brief header file for LCD
  *
  * @section DESCRIPTION
+ *
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
-#include "VideoSegment_m.h"
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
+#include "../BasicAdmissionStrategy.h"
 
-class BasicAdmissionStrategy {
+
+/**
+ * @brief Class that models the behaviour of the Leave Copy Down Admission Strategy
+ */
+class LCD : public BasicAdmissionStrategy{
 public:
-    BasicAdmissionStrategy();
-    virtual ~BasicAdmissionStrategy();
-    virtual bool toBeCached(VideoSegment* pkg) = 0;
-    virtual void periodicEvents() = 0;
+    // Default constructor
+    LCD();
+
+    // Destructor
+    virtual ~LCD();
+
+    // Answer true iff package has to be cached
+    bool toBeCached(VideoSegment* pkg);
+
+    // Perform periodic events
+    void periodicEvents();
 };
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_ */

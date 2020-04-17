@@ -28,8 +28,7 @@
 #include "LRUCacheSegment.h"
 #include <omnetpp.h>
 #include <list>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
 
 /*
  * @brief Creates a new LRU CacheSegment
@@ -69,7 +68,7 @@ void LRUCacheSegment::periodicEvents() {
 VideoSegment* LRUCacheSegment::getElementWithSecondChance() {
     if (container.size() > 1) {
         writeOperation++;
-        return container[head->getPrev()->getValue()]->first->dup();
+        return container[head->getPrev()->getValue()]->first->getSegment()->dup();
     }
 
     else
@@ -98,7 +97,7 @@ std::list<std::string>* LRUCacheSegment::insertIntoCache(VideoSegment *pkg) {
         deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
     container[keyBuilder] = p;
     head->getNext()->setPrev(p->second);
@@ -140,7 +139,7 @@ std::list<std::string>* LRUCacheSegment::reduce(int size) {
  */
 void LRUCacheSegment::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->first->getSize();
+        int freedSize = container[id]->first->getSegment()->getSize();
         RecencyNode* rec = container[id]->second;
         rec->getPrev()->setNext(rec->getNext());
         rec->getNext()->setPrev(rec->getPrev());
@@ -179,7 +178,8 @@ VideoSegment* LRUCacheSegment::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -287,3 +287,13 @@ void LRUCacheSegment::setCategory(std::string category) {
 std::string LRUCacheSegment::getCategory() {
     return this->category;
 }
+
+std::string LRUCacheSegment::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

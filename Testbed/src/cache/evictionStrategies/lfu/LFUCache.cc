@@ -25,12 +25,10 @@
  * Eviction Strategy
  *
  */
-#include <nodes/FrequencyNode.h>
 #include "LFUCache.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
 /*
  * @brief Creates a new LFU Cache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -86,7 +84,7 @@ void LFUCache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void LFUCache::deleteSegment(std::string id) {
-    int freedSize = container[id]->first->getSize();
+    int freedSize = container[id]->first->getSegment()->getSize();
     FrequencyNode* freq = container[id]->second;
     freq->getItems()->erase(id);
     if (freq->getItems()->size() == 0) {
@@ -133,7 +131,7 @@ void LFUCache::insertIntoCache(VideoSegment *pkg) {
     if (freq->getValue() != 1) {
         std::set<std::string>* items = new std::set<std::string>();
         items->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg,
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg,0),
                 new FrequencyNode(1, items, head, freq));
         container[keyBuilder] = p;
         freq->setPrev(p->second);
@@ -141,7 +139,7 @@ void LFUCache::insertIntoCache(VideoSegment *pkg) {
 
     } else {
         freq->getItems()->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg, freq);
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg,0), freq);
         container[keyBuilder] = p;
     }
     cacheSize = cacheSize + pkg->getSize();
@@ -176,7 +174,8 @@ VideoSegment *LFUCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -294,4 +293,14 @@ int LFUCache::getReadOperations() {
 int LFUCache::getWriteOperations() {
     return this->writeOperation;
 }
+
+std::string LFUCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+
 

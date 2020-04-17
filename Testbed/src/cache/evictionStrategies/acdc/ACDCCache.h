@@ -23,10 +23,16 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ACDC_ACDCCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ACDC_ACDCCACHE_H_
-#include "BasicGhostList.h"
-#include "BasicEvictionStrategy.h"
-#include "BasicCacheSegment.h"
-#include "ARCProbationaryCache.h"
+#include "../BasicEvictionStrategy.h"
+#include "../ghostLists/BasicGhostList.h"
+#include "../ghostLists/LifeTimeGhostList.h"
+#include "../ghostLists/GhostList.h"
+#include "../segment/BasicCacheSegment.h"
+#include "../probationary/ARCProbationaryCache.h"
+#include "../ProbationaryCacheFactory.h"
+#include "../CacheSegmentFactory.h"
+#include "SSASFactory.h"
+#include "BasicSSAS.h"
 #include <vector>
 #include <string>
 #include <omnetpp.h>
@@ -48,6 +54,7 @@ public:
     int getReadOperations();
     void resetRates();
     void deleteSegment(std::string id);
+    std::string getCountsOfElements();
 protected:
     bool expanded = false;
     std::string expandStrat = "";

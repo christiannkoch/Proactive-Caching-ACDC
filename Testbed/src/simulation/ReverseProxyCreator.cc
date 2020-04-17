@@ -67,7 +67,7 @@ ReverseProxyCreator::~ReverseProxyCreator() {
  *
  * Creates the reverse proxies
  */
-void ReverseProxyCreator::createReverseProxys() {
+std::vector<cModule*> ReverseProxyCreator::createReverseProxys() {
     int proxyId = 1;
     for (auto revProxy : *cacheSettings) {
         cModuleType *moduleType = cModuleType::get(
@@ -96,6 +96,7 @@ void ReverseProxyCreator::createReverseProxys() {
         proxyId++;
     }
     connectNetwork();
+    return ReverseProxys;
 }
 
 /*

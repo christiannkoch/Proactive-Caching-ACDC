@@ -16,8 +16,8 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_BASICCACHESEGMENT_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_BASICCACHESEGMENT_H_
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
 class BasicCacheSegment {
 public:
     BasicCacheSegment();
@@ -37,6 +37,7 @@ public:
     virtual std::string getCategory() = 0;
     virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
+    virtual std::string getCountsOfElements() = 0;
 protected:
     virtual void rearrangeCache(VideoSegment *pkg) = 0;
     unsigned long long cacheSize = 0;

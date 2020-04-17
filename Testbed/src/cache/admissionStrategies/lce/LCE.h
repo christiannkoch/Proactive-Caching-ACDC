@@ -12,27 +12,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file PROB.h
+/* @file LCE.h
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for PROB
+ * @brief header file for LCE
  *
  * @section DESCRIPTION
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
-#include "BasicAdmissionStrategy.h"
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
+#include "../BasicAdmissionStrategy.h"
 
-class PROB : public BasicAdmissionStrategy{
+class LCE : public BasicAdmissionStrategy{
 public:
-    PROB(std::vector<std::string>* parameters);
-    virtual ~PROB();
+    LCE();
+    virtual ~LCE();
     bool toBeCached(VideoSegment* pkg);
     void periodicEvents();
-private:
-    double propability;
 };
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_ */

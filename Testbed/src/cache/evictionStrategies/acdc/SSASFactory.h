@@ -24,11 +24,17 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ACDC_SSASFACTORY_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ACDC_SSASFACTORY_H_
 #include <string>
-#include "BasicSSAS.h"
-#include "BasicGhostList.h"
-#include "BasicCacheSegment.h"
-#include "ARCProbationaryCache.h"
 #include <vector>
+#include "BasicSSAS.h"
+#include "../ghostLists/BasicGhostList.h"
+#include "../segment/BasicCacheSegment.h"
+#include "../probationary/ARCProbationaryCache.h"
+#include "BasicSSAS.h"
+#include "LargestGhostListSSAS.h"
+#include "SmallestGhostListSSAS.h"
+#include "RelativeLargestGhostListSSAS.h"
+#include "RelativeSmallestGhostListSSAS.h"
+
 class SSASFactory {
 public:
     SSASFactory();

@@ -27,14 +27,10 @@
  *
  */
 #include "ACDCCache.h"
-
-#include <ghostLists/GhostList.h>
-#include "ProbationaryCacheFactory.h"
-#include "CacheSegmentFactory.h"
-#include "LifeTimeGhostList.h"
 #include <string>
-#include "SSASFactory.h"
-#include "BasicSSAS.h"
+#include <sstream>
+#include <algorithm>
+
 
 /*
  * @brief returns an instance of the ACDCCache
@@ -426,3 +422,15 @@ int ACDCCache::findGhostListForCategory(VideoSegment* pkg) {
             cacheSegment = i;
     return cacheSegment;
 }
+
+std::string ACDCCache::getCountsOfElements() {
+    std::stringstream buf;
+    buf << "Probationary: " << probationaryCache->getCountsOfElements() << "; ";
+    for (auto i : cacheSegmentVector) {
+        buf << i->getCategory() << ": " << i->getCountsOfElements() << "; ";
+    }
+
+    return buf.str();
+}
+
+

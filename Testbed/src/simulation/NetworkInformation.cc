@@ -24,7 +24,6 @@
  * The NetworkInformation is a central class that holds much data for the simulation.
  */
 #include "NetworkInformation.h"
-#include <DatabaseFactory.h>
 #include <vector>
 #include <string>
 #include <omnetpp.h>
@@ -50,6 +49,8 @@ using namespace omnetpp;
 NetworkInformation::NetworkInformation(omnetpp::cModule* owner) {
     this->owner = owner;
     std::string test = owner->getParentModule()->par("SetupfileName");
+    std::string temp = owner->getParentModule()->par("Runnumber");
+    runNumber = temp;
     path = "configurations/" + test;
     readFile();
     setupDatabaseParameters(&config);
@@ -622,3 +623,8 @@ void NetworkInformation::readFile() {
 ProxyCacheSettings_t* NetworkInformation::getSettings(int id) {
     return &proxyCacheSettings.at(id - 1);
 }
+
+std::string NetworkInformation::getRunNumber(){
+    return this->runNumber;
+}
+

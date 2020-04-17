@@ -24,13 +24,13 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_FIFO_FIFOCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_FIFO_FIFOCACHE_H_
 
-#include <nodes/RecencyNode.h>
+
 #include <map>
 #include <string>
 #include <vector>
-#include "BasicEvictionStrategy.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../BasicEvictionStrategy.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class FIFOCache: public BasicEvictionStrategy {
 public:
@@ -49,11 +49,12 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;/**< a boolean value that is true, if all cache expand or reduce operations have been performed */
     RecencyNode* head;
     void setSize(long long size);
-    std::map<std::string, std::pair<VideoSegment*, RecencyNode*>*> container;/**< This models the storage of the cache */
+    std::map<std::string, std::pair<PointerAndCounter*, RecencyNode*>*> container;/**< This models the storage of the cache */
     unsigned long long maxCacheSize; /**< a vector storing all parameters for the eviction strategy */
     unsigned long long cacheSize = 0; /**< a long long representing the maximum size of the cache in kbit */
     void rearrangeCache(VideoSegment *pkg);

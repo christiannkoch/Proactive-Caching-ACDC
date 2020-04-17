@@ -25,12 +25,11 @@
  * Eviction Strategy
  *
  */
-#include <evictionStrategies/lfuda/LFUDACache.h>
-#include <nodes/FrequencyNode.h>
+#include "LFUDACache.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
+
 /*
  * @brief Creates a new LFUDACache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -87,7 +86,7 @@ void LFUDACache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void LFUDACache::deleteSegment(std::string id) {
-    int freedSize = container[id]->first->getSize();
+    int freedSize = container[id]->first->getSegment()->getSize();
     FrequencyNode* freq = container[id]->second;
     freq->getItems()->erase(id);
     globalK = freq->getValue();
@@ -121,7 +120,7 @@ void LFUDACache::insertIntoCache(VideoSegment *pkg) {
     if (nodeContainer.find(1 + globalK) == nodeContainer.end()) {
         std::set<std::string>* items = new std::set<std::string>();
         items->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg,
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg, 0),
                 new FrequencyNode(1 + globalK, items, nullptr, nullptr));
         container[keyBuilder] = p;
         nodeContainer[1 + globalK] = p->second;
@@ -134,7 +133,7 @@ void LFUDACache::insertIntoCache(VideoSegment *pkg) {
 
     } else {
         nodeContainer[1 + globalK]->getItems()->insert(keyBuilder);
-        auto p = new std::pair<VideoSegment*, FrequencyNode*>(pkg,
+        auto p = new std::pair<PointerAndCounter*, FrequencyNode*>(new PointerAndCounter(pkg, 0),
                 nodeContainer[1 + globalK]);
         container[keyBuilder] = p;
     }
@@ -256,7 +255,8 @@ VideoSegment *LFUDACache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     rearrangeCache(pkg);
     return pkg->dup();
 }
@@ -327,3 +327,13 @@ int LFUDACache::getReadOperations() {
 int LFUDACache::getWriteOperations() {
     return this->writeOperation;
 }
+
+std::string LFUDACache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

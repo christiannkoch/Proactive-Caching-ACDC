@@ -24,10 +24,10 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_GHOSTLISTS_LIMITEDGHOSTLIST_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_GHOSTLISTS_LIMITEDGHOSTLIST_H_
 
-#include <nodes/RecencyNode.h>
 #include <map>
 #include <string>
 #include <list>
+#include "../nodes/RecencyNode.h"
 
 class LimitedGhostList {
 public:

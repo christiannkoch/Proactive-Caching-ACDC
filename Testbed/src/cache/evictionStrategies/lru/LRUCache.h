@@ -24,14 +24,14 @@
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_LRU_LRUCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_LRU_LRUCACHE_H_
 
-#include <nodes/RecencyNode.h>
+
 #include <omnetpp.h>
 #include <map>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "BasicEvictionStrategy.h"
+#include "../BasicEvictionStrategy.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class LRUCache: public BasicEvictionStrategy {
 public:
@@ -49,11 +49,12 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;
     RecencyNode* head;
     void setSize(long long size);
-    std::map<std::string, std::pair<VideoSegment*, RecencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*, RecencyNode*>*> container;
     unsigned long long maxCacheSize;
     unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment *pkg);

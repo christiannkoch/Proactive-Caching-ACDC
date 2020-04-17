@@ -26,8 +26,7 @@
  *
  */
 #include "SLRUCache.h"
-#include "ProbationaryCacheFactory.h"
-#include "CacheSegmentFactory.h"
+#include <sstream>
 /*
  * @brief Creates a new SLRUCache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -230,3 +229,11 @@ int SLRUCache::getWriteOperations() {
     return probationaryCache->getWriteOperations()
             + protectedCache->getWriteOperations();
 }
+
+std::string SLRUCache::getCountsOfElements() {
+    std::stringstream buf;
+    buf << "Probationary: " << probationaryCache->getCountsOfElements()
+            << "; Protected: " << protectedCache->getCountsOfElements() << "; ";
+    return buf.str();
+}
+

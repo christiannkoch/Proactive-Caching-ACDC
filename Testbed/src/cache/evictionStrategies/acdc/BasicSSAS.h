@@ -23,6 +23,9 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_ACDC_BASICSSAS_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_ACDC_BASICSSAS_H_
+#include "../ghostLists/BasicGhostList.h"
+#include "../segment/BasicCacheSegment.h"
+#include "../probationary/ARCProbationaryCache.h"
 
 class BasicSSAS {
 public:

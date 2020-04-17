@@ -34,7 +34,7 @@ Now, open a terminal, change directory to the OMNeT++ folder and execute the fol
 
 ```{r, engine='bash'}
 . setenv
-./configure
+./configure WITH_OSGEARTH=no WITH_OSG=no
 make
 make install
 ```    
@@ -60,48 +60,6 @@ Navigate to the project folder and run:
 $ cd Proactive-Caching-ACDC
 $ opp_makemake -f --deep -lmysqlcppconn
 ```    
-Next, open the *Makefile* and manually insert the include paths mentioned below. This needs to be done because of a known issue of OMNeT++ (https://groups.google.com/forum/\#!msg/omnetpp/VEE4oXtuPes/cSQG7vZ-AAAJ). 
-
-```{r, engine='bash'}
-#C++ include paths (with -I)
-INCLUDE_PATH =\
-	-I. \
-    -Iconfigurations \
-    -Iconfigurations/ACARCConfigs \
-    -Iconfigurations/categorial \
-    -Iconfigurations/Hybrid \
-    -Iconfigurations/Infinity \
-    -Iconfigurations/Special \
-    -Iconfigurations/Topologies \
-    -Iresults \
-    -Isrc \
-    -Isrc/cache \
-    -Isrc/cache/admissionStretegies \
-    -Isrc/cache/admissionStretegies/lcd \
-    -Isrc/cache/admissionStretegies/lce \
-    -Isrc/cache/admissionStretegies/mcd \
-    -Isrc/cache/admissionStretegies/nhit \
-    -Isrc/cache/admissionStretegies/prob \
-    -Isrc/cache/admissionStretegies/rand \
-    -Isrc/cache/evictionStrategies \
-    -Isrc/cache/evictionStrategies/acdc \
-    -Isrc/cache/evictionStrategies/arc1 \
-    -Isrc/cache/evictionStrategies/arc2 \
-    -Isrc/cache/evictionStrategies/fifo \
-    -Isrc/cache/evictionStrategies/ghostLists \
-    -Isrc/cache/evictionStrategies/infinity \
-    -Isrc/cache/evictionStrategies/lfu \
-    -Isrc/cache/evictionStrategies/lfuda \
-    -Isrc/cache/evictionStrategies/lru \
-    -Isrc/cache/evictionStrategies/nodes \
-    -Isrc/cache/evictionStrategies/probationary \
-    -Isrc/cache/evictionStrategies/rand \
-    -Isrc/cache/evictionStrategies/segment \
-    -Isrc/cache/evictionStrategies/slru \
-    -Isrc/cache/evictionStrategies/ttl \
-    -Isrc/database \
-    -Isrc/simulation
-```  
 Finally, build the software using the make command, e.g., with 8 parallel threads by executing:
 ```{r, engine='bash'}
 $ make -j 8

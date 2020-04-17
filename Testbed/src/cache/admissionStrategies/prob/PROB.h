@@ -12,25 +12,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file MCD.h
+/* @file PROB.h
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for MCD
+ * @brief header file for PROB
  *
  * @section DESCRIPTION
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_MCD_MCD_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_MCD_MCD_H_
-#include "BasicAdmissionStrategy.h"
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_
+#include "../BasicAdmissionStrategy.h"
 
-class MCD: public BasicAdmissionStrategy {
+class PROB : public BasicAdmissionStrategy{
 public:
-    MCD();
-    virtual ~MCD();
+    PROB(std::vector<std::string>* parameters);
+    virtual ~PROB();
     bool toBeCached(VideoSegment* pkg);
     void periodicEvents();
+private:
+    double propability;
 };
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_MCD_MCD_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_PROB_PROB_H_ */

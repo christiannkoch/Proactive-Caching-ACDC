@@ -27,18 +27,17 @@
 #include <string>
 #include <vector>
 
-#include "ACDCCache.h"
-#include "ARC1Cache.h"
-#include "FIFOCache.h"
-#include "LFUCache.h"
-#include "LFUDACache.h"
-#include "LRUCache.h"
-#include "RANDCache.h"
-#include "SLRUCache.h"
-#include "TTLCache.h"
-#include "ARC2Cache.h"
-#include "LFUDACache.h"
-#include "InfinityCache.h"
+#include "acdc/ACDCCache.h"
+#include "arc1/ARC1Cache.h"
+#include "fifo/FIFOCache.h"
+#include "lfu/LFUCache.h"
+#include "lfuda/LFUDACache.h"
+#include "lru/LRUCache.h"
+#include "rand/RANDCache.h"
+#include "slru/SLRUCache.h"
+#include "ttl/TTLCache.h"
+#include "arc2/ARC2Cache.h"
+#include "infinity/InfinityCache.h"
 
 EvictionStrategyFactory::EvictionStrategyFactory() {
     // TODO Auto-generated constructor stub

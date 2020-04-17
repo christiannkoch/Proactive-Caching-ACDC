@@ -21,7 +21,7 @@
  *
  * @section DESCRIPTION
  */
-#include <ghostLists/BasicGhostList.h>
+#include "BasicGhostList.h"
 
 BasicGhostList::BasicGhostList() {
     // TODO Auto-generated constructor stub

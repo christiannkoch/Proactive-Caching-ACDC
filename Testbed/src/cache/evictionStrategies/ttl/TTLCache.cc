@@ -29,8 +29,8 @@
 #include <list>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
+
 /*
  * @brief Creates a new TTLCache for caching functionalities
  * @param parameters the parameters for this eviction strategy
@@ -94,7 +94,7 @@ void TTLCache::resetRates() {
  * @param id the video id of the video segment that has to be deleted
  */
 void TTLCache::deleteSegment(std::string id) {
-    int freedSize = container[id]->second->first->getSize();
+    int freedSize = container[id]->second->first->getSegment()->getSize();
     RecencyNode* rec = container[id]->second->second;
     delete container[id]->second->first;
     rec->getPrev()->setNext(rec->getNext());
@@ -119,9 +119,9 @@ void TTLCache::insertIntoCache(VideoSegment *pkg) {
         std::string toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
-    auto k = new std::pair<double, std::pair<VideoSegment*, RecencyNode*>*>(
+    auto k = new std::pair<double, std::pair<PointerAndCounter*, RecencyNode*>*>(
             omnetpp::simTime().dbl(), p);
     container[keyBuilder] = k;
     head->getNext()->setPrev(p->second);
@@ -153,8 +153,16 @@ bool TTLCache::contains(SegmentRequest *rqst) {
             + std::to_string(rqst->getSegmentId());
     if (container.find(keyBuilder) == container.end())
         return false;
-    else
-        return true;
+    else {
+            if ((omnetpp::simTime().dbl()
+                    - container.find(keyBuilder)->second->first) > timeToLive) {
+                deleteSegment(container.find(keyBuilder)->first);
+                return false;
+            }
+
+            else
+                return true;
+        }
 }
 /**
  * @brief Retrieves the video segment from the Cache. This should only be executed, if contains returns true.
@@ -168,7 +176,8 @@ VideoSegment* TTLCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->second->first;
+    VideoSegment *pkg = container[keyBuilder]->second->first->getSegment();
+    container[keyBuilder]->second->first->increaseCount();
     container[keyBuilder]->first = omnetpp::simTime().dbl();
     rearrangeCache(pkg);
     return pkg->dup();
@@ -214,7 +223,7 @@ int TTLCache::getReadOperations() {
  * @param size An Integer Value
  */
 void TTLCache::setSize(long long size) {
-    cacheSize = size;
+    maxCacheSize = size;
 }
 
 /*
@@ -244,3 +253,13 @@ void TTLCache::rearrangeCache(VideoSegment *pkg) {
 void TTLCache::alterCacheSize(double newCacheSize) {
     maxCacheSize = newCacheSize;
 }
+
+std::string TTLCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

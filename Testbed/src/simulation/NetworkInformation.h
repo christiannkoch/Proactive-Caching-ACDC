@@ -28,7 +28,8 @@
 #include <utility>
 #include <map>
 #include <omnetpp.h>
-#include <DBConnection.h>
+#include "../database/DBConnection.h"
+#include "../database/DatabaseFactory.h"
 #include <sstream>
 #include <fstream>
 #include <map>
@@ -67,6 +68,7 @@ public:
     double getEndTime();
     double getSimulationDuration();
     int getCDNDelay();
+    std::string getRunNumber();
 protected:
     int cdnDelay = 0;
     int amountOfLevels = 1;
@@ -88,6 +90,7 @@ protected:
 
     // Databse Parameters and functions
     std::string path;
+    std::string runNumber;
     struct DatabseInformation_t databaseInformation;
     DBConnection* dataBaseConnection;
     void setupDatabaseParameters(std::vector<std::string>* config);

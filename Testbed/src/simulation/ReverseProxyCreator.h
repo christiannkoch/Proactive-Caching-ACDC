@@ -37,7 +37,7 @@ public:
             std::vector<ProxyCacheSettings_t>* cacheSettings,
             std::map<std::string, std::vector<std::string>*>* leafProxyVector,
             std::map<int, std::vector<int>*>* connectionTable);
-    void createReverseProxys();
+    std::vector<cModule*> createReverseProxys();
     virtual ~ReverseProxyCreator();
 protected:
     int amountOfLevels;

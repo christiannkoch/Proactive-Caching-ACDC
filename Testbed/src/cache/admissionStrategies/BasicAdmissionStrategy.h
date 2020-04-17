@@ -12,25 +12,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file LCE.h
+/* @file BasicAdmissionStrategy.h
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for LCE
+ * @brief header file for BasicAdmissionStrategy
  *
  * @section DESCRIPTION
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_
-#include "BasicAdmissionStrategy.h"
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_
+#include "../../simulation/VideoSegment_m.h"
 
-class LCE : public BasicAdmissionStrategy{
+class BasicAdmissionStrategy {
 public:
-    LCE();
-    virtual ~LCE();
-    bool toBeCached(VideoSegment* pkg);
-    void periodicEvents();
+    BasicAdmissionStrategy();
+    virtual ~BasicAdmissionStrategy();
+    virtual bool toBeCached(VideoSegment* pkg) = 0;
+    virtual void periodicEvents() = 0;
 };
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_LCE_LCE_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_BASICADMISSIONSTRATEGY_H_ */

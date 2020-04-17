@@ -28,9 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "BasicEvictionStrategy.h"
+#include "../BasicEvictionStrategy.h"
 
 class InfinityCache: public BasicEvictionStrategy {
 public:
@@ -48,6 +46,7 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     void setSize(long long size);
     std::map<std::string, std::string> container;

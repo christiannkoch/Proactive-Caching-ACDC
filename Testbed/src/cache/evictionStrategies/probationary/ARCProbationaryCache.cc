@@ -27,8 +27,8 @@
 #include <omnetpp.h>
 #include <list>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
+
 /*
  * @brief Creates a new ARCProbationaryCache
  * @param size the size of the cache
@@ -62,7 +62,7 @@ void ARCProbationaryCache::resetRates() {
  */
 void ARCProbationaryCache::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->first->getSize();
+        int freedSize = container[id]->first->getSegment()->getSize();
         RecencyNode* rec = container[id]->second;
         delete container[id]->first;
         rec->getPrev()->setNext(rec->getNext());
@@ -92,7 +92,7 @@ std::list<std::string>* ARCProbationaryCache::insertIntoCache(
         deleteSegment(toDelete);
         deletedVideoSegments->push_back(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
     container[keyBuilder] = p;
     head->getNext()->setPrev(p->second);
@@ -161,7 +161,8 @@ VideoSegment* ARCProbationaryCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     return pkg->dup();
 }
 /**
@@ -221,3 +222,13 @@ int ARCProbationaryCache::getReadOperations() {
 int ARCProbationaryCache::getWriteOperations() {
     return this->writeOperation;
 }
+
+std::string ARCProbationaryCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

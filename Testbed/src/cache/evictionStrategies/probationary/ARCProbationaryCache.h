@@ -23,13 +23,11 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_ARCPROBATIONARYCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_PROBATIONARY_ARCPROBATIONARYCACHE_H_
-#include <nodes/RecencyNode.h>
+#include "../nodes/RecencyNode.h"
 #include <map>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
 #include "BasicProbationaryCache.h"
-
+#include "../../PointerAndCounter.h"
 
 class ARCProbationaryCache : public BasicProbationaryCache {
 public:
@@ -50,9 +48,10 @@ public:
     int getWriteOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     RecencyNode* head;
-    std::map<std::string, std::pair<VideoSegment*,RecencyNode*>*> container;
+    std::map<std::string, std::pair<PointerAndCounter*,RecencyNode*>*> container;
     unsigned long long maxCacheSize;
     unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment *pkg);

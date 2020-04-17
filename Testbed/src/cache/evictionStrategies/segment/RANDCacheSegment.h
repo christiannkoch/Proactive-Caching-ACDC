@@ -17,9 +17,10 @@
 #define SRC_CACHE_EVICTIONSTRATEGIES_SEGMENT_RANDCACHESEGMENT_H_
 #include <string>
 #include <map>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../../simulation/SegmentRequest_m.h"
+#include "../../../simulation/VideoSegment_m.h"
 #include "BasicCacheSegment.h"
+#include "../../PointerAndCounter.h"
 
 class RANDCacheSegment: public BasicCacheSegment {
 public:
@@ -40,12 +41,13 @@ public:
     std::string getCategory();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     unsigned long long maxCacheSize;
         unsigned long long cacheSize;
     void rearrangeCache(VideoSegment* pkg);
     void setCategory(std::string category);
-    std::map<std::string, VideoSegment*> container;
+    std::map<std::string, PointerAndCounter*> container;
     std::string category;
     int writeOperation = 0;
     int readOperation = 0;

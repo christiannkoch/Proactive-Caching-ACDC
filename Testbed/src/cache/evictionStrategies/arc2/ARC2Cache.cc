@@ -25,18 +25,12 @@
  * Eviction Strategy
  *
  */
-#include <ghostLists/LimitedGhostList.h>
+#include "ARC2Cache.h"
 #include <map>
 #include <string>
 #include <vector>
-#include "ARC2Cache.h"
-#include "LRUCacheSegment.h"
-#include "ARCProbationaryCache.h"
-#include "ProbationaryCacheFactory.h"
-#include "CacheSegmentFactory.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
-#include "ReverseProxy.h"
+#include <sstream>
+
 /*
  * @brief Creates a new ARC Cache for caching functionalities
  * @param size The desired Size of this Cache
@@ -275,5 +269,12 @@ int ARC2Cache::getWriteOperations() {
  */
 int ARC2Cache::getReadOperations() {
     return t1->getReadOperations() + t2->getReadOperations();
+}
+
+std::string ARC2Cache::getCountsOfElements() {
+    std::stringstream buf;
+    buf << "Probationary: " << t1->getCountsOfElements()
+            << "; Protected: " << t2->getCountsOfElements() << "; ";
+    return buf.str();
 }
 

@@ -25,10 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <omnetpp.h>
-#include <ReverseProxyCreator.h>
-#include "NetworkInformation.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <fstream>
 
 Define_Module(OriginServer);
 
@@ -131,14 +128,22 @@ void OriginServer::createReverseProxys() {
             nwInfo->getAmountOfLevels(), nwInfo->getCDNDelay(),
             nwInfo->getProxyCacheSettings(), nwInfo->getLeafProxyVector(),
             nwInfo->getConnectionTable());
-    rpc->createReverseProxys();
+    reverseProxys = rpc->createReverseProxys();
     delete rpc;
 }
 
 /*
- * @brief called when se simulation is over
+ * @brief called when the simulation is over
  */
 void OriginServer::finish() {
+    std::string filename = "results/"+nwInfo->getRunNumber()+".txt";
+    std::ofstream outputFile;
+    outputFile.open(filename);
+    for (auto i: reverseProxys){
+        ReverseProxy* prox = check_and_cast<ReverseProxy*>(i);
+        outputFile << prox->getCountsOfElements() << "\n";
+    }
+    outputFile.close();
     servesOverTime.record(serves);
     recordScalar("Total serves", servesTotal);
     delete nwInfo;

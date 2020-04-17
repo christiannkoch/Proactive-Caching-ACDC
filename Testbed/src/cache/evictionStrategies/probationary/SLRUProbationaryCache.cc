@@ -26,8 +26,8 @@
  */
 #include "SLRUProbationaryCache.h"
 #include <list>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include <sstream>
+
 /*
  * @brief Creates a new ARCProbationaryCache
  * @param size the size of the cache
@@ -69,7 +69,7 @@ void SLRUProbationaryCache::periodicEvents() {
  */
 void SLRUProbationaryCache::deleteSegment(std::string id) {
     if (container.find(id) != container.end()) {
-        int freedSize = container[id]->first->getSize();
+        int freedSize = container[id]->first->getSegment()->getSize();
         RecencyNode* rec = container[id]->second;
         delete container[id]->first;
         rec->getPrev()->setNext(rec->getNext());
@@ -98,7 +98,7 @@ std::list<std::string>* SLRUProbationaryCache::insertIntoCache(
         std::string toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head, head->getNext()));
     container[keyBuilder] = p;
     head->getNext()->setPrev(p->second);
@@ -126,7 +126,7 @@ void SLRUProbationaryCache::insertIntoCacheAtEnd(VideoSegment* pkg) {
         std::string toDelete = head->getPrev()->getValue();
         deleteSegment(toDelete);
     }
-    auto p = new std::pair<VideoSegment*, RecencyNode*>(pkg,
+    auto p = new std::pair<PointerAndCounter*, RecencyNode*>(new PointerAndCounter(pkg, 0),
             new RecencyNode(keyBuilder, head->getPrev(), head));
     container[keyBuilder] = p;
     head->getPrev()->setNext(p->second);
@@ -160,7 +160,8 @@ VideoSegment* SLRUProbationaryCache::retrieveSegment(SegmentRequest *rqst) {
     readOperation++;
     std::string keyBuilder = rqst->getVideoId()
             + std::to_string(rqst->getSegmentId());
-    VideoSegment *pkg = container[keyBuilder]->first;
+    VideoSegment *pkg = container[keyBuilder]->first->getSegment();
+    container[keyBuilder]->first->increaseCount();
     return pkg->dup();
 }
 /**
@@ -213,3 +214,13 @@ int SLRUProbationaryCache::getReadOperations() {
 int SLRUProbationaryCache::getWriteOperations() {
     return this->writeOperation;
 }
+
+std::string SLRUProbationaryCache::getCountsOfElements(){
+    std::stringstream buf;
+    for (auto i : container){
+        buf << i.first << ", " << i.second->first->getCount() << "; ";
+    }
+
+    return buf.str();
+}
+

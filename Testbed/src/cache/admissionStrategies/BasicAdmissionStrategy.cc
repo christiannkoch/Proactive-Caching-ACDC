@@ -12,25 +12,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file RandomAdmission.h
+/* @file BasicAdmissionStrategy.cc
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for RandomAdmission
+ * @brief the abstract class for all admission strategies
  *
  * @section DESCRIPTION
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_RAND_RANDOMADMISSION_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_RAND_RANDOMADMISSION_H_
 #include "BasicAdmissionStrategy.h"
 
-class RandomAdmission : public BasicAdmissionStrategy{
-public:
-    RandomAdmission();
-    virtual ~RandomAdmission();
-    bool toBeCached(VideoSegment* pkg);
-    void periodicEvents();
-};
+BasicAdmissionStrategy::BasicAdmissionStrategy() {
+    // TODO Auto-generated constructor stub
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_RAND_RANDOMADMISSION_H_ */
+}
+
+BasicAdmissionStrategy::~BasicAdmissionStrategy() {
+    // TODO Auto-generated destructor stub
+}
+

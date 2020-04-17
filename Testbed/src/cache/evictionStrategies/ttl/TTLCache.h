@@ -23,13 +23,12 @@
  */
 #ifndef SRC_CACHE_EVICTIONSTRATEGIES_TTL_TTLCACHE_H_
 #define SRC_CACHE_EVICTIONSTRATEGIES_TTL_TTLCACHE_H_
-#include <nodes/RecencyNode.h>
 #include <string>
 #include <map>
 #include <vector>
-#include "BasicEvictionStrategy.h"
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../BasicEvictionStrategy.h"
+#include "../nodes/RecencyNode.h"
+#include "../../PointerAndCounter.h"
 
 class TTLCache: public BasicEvictionStrategy {
 public:
@@ -47,6 +46,7 @@ public:
     int getReadOperations();
     void deleteSegment(std::string id);
     void resetRates();
+    std::string getCountsOfElements();
 protected:
     bool expanded;
     RecencyNode* head;
@@ -56,7 +56,7 @@ protected:
     unsigned long long cacheSize = 0;
     void rearrangeCache(VideoSegment *pkg);
     std::map<std::string,
-            std::pair<double, std::pair<VideoSegment*, RecencyNode*>*>*> container;
+            std::pair<double, std::pair<PointerAndCounter*, RecencyNode*>*>*> container;
     int writeOperation = 0;
     int readOperation = 0;
     void purge();

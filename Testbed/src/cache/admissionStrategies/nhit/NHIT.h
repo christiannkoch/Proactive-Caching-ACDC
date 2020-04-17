@@ -12,37 +12,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/* @file LCD.h
+/* @file NHIT.h
  * @author Johannes Pfannmüller, Christian Koch
  * @date
  * @version 1.0
  *
- * @brief header file for LCD
+ * @brief header file for NHIT
  *
  * @section DESCRIPTION
- *
  */
-#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
-#define SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_
-#include "BasicAdmissionStrategy.h"
+#ifndef SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_
+#define SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_
+#include "../BasicAdmissionStrategy.h"
+#include <vector>
+#include <map>
 
-
-/**
- * @brief Class that models the behaviour of the Leave Copy Down Admission Strategy
- */
-class LCD : public BasicAdmissionStrategy{
+class NHIT :  public BasicAdmissionStrategy{
 public:
-    // Default constructor
-    LCD();
-
-    // Destructor
-    virtual ~LCD();
-
-    // Answer true iff package has to be cached
+    NHIT(std::vector<std::string>* parameters);
+    virtual ~NHIT();
     bool toBeCached(VideoSegment* pkg);
-
-    // Perform periodic events
     void periodicEvents();
+private:
+    std::map<std::string, std::vector<double>*> seenPackets;
+    unsigned int thresholdValue;
+    double timeFrame;
+    std::vector<std::string> stringsToDelete;
 };
 
-#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_LCD_LCD_H_ */
+#endif /* SRC_CACHE_ADMISSIONSTRETEGIES_NHIT_NHIT_H_ */

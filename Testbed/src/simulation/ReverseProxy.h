@@ -29,9 +29,10 @@
 #include <omnetpp.h>
 
 #include "../cache/ProxyCacheSettingst.h"
-#include "BaseCache.h"
-#include "BasicEvictionStrategy.h"
-#include "BasicAdmissionStrategy.h"
+#include "../cache/CacheFactory.h"
+#include "../cache/BaseCache.h"
+#include "../cache/evictionStrategies/BasicEvictionStrategy.h"
+#include "../cache/admissionStrategies/BasicAdmissionStrategy.h"
 #include "SegmentRequest_m.h"
 #include "VideoSegment_m.h"
 #include "ClientCreator.h"
@@ -41,6 +42,8 @@
 using namespace omnetpp;
 
 class ReverseProxy: public cSimpleModule {
+public:
+    std::string getCountsOfElements();
 protected:
     void sendMessage(cMessage *msg, int gate);
     void handleMessage(cMessage *msg) override;
@@ -73,6 +76,7 @@ protected:
     void scheduleSelfMessages();
     std::vector<double> delayVector;
     std::vector<double> firstSegmentDelayVector;
+    std::string elementCounterAtEnd;
 };
 
 #endif /* SRC_SIMULATION_REVERSEPROXY_H_ */

@@ -21,7 +21,7 @@
  *
  * @section DESCRIPTION
  */
-#include <ghostLists/LifeTimeGhostList.h>
+#include "LifeTimeGhostList.h"
 #include <omnetpp.h>
 #include <string>
 #include <map>

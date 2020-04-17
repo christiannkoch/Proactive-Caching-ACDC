@@ -33,7 +33,6 @@
 #include <string>
 #include "MetaRequestCursor.h"
 #include "CursorFactory.h"
-#include "DatabaseInformation.h"
 #include <boost/lexical_cast.hpp>
 
 using namespace omnetpp;

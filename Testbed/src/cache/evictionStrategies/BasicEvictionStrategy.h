@@ -26,8 +26,8 @@
 
 #include <vector>
 #include <string>
-#include "SegmentRequest_m.h"
-#include "VideoSegment_m.h"
+#include "../../simulation/SegmentRequest_m.h"
+#include "../../simulation/VideoSegment_m.h"
 
 /** The Base Class for Caches
  *  This is an abstract Class where all Caches inherit from
@@ -46,6 +46,7 @@ public:
     virtual int getReadOperations() = 0;
     virtual void deleteSegment(std::string id) = 0;
     virtual void resetRates() = 0;
+    virtual std::string getCountsOfElements() = 0;
 protected:
     virtual void setSize(long long size) = 0;
     std::vector<std::string>* parameters;
