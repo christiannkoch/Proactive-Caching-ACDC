@@ -16,7 +16,8 @@ We built the software from scratch by installing the following packages and libr
 
 ```{r, engine='bash'}
 sudo apt install mysql-server libmysqlcppconn-dev libboost-dev python3 python3-pip git python3-tk
-sudo pip3 install mysql-connector pandas seaborn
+pip3 install mysql-connector pandas seaborn PyMySQL
+python3 -m pip install PyMySQL
 ```
 
 
