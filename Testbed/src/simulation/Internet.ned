@@ -40,8 +40,9 @@ network Internet
         string reverseProxyCacheParameters = default("admission=LCE;eviction=LFU;parameterList=10;");
         //string ytCacheParam = default("");
         string SetupfileName = default("");
+        string Runnumber = default("");
 		string name = default ("root");
-		string password = default ("root");
+		string password = default ("start123");
     	double recordGranularity = default(3600.0);
     submodules:
         originServ: OriginServer;
