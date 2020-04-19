@@ -2,11 +2,11 @@ Database Type = mysql
 Database Name = ACDCTestData
 Database Table = YouTubeDataset
 Database Login = root
-Database Password = root
+Database Password = start123
 Database Address = 127.0.0.1
 Database Port = 3306
 Start Time = 1397426400.07611
-End Time = 1398031200.07611
+End Time = 1398635589.26526
 Category = ALL
 ReverseProxy1: Admission Strategy = MCD; Parameter List =  ; Eviction Strategy = LRU; Size = 11702; parameterList =  ; Proxy Name = Proxy1; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = false
 ReverseProxy2: Admission Strategy = MCD; Parameter List =  ; Eviction Strategy = LRU; Size = 11702; parameterList =  ; Proxy Name = Proxy2; StorageAlterations =  ; StorageAlterationStragegy =  ; Leaf = false
