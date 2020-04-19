@@ -1,11 +1,11 @@
 import pandas as pd
-import mysql.connector
+import pymysql
 import string
 import random
 import pandas as pd
 import numpy as np
 
-db = mysql.connector.connect(user='root', password='root', host='localhost',database='ACDCTestData')
+db = pymysql.connect(user='root', password='start123', host='localhost',database='ACDCTestData')
 cursor = db.cursor();
 
 
